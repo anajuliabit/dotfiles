@@ -1,3 +1,6 @@
+--package.path = package.path .. ";/Users/anajulia/.nix-dotfiles/hosts/darwin/nvim/lua/ana/init.lua"
+-- package.cpath = package.cpath .. ";/path/to/ana.so"
+
 require("ana")
 
 --vim.diagnostic.config({

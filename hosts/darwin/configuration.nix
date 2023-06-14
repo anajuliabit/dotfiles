@@ -19,7 +19,7 @@
 
   # if you use zsh (the default on new macOS installations),
   # you'll need to enable this so nix-darwin creates a zshrc sourcing needed environment changes
-  programs.zsh.enable = true;
+  # programs.zsh.enable = true;
   # bash is enabled by default
 
   homebrew = {
@@ -42,4 +42,23 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.anajulia = import ./home.nix;
+
+  environment = {
+   # shells = with pkgs; [ zsh ];          # Default shell
+    variables = {                         # System variables
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
+    systemPackages = with pkgs; [         # Installed Nix packages
+      # Terminal
+      #ansible
+      git
+     # ranger
+      vim
+      # Doom Emacs
+      #emacs
+      #fd
+      #ripgrep
+    ];
+  };
 }

@@ -24,7 +24,7 @@
       lua
       sumneko-lua-language-server 
       stylua
-    ])
+    ]);
 
     imports = [
         ./git.nix

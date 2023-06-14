@@ -1,7 +1,30 @@
 { pkgs, ... }:
 
 {
+    xdg.configFile."nvim".source = "/Users/anajulia/.config/nvim-bkp";
+
+    home.packages = with pkgs; [
+      stylua
+      nodePackages_latest.prettier
+      # black
+      # alejandra
+      # shfmt
+      # rustfmt is provided by rust-overlay
+  
+      # selene
+      # nodePackages_latest.eslint_d
+      shellcheck
+      # statix
+  
+      # lua-language-server
+      nodePackages_latest.typescript-language-server
+      nodePackages_latest.bash-language-server
+  
+      gcc
+    ];
+
     programs.neovim = {
+         package = pkgs.neovim-unwrapped; 
         enable = true;
         defaultEditor = true;
         viAlias = true;
@@ -100,6 +123,6 @@
        #         '';
        #     }
        # ];
-        extraLuaConfig = builtins.readFile ./init.lua;
+       # extraLuaConfig = builtins.readFile ./init.lua;
     };
 }

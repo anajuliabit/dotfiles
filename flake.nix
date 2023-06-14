@@ -16,7 +16,7 @@
     };
 
     outputs = { self, nixpkgs, darwin, home-manager }: {
-        darwinConfigurations."anajulia" = darwin.lib.darwinSystem {
+        darwinConfigurations."darwin" = darwin.lib.darwinSystem {
             system = "aarch64-darwin";
             modules = [ 
                 ./hosts/darwin/configuration.nix
