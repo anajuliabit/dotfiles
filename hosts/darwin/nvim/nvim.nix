@@ -24,7 +24,7 @@
     ];
 
     programs.neovim = {
-         package = pkgs.neovim-unwrapped; 
+        package = pkgs.neovim-unwrapped; 
         enable = true;
         defaultEditor = true;
         viAlias = true;

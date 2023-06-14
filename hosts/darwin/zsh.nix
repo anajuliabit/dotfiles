@@ -62,15 +62,16 @@
           l = "exa -l";
           la = "exa -la";
           md = "mkdir -p";
+	      nvim = "nvim -u ~/.config/nvim-bkp/init.lua";
         };
         shellGlobalAliases = {exa = "exa --icons --git";};
-      #  oh-my-zsh = {
-      #      enable = true;
-      #      plugins = [
-      #          "git"
-      #          "vi-mode"
-      #      ];
-      #  };
+        oh-my-zsh = {
+            enable = true;
+            plugins = [
+                "git"
+                "vi-mode"
+            ];
+        };
     };
     programs.starship = {
         enable = true;

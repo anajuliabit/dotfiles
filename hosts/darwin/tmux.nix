@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 {
+   xdg.configFile."tmux".source = "/Users/anajulia/.config/tmuxbak";
 #  environment = {
 #    shellAliases = {
 #      tx = "tmux new-session -A -s $USER";
