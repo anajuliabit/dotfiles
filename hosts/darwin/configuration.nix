@@ -31,6 +31,7 @@
         # "amethyst"
         "discord"
         #"iterm2"
+        "spotify"
     ];
   };
 
@@ -39,26 +40,15 @@
       home = "/Users/anajulia";
   };
 
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users.anajulia = import ./home.nix;
+#  home-manager.useGlobalPkgs = true;
+#  home-manager.useUserPackages = true;
+#  home-manager.users.anajulia = import ./home.nix;
 
-  environment = {
-   # shells = with pkgs; [ zsh ];          # Default shell
-    variables = {                         # System variables
-      EDITOR = "nvim";
-      VISUAL = "nvim";
-    };
-    systemPackages = with pkgs; [         # Installed Nix packages
-      # Terminal
-      #ansible
-      git
-     # ranger
-      vim
-      # Doom Emacs
-      #emacs
-      #fd
-      #ripgrep
-    ];
-  };
+  programs.nix-index.enable = true;
+  environment.systemPackages = with pkgs; [ ];
+
+  imports = [
+      ./yabai.nix
+      ./skhd.nix
+  ];
 }

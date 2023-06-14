@@ -1,4 +1,6 @@
-Build the nix flake.
+## Setup 
+
+Build nix flake
 
 ```bash
 nix build .#darwinConfigurations.darwin.system
@@ -38,14 +40,15 @@ solution:
 
 Programs:
 
-- [ ] Migrate braver
-- [ ] Spotify
+- [ ] Braver
+- [x] Spotify
+- [x] Discord
 - [ ] Yubikey manager
 
 Terminal:
 
 - [x] zsh
-- [ ] Tmux
+- [x] Tmux
 - [ ] Copilot
 
 Editor: 
@@ -55,5 +58,6 @@ Editor:
 
 Mac:
 
-- [ ] Yabai
-- [ ] Skhd
+- [x] Yabai
+- [x] Skhd
+- [ ] Spacebar

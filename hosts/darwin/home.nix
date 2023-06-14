@@ -24,6 +24,8 @@
       lua
       sumneko-lua-language-server 
       stylua
+
+      tldr
     ]);
 
     imports = [

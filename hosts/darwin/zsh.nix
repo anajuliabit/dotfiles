@@ -73,7 +73,6 @@
             ];
         };
     };
-    programs.starship = {
-        enable = true;
-    };
+    #programs.starship.enable = true;
+    programs.home-manager.enable = true;
 }
