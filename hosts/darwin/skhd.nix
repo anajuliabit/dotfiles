@@ -3,15 +3,6 @@
 {
   environment.systemPackages = with pkgs; [
       skhd
-      # Terminal
-      #ansible
-      git
-     # ranger
-      vim
-      ripgrep
-      fd
-      #home-manager
-      #emacs
 
   ];
 

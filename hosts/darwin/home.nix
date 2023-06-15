@@ -28,6 +28,12 @@
       tldr
     ]);
 
+    programs.nix-index.enable = true;
+    programs.nix-index.enableZshIntegration = true
+    programs.home-manager.enable = true;
+    programs.zoxide.enable = true;
+    programs.command-not-found.enable = false;
+
     imports = [
         ./git.nix
         ./nvim/nvim.nix

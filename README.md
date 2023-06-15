@@ -50,6 +50,7 @@ Terminal:
 - [x] zsh
 - [x] Tmux
 - [ ] Copilot
+- [ ] Autojump
 
 Editor: 
 
@@ -61,3 +62,10 @@ Mac:
 - [x] Yabai
 - [x] Skhd
 - [ ] Spacebar
+
+## Snippets
+
+- Find here a executable is inside nix store with
+```
+nix-build -E 'with import <nixpkgs> {}; executable' --no-out-link
+```

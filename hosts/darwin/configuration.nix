@@ -17,16 +17,9 @@
     '';
   };
 
-  # if you use zsh (the default on new macOS installations),
-  # you'll need to enable this so nix-darwin creates a zshrc sourcing needed environment changes
-  # programs.zsh.enable = true;
-  # bash is enabled by default
-
   homebrew = {
     enable = true;
     onActivation.autoUpdate = true;
-    # updates homebrew packages on activation,
-    # can make darwin-rebuild much slower (otherwise i'd forget to do it ever though)
     casks = [
         # "amethyst"
         "discord"
@@ -40,12 +33,27 @@
       home = "/Users/anajulia";
   };
 
-#  home-manager.useGlobalPkgs = true;
-#  home-manager.useUserPackages = true;
-#  home-manager.users.anajulia = import ./home.nix;
-
-  programs.nix-index.enable = true;
-  environment.systemPackages = with pkgs; [ ];
+  environment.systemPackages = with pkgs; [ 
+     # Terminal
+     #ansible
+     git
+     #fast alternative ot autojump and z-lua
+     #ranger
+     vim
+     ripgrep
+     fd # alternative to find
+     curl
+     wget
+     fzf
+     nix-diff # explain why 2 nix devirations differ
+     #emacs
+     neofetch # system info cli
+     yubikey-manager 
+     procs # alternative to ps
+     sd # alternative to sed
+     tealdeer # tldr implementation for simplified example based man pages
+     exa # Replacement for ls
+   ];
 
   imports = [
       ./yabai.nix

@@ -19,11 +19,8 @@
         dirHashes = {
           dl = "$HOME/Downloads";
           docs = "$HOME/Documents";
-          code = "$HOME/Documents/code";
-          dots = "$HOME/Documents/code/dotfiles";
+          code = "$HOME/dev/code";
           pics = "$HOME/Pictures";
-          vids = "$HOME/Videos";
-          nixpkgs = "$HOME/Documents/code/git/nixpkgs";
         };
         dotDir = ".config/zsh";
        # history = {
@@ -48,11 +45,6 @@
           zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
           zstyle ':completion:*' verbose true
           _comp_options+=(globdots)
-
-          # run programs that are not in PATH with comma
-          command_not_found_handler() {
-            ${pkgs.comma}/bin/comma "$@"
-          }
         '';
 
         shellAliases = {
@@ -62,7 +54,7 @@
           l = "exa -l";
           la = "exa -la";
           md = "mkdir -p";
-	      nvim = "nvim -u ~/.config/nvim-bkp/init.lua";
+	      nvim = "nvim -u ~/.config/nvim-bkp/init.lua"; # fix this when finish nvim migration 
         };
         shellGlobalAliases = {exa = "exa --icons --git";};
         oh-my-zsh = {
@@ -74,5 +66,4 @@
         };
     };
     #programs.starship.enable = true;
-    programs.home-manager.enable = true;
 }
