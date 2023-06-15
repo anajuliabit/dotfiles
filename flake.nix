@@ -19,6 +19,9 @@
         darwinConfigurations."darwin" = darwin.lib.darwinSystem {
             system = "aarch64-darwin";
             modules = [ 
+                # force nix to use flake registry instead of channel
+                # https://github.com/nix-community/nix-index/issues/167 
+                { nix.nixPath.nixpkgs = "${nixpkgs}"; }
                 ./hosts/darwin/configuration.nix
                 home-manager.darwinModules.home-manager
             ];
