@@ -55,6 +55,9 @@
      exa # Replacement for ls
    ];
 
+  home-manager.useUserPackages = true;
+  home-manager.users.anajulia = import ./home.nix;
+
   imports = [
       ./yabai.nix
       ./skhd.nix

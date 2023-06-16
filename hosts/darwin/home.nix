@@ -28,10 +28,10 @@
       tldr
     ]);
 
-    programs.nix-index.enable = true;
-    programs.nix-index.enableZshIntegration = true
     programs.home-manager.enable = true;
-    programs.zoxide.enable = true;
+    programs.nix-index.enable = true;
+    programs.nix-index.enableZshIntegration = true;
+    programs.zoxide.enable = true; # rust autojump 
     programs.command-not-found.enable = false;
 
     imports = [

@@ -15,8 +15,6 @@
       # nodePackages_latest.eslint_d
       shellcheck
       # statix
-      luacheck
-      lua-language-server
       nodePackages_latest.typescript-language-server
       nodePackages_latest.bash-language-server
   
