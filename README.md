@@ -69,3 +69,10 @@ Mac:
 ```
 nix-build -E 'with import <nixpkgs> {}; executable' --no-out-link
 ```
+
+
+- Nix info
+
+```
+nix-shell -p nix-info --run "nix-info -m"
+```

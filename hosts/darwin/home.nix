@@ -1,6 +1,6 @@
 { pkgs, ... }: 
 {
-    home.stateVersion = "22.11";
+    home.stateVersion = "22.05";
 
     fonts.fontconfig.enable = true;
     home.packages = (with pkgs; [
@@ -26,10 +26,10 @@
       stylua
 
       tldr
+      neovim
     ]);
 
-    programs.home-manager.enable = true;
-    programs.nix-index.enable = true;
+    #programs.nix-index.enable = true;
     programs.nix-index.enableZshIntegration = true;
     programs.zoxide.enable = true; # rust autojump 
     programs.command-not-found.enable = false;

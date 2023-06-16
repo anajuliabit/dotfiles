@@ -1,6 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, channel, ... }:
 
 {
+  imports = [
+       # https://nix-community.github.io/home-manager/index.html#sec-install-nix-darwin-module
+       #<home-manager/nix-darwin>
+      ./yabai.nix
+      ./skhd.nix
+  ];
+
+#  home-manager.useUserPackages = true;
+#  home-manager.useGlobalPkgs = true;
+ # home.users.anajulia = import ./home.nix;
+  # inputs.home.useUserPackages = true;
+ # inputs.home.useGlobalPkgs = true;
+
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
   
@@ -15,6 +28,11 @@
       auto-optimise-store = true
       experimental-features = nix-command flakes
     '';
+  #  nixPath = [
+  #    "nixpkgs=${channel.input}"
+  #    "home-manager=${home}"
+  # ];
+
   };
 
   homebrew = {
@@ -55,11 +73,4 @@
      exa # Replacement for ls
    ];
 
-  home-manager.useUserPackages = true;
-  home-manager.users.anajulia = import ./home.nix;
-
-  imports = [
-      ./yabai.nix
-      ./skhd.nix
-  ];
-}
+    }
