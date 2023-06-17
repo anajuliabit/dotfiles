@@ -75,7 +75,6 @@
       programs-nix-index = 
         # Additional configuration for `nix-index` to enable `command-not-found` functionality with zsh.
         { config, lib, pkgs, ... }:
-
         {
           config = lib.mkIf config.programs.nix-index.enable {
             programs.zsh.interactiveShellInit = ''

@@ -54,7 +54,7 @@
           l = "exa -l";
           la = "exa -la";
           md = "mkdir -p";
-	      nvim = "nvim -u ~/.config/nvim-bkp/init.lua"; # fix this when finish nvim migration 
+          nvim = "nvim -u ~/.config/nvim-bkp/init.lua"; # fix this when finish nvim migration 
         };
         shellGlobalAliases = {exa = "exa --icons --git";};
         oh-my-zsh = {
@@ -65,5 +65,8 @@
             ];
         };
     };
+
+    programs.direnv.enable = true;
+    programs.direnv.nix-direnv.enable = true;
     #programs.starship.enable = true;
 }

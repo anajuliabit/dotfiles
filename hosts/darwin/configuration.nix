@@ -1,4 +1,4 @@
-{ pkgs, channel, ... }:
+{ pkgs, channel, lib, ... }:
 
 {
   imports = [
@@ -8,11 +8,6 @@
       ./skhd.nix
   ];
 
-#  home-manager.useUserPackages = true;
-#  home-manager.useGlobalPkgs = true;
- # home.users.anajulia = import ./home.nix;
-  # inputs.home.useUserPackages = true;
- # inputs.home.useGlobalPkgs = true;
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
@@ -27,6 +22,8 @@
     extraOptions = ''
       auto-optimise-store = true
       experimental-features = nix-command flakes
+      '' + lib.optionalString (pkgs.system == "aarch64-darwin") ''
+         extra-platforms = x86_64-darwin aarch64-darwin
     '';
   #  nixPath = [
   #    "nixpkgs=${channel.input}"
@@ -34,6 +31,11 @@
   # ];
 
   };
+
+ # Create /etc/bashrc that loads the nix-darwin environment.
+  programs.zsh.enable = true;
+  programs.nix-index.enable = true;
+
 
   homebrew = {
     enable = true;
@@ -73,4 +75,4 @@
      exa # Replacement for ls
    ];
 
-    }
+}
