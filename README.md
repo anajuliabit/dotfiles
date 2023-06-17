@@ -40,7 +40,7 @@ solution:
 
 Programs:
 
-- [ ] Braver
+- [ ] Brave
 - [x] Spotify
 - [x] Discord
 - [ ] Yubikey manager
@@ -50,11 +50,12 @@ Terminal:
 - [x] zsh
 - [x] Tmux
 - [ ] Copilot
-- [ ] Autojump
+- [ ] fish
+- [ ] iterm
 
 Editor: 
 
-- [x] nvim - temporarily solution
+- [x] nvim 
 - [ ] emacs
 
 Mac:

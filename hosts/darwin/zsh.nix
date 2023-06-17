@@ -45,6 +45,13 @@
           zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
           zstyle ':completion:*' verbose true
           _comp_options+=(globdots)
+
+          export PATH=/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin/:$PATH
+          # For 1Password CLI. This requires `pkgs.gh` to be installed.
+          source $HOME/.config/op/plugins.sh
+          # Because, adding it in .ssh/config is not enough.
+          # cf. https://developer.1password.com/docs/ssh/get-started#step-4-configure-your-ssh-or-git-client
+
         '';
 
         shellAliases = {
@@ -64,6 +71,8 @@
                 "vi-mode"
             ];
         };
+        envExtra = ''
+        '';
     };
 
     programs.direnv.enable = true;

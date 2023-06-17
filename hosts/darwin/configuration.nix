@@ -54,11 +54,12 @@
   };
 
   environment.systemPackages = with pkgs; [ 
-     # Terminal
      #ansible
      git
-     #fast alternative ot autojump and z-lua
-     #ranger
+     zoxide #fast alternative ot autojump and z-lua
+     coreutils
+     curl
+     wget
      vim
      ripgrep
      fd # alternative to find
@@ -66,12 +67,9 @@
      wget
      fzf
      nix-diff # explain why 2 nix devirations differ
-     #emacs
      neofetch # system info cli
-     yubikey-manager 
      procs # alternative to ps
      sd # alternative to sed
-     tealdeer # tldr implementation for simplified example based man pages
      exa # Replacement for ls
    ];
 

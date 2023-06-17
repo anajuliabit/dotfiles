@@ -6,13 +6,13 @@
     # https://direnv.net
     # https://rycee.gitlab.io/home-manager/options.html#opt-programs.direnv.enable
     
-    home.packages = (with pkgs; [
+    home.packages = with pkgs; [
+      tldr
       (nerdfonts.override { fonts = [ "Cousine" ]; })
       htop
       httpie
       jq
       yq
-      ripgrep
 
       # rust
       rustc
@@ -28,9 +28,16 @@
       sumneko-lua-language-server 
       stylua
 
-      tldr
      # neovim
-    ]);
+     #emacs
+     # nodePackages.typescript
+     # nodejs
+
+      yubikey-manager 
+
+      ] ++ lib.optionals stdenv.isDarwin [
+        m-cli # useful macOS CLI commands
+      ];
 
     #programs.nix-index.enable = true;
     #programs.nix-index.enableZshIntegration = true;
