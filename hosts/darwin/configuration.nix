@@ -1,4 +1,4 @@
-{ pkgs, channel, lib, ... }:
+{ pkgs, channel, lib, config, ... }:
 
 {
   imports = [
@@ -36,7 +36,6 @@
   programs.zsh.enable = true;
   programs.nix-index.enable = true;
 
-
   homebrew = {
     enable = true;
     onActivation.autoUpdate = true;
@@ -61,7 +60,7 @@
      curl
      wget
      vim
-     ripgrep
+     (ripgrep.override {withPCRE2 = true;})
      fd # alternative to find
      curl
      wget
@@ -72,5 +71,6 @@
      sd # alternative to sed
      exa # Replacement for ls
    ];
+
 
 }

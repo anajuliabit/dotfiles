@@ -10,6 +10,10 @@
        darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
        home-manager.url = "github:nix-community/home-manager";
        home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";        
+     #  emacs-overlay = {                                         
+     #   url = "github:nix-community/emacs-overlay";
+     #   flake = false;
+     # };
    };
 
    
