@@ -2,16 +2,31 @@
 # This is an ideal way to install on a vanilla NixOS installion.
 # You will need to import this from somewhere in the flake (Obviously not in a home-manager nix file)
 
-{ config, pkgs, location, ... }:
+{ config, pkgs, inputs,... }:
 
 {
-  services.emacs.enable = true;
+  environment.systemPackages = with pkgs; [
+     ((emacsPackagesFor emacs-unstable).emacsWithPackages
+        (epkgs: [ epkgs.vterm ]))
+     texlive.combined.scheme-medium
+     gnutls
+     zstd                # for undo-fu-session/undo-tree compression
+  ];                                             
 
-  system.userActivationScripts = {               # Installation script every time nixos-rebuild is run. So not during initial install.
-    doomEmacs = {
+  services.emacs.package = pkgs.emacs-unstable;
+
+  services.emacs.enable = true;
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
+    }))
+  ];
+
+  system.activationScripts = {               # Installation script every time nixos-rebuild is run. So not during initial install.
+    postActivation = {
       text = ''
         source ${config.system.build.setEnvironment}
-        EMACS="$XDG_CONFIG_HOME/emacs"
+        EMACS="/Users/anajulia/.config/emacs"
 
 
         if [ ! -d "$EMACS" ]; then
@@ -19,15 +34,11 @@
           yes | $EMACS/bin/doom install
           rm -r $XDG_CONFIG_HOME/doom
           ln -s ./ $XDG_CONFIG_HOME/doom
-          $EMACS/bin/doom sync
-        else
-          $EMACS/bin/doom sync
         fi
       '';                                        # It will always sync when rebuild is done. So changes will always be applied.
     };
+
+   # activationScripts.postActivation.text = ''sudo chsh -s ${pkgs.zsh}/bin/zsh''; # Since it's not possible to declare default shell, run this command after build
   };
 
-  environment.systemPackages = with pkgs; [
-    texlive.combined.scheme-medium
-  ];                                             
 }

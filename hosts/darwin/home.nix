@@ -1,7 +1,6 @@
 { pkgs, ... }: 
 {
     home.stateVersion = "22.05";
-    fonts.fontconfig.enable = true;
     
     home.packages = with pkgs; [
       tldr
@@ -26,7 +25,6 @@
       stylua
 
      # neovim
-     #emacs
      # nodePackages.typescript
      # nodejs
 
@@ -43,15 +41,15 @@
         ./nvim.nix
         ./tmux.nix
         ./zsh.nix
-        ../../modules/emacs
+       # ../../modules/emacs
     ];
 
-  home.sessionVariables = rec {
-    XDG_CACHE_HOME = "\${HOME}/.cache";
-    XDG_CONFIG_HOME = "\${HOME}/.config";
-    XDG_BIN_HOME = "\${HOME}/.local/bin";
-    XDG_DATA_HOME = "\${HOME}/.local/share";
-  };
+#  home.sessionVariables = rec {
+#    XDG_CACHE_HOME = "\${HOME}/.cache";
+#    XDG_CONFIG_HOME = "\${HOME}/.config";
+#    XDG_BIN_HOME = "\${HOME}/.local/bin";
+#    XDG_DATA_HOME = "\${HOME}/.local/share";
+#  };
 
   #  PATH = [
   #    "\${HOME}/.bin"
@@ -59,9 +57,5 @@
   #    "\${HOME}/.node_modules"
   #  ];
 
-   modules.emacs = {
-       enable = true;
-       doom.enable = true;
-   };
-
+#   modules.emacs.enable = true;
 }

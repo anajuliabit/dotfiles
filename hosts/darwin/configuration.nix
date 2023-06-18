@@ -1,4 +1,4 @@
-{ pkgs, channel, lib, config, ... }:
+{ pkgs, channel, lib, config, inputs, ... }:
 
 {
   imports = [
@@ -6,6 +6,7 @@
        #<home-manager/nix-darwin>
       ./yabai.nix
       ./skhd.nix
+      ../../modules/emacs/doom/doom.nix
   ];
 
 
@@ -13,7 +14,7 @@
   services.nix-daemon.enable = true;
   
   nix = {
-    package = pkgs.nix;
+    package = pkgs.nixUnstable;
     gc = {                                
       automatic = true;
       interval.Day = 7;
@@ -29,7 +30,6 @@
   #    "nixpkgs=${channel.input}"
   #    "home-manager=${home}"
   # ];
-
   };
 
  # Create /etc/bashrc that loads the nix-darwin environment.
@@ -47,10 +47,13 @@
     ];
   };
 
+
   users.users.anajulia= {
       name = "anajulia";
       home = "/Users/anajulia";
   };
+
+  #fonts.fontconfig.enable = true;
 
   environment.systemPackages = with pkgs; [ 
      #ansible
@@ -72,5 +75,27 @@
      exa # Replacement for ls
    ];
 
-
+   
+  system = {
+    defaults = {
+      NSGlobalDomain = {                  # Global macOS system settings
+        KeyRepeat = 1;
+        NSAutomaticCapitalizationEnabled = false;
+        NSAutomaticSpellingCorrectionEnabled = false;
+      };
+      dock = {                            # Dock settings
+        autohide = true;
+        orientation = "bottom";
+        showhidden = true;
+        tilesize = 40;
+      };
+      finder = {                          # Finder settings
+        QuitMenuItem = false;             # I believe this probably will need to be true if using spacebar
+      };  
+      trackpad = {                        # Trackpad settings
+        Clicking = true;
+        TrackpadRightClick = true;
+      };
+    };
+  };
 }
