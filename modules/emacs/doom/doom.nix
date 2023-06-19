@@ -32,8 +32,8 @@
         if [ ! -d "$EMACS" ]; then
           ${pkgs.git}/bin/git clone https://github.com/hlissner/doom-emacs.git $EMACS
           yes | $EMACS/bin/doom install
-          rm -r $XDG_CONFIG_HOME/doom
-          ln -s ./ $XDG_CONFIG_HOME/doom
+         # rm -r $XDG_CONFIG_HOME/doom
+         # ln -s ./ $XDG_CONFIG_HOME/doom
         fi
       '';                                        # It will always sync when rebuild is done. So changes will always be applied.
     };
