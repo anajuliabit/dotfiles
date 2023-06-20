@@ -45,6 +45,7 @@
           source $HOME/.config/op/plugins.sh
           # Because, adding it in .ssh/config is not enough.
           # cf. https://developer.1password.com/docs/ssh/get-started#step-4-configure-your-ssh-or-git-client
+          export PATH=/Users/anajulia/.config/emacs/bin:$PATH
 
         '';
 

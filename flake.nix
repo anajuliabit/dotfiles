@@ -45,7 +45,7 @@
           # `home-manager` module
           home-manager.darwinModules.home-manager
           {
-            #nixpkgs = nixpkgsConfig;
+            nixpkgs = nixpkgsConfig;
             # `home-manager` config
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -64,7 +64,7 @@
             inherit (nixpkgsConfig) config;
           };
         }; 
-        emacs = import inputs.emacs-overlay.overlay;
+        #emacs = import inputs.emacs-overlay.overlay;
       };
 
     # My `nix-darwin` modules that are pending upstream, or patched versions waiting on upstream fixes.
