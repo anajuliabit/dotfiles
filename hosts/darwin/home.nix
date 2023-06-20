@@ -29,6 +29,7 @@
      # nodejs
 
       yubikey-manager 
+      rtx
 
       ] ++ lib.optionals stdenv.isDarwin [
         m-cli # useful macOS CLI commands

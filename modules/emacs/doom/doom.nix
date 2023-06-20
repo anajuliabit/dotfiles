@@ -5,7 +5,7 @@
 { config, pkgs, inputs,... }:
 
 {
-  environment.systemPackages = with pkgs; [
+     environment.systemPackages = with pkgs; [
      ((emacsPackagesFor emacs-unstable).emacsWithPackages
         (epkgs: [ epkgs.vterm ]))
      texlive.combined.scheme-medium

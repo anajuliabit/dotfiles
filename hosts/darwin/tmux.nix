@@ -30,7 +30,7 @@
         shortcut = "a";
         keyMode = "vi";
         plugins = with pkgs.tmuxPlugins; [
-            pain-control
+            #pain-control
             # gruvbox
         ];
     };

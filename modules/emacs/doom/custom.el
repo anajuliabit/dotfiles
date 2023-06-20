@@ -83,7 +83,7 @@
      (tramp-connection-local-default-system-profile
       (path-separator . ":")
       (null-device . "/dev/null"))))
- '(package-selected-packages '(solidity-mode nix-mode)))
+ '(package-selected-packages '(org-bullets solidity-mode nix-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
