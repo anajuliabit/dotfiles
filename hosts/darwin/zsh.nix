@@ -21,29 +21,29 @@
     # };
 
     initExtra = ''
-      # search history based on what's typed in the prompt
-      autoload -U history-search-end
-      zle -N history-beginning-search-backward-end history-search-end
-      zle -N history-beginning-search-forward-end history-search-end
-      bindkey "^[OA" history-beginning-search-backward-end
-      bindkey "^[OB" history-beginning-search-forward-end
+       # search history based on what's typed in the prompt
+       autoload -U history-search-end
+       zle -N history-beginning-search-backward-end history-search-end
+       zle -N history-beginning-search-forward-end history-search-end
+       bindkey "^[OA" history-beginning-search-backward-end
+       bindkey "^[OB" history-beginning-search-forward-end
 
-      # case insensitive tab completion
-      zstyle ':completion:*' completer _complete _ignored _approximate
-      zstyle ':completion:*' list-colors '\'
-      zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-      zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-      zstyle ':completion:*' menu select
-      zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-      zstyle ':completion:*' verbose true
-      _comp_options+=(globdots)
+       # case insensitive tab completion
+       zstyle ':completion:*' completer _complete _ignored _approximate
+       zstyle ':completion:*' list-colors '\'
+       zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+       zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+       zstyle ':completion:*' menu select
+       zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+       zstyle ':completion:*' verbose true
+       _comp_options+=(globdots)
 
       export PATH=/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin/:$PATH
-      # For 1Password CLI. This requires `pkgs.gh` to be installed.
-      source $HOME/.config/op/plugins.sh
-      # Because, adding it in .ssh/config is not enough.
-      # cf. https://developer.1password.com/docs/ssh/get-started#step-4-configure-your-ssh-or-git-client
-      export PATH=/Users/anajulia/.config/emacs/bin:$PATH
+       # For 1Password CLI. This requires `pkgs.gh` to be installed.
+       source $HOME/.config/op/plugins.sh
+       # Because, adding it in .ssh/config is not enough.
+       # cf. https://developer.1password.com/docs/ssh/get-started#step-4-configure-your-ssh-or-git-client
+       export PATH=/Users/anajulia/.config/emacs/bin:$PATH
     '';
 
     shellAliases = {
