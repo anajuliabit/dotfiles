@@ -1,5 +1,5 @@
 ;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/packages.el
+;;$DOOMDIR/packages.el
 
 ;; To install a package with Doom you must declare them here and run 'doom sync'
 ;; on the command line, then restart Emacs for the changes to take effect -- or
@@ -49,4 +49,12 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! org-bullets)
+;;(package! org-bullets)
+;;
+(package! copilot
+:recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist"))
+)
+
+(package! solidity-mode :pin "d166a86b83907e0cfd64c191e9dfce4b44a9843e")
+(package! company-solidity)
+(package! solidity-flycheck)

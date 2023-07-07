@@ -1,8 +1,8 @@
-{ pkgs, ... }: 
-{
-    home.stateVersion = "22.05";
-    
-    home.packages = with pkgs; [
+{ pkgs, ... }: {
+  home.stateVersion = "22.05";
+
+  home.packages = with pkgs;
+    [
       tldr
       (nerdfonts.override { fonts = [ "Cousine" ]; })
       htop
@@ -16,41 +16,44 @@
       rust-analyzer
 
       # nix
-      rnix-lsp 
+      rnix-lsp
       nixfmt
 
       # lua
       lua
-      sumneko-lua-language-server 
+      sumneko-lua-language-server
       stylua
 
-     # neovim
-     # nodePackages.typescript
-     # nodejs
+      # neovim
+      # nodePackages.typescript
+      # nodejs
 
-      yubikey-manager 
-      rtx
+      yubikey-manager
+      #rtx
 
-      ] ++ lib.optionals stdenv.isDarwin [
-        m-cli # useful macOS CLI commands
-      ];
-
-    #programs.command-not-found.enable = false;
-
-    imports = [
-        ./git.nix
-        ./nvim.nix
-        ./tmux.nix
-        ./zsh.nix
-       # ../../modules/emacs
+    ] ++ lib.optionals stdenv.isDarwin [
+      m-cli # useful macOS CLI commands
     ];
 
-#  home.sessionVariables = rec {
-#    XDG_CACHE_HOME = "\${HOME}/.cache";
-#    XDG_CONFIG_HOME = "\${HOME}/.config";
-#    XDG_BIN_HOME = "\${HOME}/.local/bin";
-#    XDG_DATA_HOME = "\${HOME}/.local/share";
-#  };
+  home.sessionVariables = { EDITOR = "emacs"; };
+
+  #programs.command-not-found.enable = false;
+  programs.rtx.enable = true;
+
+  imports = [
+    ./git.nix
+    ./nvim.nix
+    ./tmux.nix
+    ./zsh.nix
+    # ../../modules/emacs
+  ];
+
+  #  home.sessionVariables = rec {
+  #    XDG_CACHE_HOME = "\${HOME}/.cache";
+  #    XDG_CONFIG_HOME = "\${HOME}/.config";
+  #    XDG_BIN_HOME = "\${HOME}/.local/bin";
+  #    XDG_DATA_HOME = "\${HOME}/.local/share";
+  #  };
 
   #  PATH = [
   #    "\${HOME}/.bin"
@@ -58,5 +61,5 @@
   #    "\${HOME}/.node_modules"
   #  ];
 
-#   modules.emacs.enable = true;
+  #   modules.emacs.enable = true;
 }

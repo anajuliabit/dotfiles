@@ -40,13 +40,13 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(after! org
-        (setq org-directory "~/org/")
-        (setq +org-capture-journal-file "~/org/journal")
-        (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" | "DONE(d)" "CANCELLED(c)")))
-       ;; (require 'org-bullets)
-       ;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-)
+;;(after! org
+;;        (setq org-directory "~/org/")
+;;        (setq +org-capture-journal-file "~/org/journal")
+;;        (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" | "DONE(d)" "CANCELLED(c)")))
+;;       ;; (require 'org-bullets)
+;;       ;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; )
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -79,3 +79,34 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; accept completion from copilot and fallback to company
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
+
+(setq solidity-comment-style 'slash)
+
+(use-package! solidity-flycheck  ; included with solidity-mode
+  :when (modulep! :checkers syntax)
+  :after solidity-mode
+  :config
+  (set-docsets! 'solidity-mode "Solidity")
+  (setq flycheck-solidity-solc-addstd-contracts t)
+  (when (funcall flycheck-executable-find solidity-solc-path)
+    (add-to-list 'flycheck-checkers 'solidity-checker nil #'eq))
+  (when (funcall flycheck-executable-find solidity-solium-path)
+    (add-to-list 'flycheck-checkers 'solium-checker nil #'eq)))
+
+
+(use-package! company-solidity
+  :when (modulep! :completion company)
+  :after solidity-mode
+  :config
+  (delq! 'company-solidity company-backends)
+  (set-company-backend! 'solidity-mode 'company-solidity))

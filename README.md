@@ -1,13 +1,11 @@
-## Setup 
-
 Build nix flake
 
 ```bash
 nix build .#darwinConfigurations.darwin.system
 ```
 
-After first build, rebuild and load changes.
-Using impure as a workaround until I migrate nvim conf to nix (loads ~/.config/nvim-bkp)
+After first build, rebuild and load changes. Using impure as a workaround until
+I migrate nvim conf to nix (loads ~/.config/nvim-bkp)
 
 ```bash
 git add .
@@ -25,16 +23,18 @@ sudo nix-collect-garbage -d
 https://github.com/NixOS/nix/issues/3261
 
 nix command crash with:
-  ```
-  error (ignored): unable to download [...]: Problem with the SSL CA cert (path? access rights?) (77)
-  ```
+
+```
+error (ignored): unable to download [...]: Problem with the SSL CA cert (path? access rights?) (77)
+```
 
 solution:
-  ```
-  sudo launchctl setenv NIX_SSL_CERT_FILE /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt
-  sudo launchctl kickstart -k system/org.nixos.nix-daemon
-  nix-shell -p nix-info --run "nix-info -m"
-  ```
+
+```
+sudo launchctl setenv NIX_SSL_CERT_FILE /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt
+sudo launchctl kickstart -k system/org.nixos.nix-daemon
+nix-shell -p nix-info --run "nix-info -m"
+```
 
 ## Todo
 
@@ -53,10 +53,10 @@ Terminal:
 - [ ] fish
 - [ ] iterm
 
-Editor: 
+Editor:
 
-- [x] nvim 
-- [ ] emacs
+- [x] nvim
+- [x] emacs
 
 Mac:
 
@@ -67,10 +67,10 @@ Mac:
 ## Snippets
 
 - Find here a executable is inside nix store with
+
 ```
 nix-build -E 'with import <nixpkgs> {}; executable' --no-out-link
 ```
-
 
 - Nix info
 

@@ -58,7 +58,6 @@
 
       #
       yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-      yabai --load-sa
     '';
   };
 }
