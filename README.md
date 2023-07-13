@@ -49,7 +49,7 @@ Terminal:
 
 - [x] zsh
 - [x] Tmux
-- [ ] Copilot
+- [x] Copilot
 - [ ] fish
 - [ ] iterm
 

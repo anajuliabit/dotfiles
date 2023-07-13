@@ -18,26 +18,34 @@
       # nix
       rnix-lsp
       nixfmt
+      niv # easy dependency management for nix projects
 
       # lua
       lua
       sumneko-lua-language-server
       stylua
 
-      # neovim
-      # nodePackages.typescript
-      # nodejs
+      nodePackages.typescript
+      nodejs
 
       yubikey-manager
-      #rtx
+      nodePackages.node2nix
+      comma # run software from without installing it
 
+      ledger
+      ispell
     ] ++ lib.optionals stdenv.isDarwin [
       m-cli # useful macOS CLI commands
     ];
 
-  home.sessionVariables = { EDITOR = "emacs"; };
+  home.sessionVariables = {
+    EDITOR = "emacs";
+    PATH =
+      "/Users/anajulia/.config/emacs/bin:/Users/$USER/Library/Python/3.9/bin:$PATH";
+    CXX = "clang++";
+  };
 
-  #programs.command-not-found.enable = false;
+  programs.command-not-found.enable = true;
   programs.rtx.enable = true;
 
   imports = [

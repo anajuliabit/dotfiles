@@ -60,15 +60,12 @@
     vim
     (ripgrep.override { withPCRE2 = true; })
     fd # alternative to find
-    curl
-    wget
     fzf
     nix-diff # explain why 2 nix devirations differ
     neofetch # system info cli
     procs # alternative to ps
     sd # alternative to sed
     exa # Replacement for ls
-    ledger
   ];
 
   system = {
