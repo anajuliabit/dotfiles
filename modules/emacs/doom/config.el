@@ -37,28 +37,7 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
-;; keep the cursor centered to avoid sudden scroll jumps
-(require 'centered-cursor-mode)
 
-;; disable in terminal modes
-;; http://stackoverflow.com/a/6849467/519736
-;; also disable in Info mode, because it breaks going back with the backspace key
-(define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
-  (lambda ()
-    (when (not (memq major-mode
-                     (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
-      (centered-cursor-mode))))
-(my-global-centered-cursor-mode 1)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-;;(after! org
-;;        (setq org-directory "~/org/")
-;;        (setq +org-capture-journal-file "~/org/journal")
-;;        (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" | "DONE(d)" "CANCELLED(c)")))
-;;       ;; (require 'org-bullets)
-;;       ;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-;; )
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -123,3 +102,41 @@
   :config
   (delq! 'company-solidity company-backends)
   (set-company-backend! 'solidity-mode 'company-solidity))
+
+
+;; keep the cursor centered to avoid sudden scroll jumps
+;; disable in terminal modes
+;; http://stackoverflow.com/a/6849467/519736
+;; also disable in Info mode, because it breaks going back with the backspace key
+(define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
+  (lambda ()
+    (when (not (memq major-mode
+                     (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
+      (centered-cursor-mode))))
+(my-global-centered-cursor-mode 1)
+
+
+(setq deft-directory "~/org")
+(setq org-directory "~/org")
+(setq org-agenda-files '("agenda.org" "birthdays.org" "habits.org"))
+
+(setq org-agenda-start-with-log-mode t)
+(setq org-log-done 'time)
+(setq org-log-into-drawer t)
+
+
+(after! org
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "PROGRESS(p)" "WAIT(w)" "|" "DONE(d!)")))
+;;        (setq +org-capture-journal-file "~/org/journal")
+;;        (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" | "DONE(d)" "CANCELLED(c)")))
+;;       ;; (require 'org-bullets)
+;;       ;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;;
+)
+
+(setq org-refile-targets
+      '(("archive.org" :maxlevel . 1)))
+
+;; Save Org buffers after refiling!
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
