@@ -34,6 +34,8 @@
 
       ledger
       ispell
+
+      zotero
     ] ++ lib.optionals stdenv.isDarwin [
       m-cli # useful macOS CLI commands
     ];

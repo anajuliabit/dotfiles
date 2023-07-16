@@ -14,7 +14,7 @@
       window_placement = "second_child";
       window_opacity = "on";
       window_opacity_duration = "0.0";
-      window_border = "on";
+      window_border = "off";
       window_border_placement = "inset";
       window_border_width = 2;
       window_border_radius = 3;

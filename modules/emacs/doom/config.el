@@ -95,14 +95,13 @@
     (add-to-list 'flycheck-checkers 'solium-checker nil #'eq)))
 
 
-;; auto completaion
+
 (use-package! company-solidity
   :when (modulep! :completion company)
   :after solidity-mode
   :config
   (delq! 'company-solidity company-backends)
   (set-company-backend! 'solidity-mode 'company-solidity))
-
 
 ;; keep the cursor centered to avoid sudden scroll jumps
 ;; disable in terminal modes
@@ -115,28 +114,64 @@
       (centered-cursor-mode))))
 (my-global-centered-cursor-mode 1)
 
-
-(setq deft-directory "~/org")
-(setq org-directory "~/org")
 (setq org-agenda-files '("agenda.org" "birthdays.org" "habits.org"))
-
 (setq org-agenda-start-with-log-mode t)
-(setq org-log-done 'time)
-(setq org-log-into-drawer t)
-
-
-(after! org
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "PROGRESS(p)" "WAIT(w)" "|" "DONE(d!)")))
-;;        (setq +org-capture-journal-file "~/org/journal")
-;;        (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROJ(p)" "WAIT(w)" | "DONE(d)" "CANCELLED(c)")))
-;;       ;; (require 'org-bullets)
-;;       ;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-;;
-)
-
-(setq org-refile-targets
-      '(("archive.org" :maxlevel . 1)))
+(setq org-directory "~/org/"
+      org-ellipsis "  "                ; nerd fonts chevron character
+      org-journal-file-type 'yearly
+      org-use-property-inheritance t
+      org-log-done 'time
+      ;;org-hide-emphasis-markers t
+      ;;org-enforce-todo-dependencies t
+      ;;org-enforce-todo-checkbox-dependencies t
+      org-log-into-drawer t
+      org-log-state-notes-into-drawer t
+      org-log-repeat 'time
+      org-todo-repeat-to-state "TODO"
+      +org-capture-notes-file "agenda.org"
+      org-refile-targets
+      '(("archive.org" :maxlevel . 1))
+      deft-directory "~/org"
+      deft-recursive t)
 
 ;; Save Org buffers after refiling!
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+(after! org
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "PROGRESS(p)" "WAIT(w)" "|" "DONE(d!)")))
+  ;;        (setq +org-capture-journal-file "~/org/journal")
+  ;;        (require 'org-bullets)
+  ;;       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  ;;
+;;  (map!
+;;   :map org-mode-map
+;;   "C-M-i" . completion-at-point)
+;;  )
+)
+
+(map! :leader
+      (:prefix ("j" . "journal") ;; org-journal bindings
+        :desc "Create new journal entry" "j" #'org-journal-new-entry
+        :desc "Open previous entry" "p" #'org-journal-open-previous-entry
+        :desc "Open next entry" "n" #'org-journal-open-next-entry
+        :desc "Search journal" "s" #'org-journal-search-forever))
+
+;; The built-in calendar mode mappings for org-journal
+;; conflict with evil bindings
+(map!
+ (:map calendar-mode-map
+   :n "o" #'org-journal-display-entry
+   :n "p" #'org-journal-previous-entry
+   :n "n" #'org-journal-next-entry
+   :n "O" #'org-journal-new-date-entry))
+
+;; Local leader (<SPC m>) bindings for org-journal in calendar-mode
+;; I was running out of bindings, and these are used less frequently
+;; so it is convenient to have them under the local leader prefix
+(map!
+ :map (calendar-mode-map)
+ :localleader
+ "w" #'org-journal-search-calendar-week
+ "m" #'org-journal-search-calendar-month
+ "y" #'org-journal-search-calendar-year)
