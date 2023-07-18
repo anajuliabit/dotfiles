@@ -189,7 +189,7 @@
 (setq org-roam-capture-templates
       '(("d" "default" plain
          "%?"
-         :if-new (file+head "main/${slug}.org"
+         :if-new (file+head "${slug}.org"
                             "#+title: ${title}\n")
          :immediate-finish t
          :unnarrowed t)

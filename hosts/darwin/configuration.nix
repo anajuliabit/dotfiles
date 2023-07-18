@@ -77,19 +77,35 @@
       };
       dock = { # Dock settings
         autohide = true;
+        autohide-delay = 0.0;
+        autohide-time-modifier = 0.2;
+        expose-animation-duration = 0.2;
+        static-only = false;
+        show-recents = false;
+        show-process-indicators = true;
+        mru-spaces = false;
+        launchanim = false;
         orientation = "bottom";
-        showhidden = true;
         tilesize = 40;
       };
       finder = { # Finder settings
         QuitMenuItem =
           false; # I believe this probably will need to be true if using spacebar
+        #        ShowExternalHardDrivesOnDesktop = true;
+        #        ShowHardDrivesOnDesktop = true;
+        #        ShowMountedServersOnDesktop = true;
+        #        ShowRemovableMediaOnDesktop = true;
+        #        _FXSortFoldersFirst = true;
       };
       trackpad = { # Trackpad settings
         Clicking = true;
         TrackpadRightClick = true;
       };
     };
+    activationScripts.postUserActivation.text = ''
+      # Following line should allow us to avoid a logout/login cycle
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    '';
   };
 
   nixpkgs.config.permittedInsecurePackages = [ "nodejs-16.20.1" ];
