@@ -59,3 +59,4 @@
 (package! company-solidity)
 (package! solidity-flycheck)
 (package! centered-cursor-mode)
+(package! citar-org-roam)

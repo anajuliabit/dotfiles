@@ -119,6 +119,7 @@
 (setq org-directory "~/org/"
       org-ellipsis "  "                ; nerd fonts chevron character
       org-journal-file-type 'yearly
+      org-journal-dir "~/org/roam/journal/"
       org-use-property-inheritance t
       org-log-done 'time
       ;;org-hide-emphasis-markers t
@@ -128,7 +129,9 @@
       org-log-state-notes-into-drawer t
       org-log-repeat 'time
       org-todo-repeat-to-state "TODO"
-      +org-capture-notes-file "agenda.org"
+      +org-capture-todo-file "agenda.org"
+      +org-capture-notes-file "notes.org"
+ ;;     +org-capture-journal-file "roam/journal/20230101.org" uses j j to capture
       org-refile-targets
       '(("archive.org" :maxlevel . 1))
       deft-directory "~/org"
@@ -153,8 +156,8 @@
 (map! :leader
       (:prefix ("j" . "journal") ;; org-journal bindings
         :desc "Create new journal entry" "j" #'org-journal-new-entry
-        :desc "Open previous entry" "p" #'org-journal-open-previous-entry
-        :desc "Open next entry" "n" #'org-journal-open-next-entry
+        :desc "Open previous entry" "p" #'org-journal-previous-entry
+        :desc "Open next entry" "n" #'org-journal-next-entry
         :desc "Search journal" "s" #'org-journal-search-forever))
 
 ;; The built-in calendar mode mappings for org-journal
@@ -175,3 +178,74 @@
  "w" #'org-journal-search-calendar-week
  "m" #'org-journal-search-calendar-month
  "y" #'org-journal-search-calendar-year)
+
+(setq org-capture-templates
+      '(("w" "Work task" entry  (file+headline "~/org/agenda.org" "Work"))
+        ("p" "Personal task" entry  (file+headline "~/org/agenda.org" "Personal"))
+        ("d" "Dev task" entry  (file+headline "~/org/agenda.org" "Dev"))
+        ("s" "Slipbox" entry  (file "~/org/inbox.org")
+         "* %?\n")))
+
+(setq org-roam-capture-templates
+      '(("d" "default" plain
+         "%?"
+         :if-new (file+head "main/${slug}.org"
+                            "#+title: ${title}\n")
+         :immediate-finish t
+         :unnarrowed t)
+        ("r" "reference" plain "%?"
+         :if-new
+         (file+head "reference/${title}.org" "#+title: ${title}\n")
+         :immediate-finish t
+         :unnarrowed t)
+        ("a" "article" plain "%?"
+         :if-new
+         (file+head "articles/${title}.org" "#+title: ${title}\n#+filetags: :article:\n")
+         :immediate-finish t
+         :unnarrowed t)))
+
+(setq anajulia/default-bibliography `(,(expand-file-name "roam/biblio.bib" org-directory)))
+
+(after! citar
+  (map! :map org-mode-map
+        :desc "Insert citation" "C-c b" #'citar-insert-citation)
+  (setq citar-bibliography anajulia/default-bibliography
+        citar-at-point-function 'embark-act
+        citar-symbol-separator "  "
+        citar-format-reference-function 'citar-citeproc-format-reference
+        org-cite-csl-styles-dir "~/Zotero/styles"
+        citar-citeproc-csl-styles-dir org-cite-csl-styles-dir
+        citar-citeproc-csl-locales-dir "~/Zotero/locales"
+        citar-citeproc-csl-style (file-name-concat org-cite-csl-styles-dir "apa.csl")))
+
+
+ (defun jethro/tag-new-node-as-draft ()
+    (org-roam-tag-add '("draft")))
+  (add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
+  (cl-defmethod org-roam-node-type ((node org-roam-node))
+    "Return the TYPE of NODE."
+    (condition-case nil
+        (file-name-nondirectory
+         (directory-file-name
+          (file-name-directory
+           (file-relative-name (org-roam-node-file node) org-roam-directory))))
+      (error "")))
+  (setq org-roam-node-display-template
+        (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (require 'citar)
+  (defun jethro/org-roam-node-from-cite (keys-entries)
+    (interactive (list (citar-select-ref :multiple nil :rebuild-cache t)))
+    (let ((title (citar--format-entry-no-widths (cdr keys-entries)
+                                                "${author editor} :: ${title}")))
+      (org-roam-capture- :templates
+                         '(("r" "reference" plain "%?" :if-new
+                            (file+head "reference/${citekey}.org"
+                                       ":PROPERTIES:
+:ROAM_REFS: [cite:@${citekey}]
+:END:
+#+title: ${title}\n")
+                            :immediate-finish t
+                            :unnarrowed t))
+                         :info (list :citekey (car keys-entries))
+                         :node (org-roam-node-create :title title)
+                         :props '(:finalize find-file))))
