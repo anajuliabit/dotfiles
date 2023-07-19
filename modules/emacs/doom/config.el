@@ -110,7 +110,7 @@
 (define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
   (lambda ()
     (when (not (memq major-mode
-                     (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
+                     (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode 'vterm-mode)))
       (centered-cursor-mode))))
 (my-global-centered-cursor-mode 1)
 

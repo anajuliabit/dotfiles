@@ -36,34 +36,6 @@ sudo launchctl kickstart -k system/org.nixos.nix-daemon
 nix-shell -p nix-info --run "nix-info -m"
 ```
 
-## Todo
-
-Programs:
-
-- [ ] Brave
-- [x] Spotify
-- [x] Discord
-- [ ] Yubikey manager
-
-Terminal:
-
-- [x] zsh
-- [x] Tmux
-- [x] Copilot
-- [ ] fish
-- [ ] iterm
-
-Editor:
-
-- [x] nvim
-- [x] emacs
-
-Mac:
-
-- [x] Yabai
-- [x] Skhd
-- [ ] Spacebar
-
 ## Snippets
 
 - Find here a executable is inside nix store with

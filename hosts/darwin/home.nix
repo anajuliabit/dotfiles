@@ -10,6 +10,13 @@
       jq
       yq
 
+      # dev tools
+      gdb
+      #clang-tools
+      #clang
+      #cmake
+      pkg-config
+
       # rust
       rustc
       cargo
@@ -47,6 +54,7 @@
     CXX = "clang++";
   };
 
+  programs.home-manager.enable = true;
   programs.command-not-found.enable = true;
   programs.rtx.enable = true;
 

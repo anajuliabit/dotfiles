@@ -57,7 +57,8 @@
       yabai -m rule --add app="Font Book" manage=off
       yabai -m rule --add app="App Store" manage=off
       yabai -m rule --add app="System Information" manage=off
-      yabai -m rule --add app=Emacs manage=on
+      yabai -m rule --add app="^Emacs$" title!='^$' manage=on
+
 
       # Taken from https://github.com/koekeishiya/yabai/issues/719#issuecomment-728140216
 
@@ -69,7 +70,8 @@
       #yabai -m signal --add event=display_changed \
       #  action="yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id)"
 
-      #
+      # load scripting additions
+      sudo yabai --load-sa
       yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
     '';
   };
