@@ -12,14 +12,14 @@
     "alt - l : yabai -m window --focus east"
 
     # change focus between external displays
-    "shift + alt - j: yabai -m display --focus north"
-    "shift + alt - k: yabai -m display --focus south"
+    #"shift + alt - j: yabai -m display --focus north"
+    #"shift + alt - k: yabai -m display --focus south"
 
     # rotate layout
     "shift + alt - r : yabai -m space --rotate 270"
     "shift + alt - y : yabai -m space --mirror y-axis"
     "shift + alt - x : yabai -m space --mirror x-axis"
-  #  "shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2"
+    #  "shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2"
 
     # move window to prev and next space
     "shift + alt - p : yabai -m window --space prev;"

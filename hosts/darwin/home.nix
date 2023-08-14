@@ -41,6 +41,14 @@
 
       ledger
       ispell
+      hunspell
+      hunspellDicts.en-us
+      hunspellDicts.pt-br
+
+      # latex
+      texlive.combined.scheme-full
+
+      graphviz
 
       #zotero
     ] ++ lib.optionals stdenv.isDarwin [

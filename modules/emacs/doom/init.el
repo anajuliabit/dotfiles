@@ -7,7 +7,7 @@
 ;;      documentation. There you'll find a link to Doom's Module Index where all
 ;;      of our modules are listed, including what flags they support.
 
-;; NOTE Move your cursor over a module's name (or its flags) and press 'K' (or
+;; NOTE [[id:11c73314-09ca-4c2f-8c31-6d35b95f2970][Move]]Move your cursor over a module's name (or its flags) and press 'K' (or
 ;;      'C-c c k' for non-vim users) to view its documentation. This works on
 ;;      flags as well (those symbols that start with a plus).
 ;;
@@ -81,7 +81,7 @@
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
-       (spell +flyspell) ; tasing you for misspelling mispelling
+       (spell +hunspell +flyspell) ; tasing you for misspelling mispelling
        grammar           ; tasing grammar mistake every you make
 
        :tools
@@ -141,7 +141,7 @@
        ;;idris             ; a language you can depend on
        json              ; At least it ain't XML
        ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
-       (javascript + lsp)       ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp)       ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        latex             ; writing papers in Emacs has never been so fun
@@ -152,7 +152,7 @@
        ;;nim               ; python + lisp at the speed of c
        nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org +journal +roam2)             ; organize your plain life in plain text
+       (org +roam2 +pomodoro +gnuplot +pretty)             ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -168,7 +168,7 @@
        ;;(scheme +guile)   ; a fully conniving family of lisps
        sh                ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
-       solidity          ; do you need a blockchain? No.
+       (solidity +lsp)          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
        ;;web               ; the tubes
