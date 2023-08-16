@@ -78,7 +78,13 @@
               ("<tab>" . 'copilot-accept-completion)
               ("TAB" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+              ("C-<tab>" . 'copilot-accept-completion-by-word))
+        :config
+        ;; turn on by default
+        (copilot-mode 1)
+        ;; use company as a fallback
+        (setq copilot-use-company-fallback t)
+  )
 
 
 (setq solidity-comment-style 'slash)
@@ -156,7 +162,7 @@
         org-agenda-skip-deadline-if-done t
         org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
         org-agenda-skip-scheduled-if-done t
-        org-agenda-span 2
+        org-agenda-span 6
         org-agenda-start-on-weekday 6
         org-agenda-start-with-log-mode t
         org-agenda-sticky nil
@@ -168,7 +174,7 @@
         org-ellipsis "  "                ; nerd fonts chevron character
         org-use-property-inheritance t
         org-log-done 'time
-        ;;org-hide-emphasis-markers t
+        org-hide-emphasis-markers t
         org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t
         org-habit-completed-glyph ?✓
@@ -180,8 +186,8 @@
         org-log-state-notes-into-drawer t
         org-log-repeat 'time
         org-todo-repeat-to-state "TODO"
-        +org-capture-todo-file "home.org"
-        +org-capture-notes-file "slipbox.org"
+        +org-capture-todo-file "inbox.org"
+        +org-capture-notes-file "inbox.org"
         org-archive-location "~/.personal/archives/%s::"
         org-refile-targets
         '(("archive.org" :maxlevel . 1))
@@ -194,9 +200,9 @@
         org-hide-emphasis-markers t
         org-modules '(org-crypt org-habit org-mouse org-protocol org-tempo)
         org-refile-allow-creating-parent-nodes 'confirm
-        org-refile-targets '((org-agenda-files :maxlevel . 1)
-                             ("~/.personal/agenda/home.org" :maxlevel . 2)
-                             ("~/.personal/agenda/work.org" :maxlevel . 2))
+        org-refile-targets '((org-agenda-files :maxlevel . 3)
+                             ("~/.personal/agenda/home.org" :maxlevel . 5)
+                             ("~/.personal/agenda/work.org" :maxlevel . 5))
         org-refile-use-cache nil
         org-refile-use-outline-path nil
         org-startup-indented t
@@ -235,7 +241,7 @@
         org-todo-keywords '((sequence "TODO(t)" "STARTED(s)"
                              "NEXT(n)"
                              "SOMEDAY(.)"
-                             "WAITING(w)""|" "DONE(x!)" "CANCELLED(c@)") )
+                             "WAITING(w)""|" "DONE(d!)" "CANCELLED(c@)") )
         org-use-effective-time t
         ;;  org-use-speed-commands 'my/org-use-speed-commands-for-headings-and-lists
         org-yank-adjusted-subtrees t
@@ -282,8 +288,10 @@
             ":CAPTURED: %<%Y-%m-%d %H:%M>\n"
             ":END:") "Template for basic task.")
   (defvar my/org-contacts-template
-    (concat "* %(org-contacts-template-name)\n"
+    (concat "* %^{Name}\n"
             ":PROPERTIES:\n"
+            ":EMAIL: %^{Email}\n"
+            ":PHONE: %^{Phone}\n"
             ":BIRTHDAY: %^{YYYY-MM-DD}\n"
             ":END:") "Template for a contact.")
   (setq org-capture-templates
@@ -327,34 +335,99 @@
            :immediate-finish t)))
   )
 
-;;(setq org-capture-templates
-;;      '(("w" "Work task" entry  (file+headline "~/org/tasks.org" "Work"))
-;;        ("p" "Personal task" entry  (file+headline "~/org/tasks.org" "Personal"))
-;;        ("d" "Dev task" entry  (file+headline "~/org/tasks.org" "Dev"))
-;;        ("s" "Slipbox" entry  (file "~/org/inbox.org")
-;;         "* %?\n")))
+(after! org-clock
+  (defun my/org-mode-ask-effort ()
+    "Ask for an effort estimate when clocking in."
+    (unless (org-entry-get (point) "Effort")
+      (let ((effort
+             (completing-read
+              "Effort: "
+              (org-entry-get-multivalued-property (point) "Effort"))))
+        (unless (equal effort "")
+          (org-set-property "Effort" effort)))))
+  (add-hook 'org-clock-in-prepare-hook 'my/org-mode-ask-effort)
+  (setq org-clock-clocktable-default-properties
+        '(:block thisweek :maxlevel 2 :scope agenda :link t :compact t :formula %
+                 :step week :fileskip0 t :stepskip0 t :narrow 50
+                 :properties ("Effort" "CLOCKSUM" "TODO"))
+        org-clock-continuously nil
+        org-clock-in-switch-to-state "STARTED"
+        org-clock-out-remove-zero-time-clocks t
+        org-clock-persist t
+        org-clock-persist-file (expand-file-name "~/.cache/emacs/org-clock-save.el")
+        org-clock-persist-query-resume nil
+        org-clock-report-include-clocking-task t
+        org-show-notification-handler (lambda (msg) (alert msg))))
 
-(setq org-roam-capture-templates
-      '(("m" "main" plain
-         "%?"
-         :if-new (file+head "main/${slug}.org" "#+title: ${title}\n")
-         :immediate-finish t
-         :unnarrowed t)
-        ("r" "reference" plain "%?"
-         :if-new
-         (file+head "reference/${title}.org" "#+title: ${title}\n")
-         :immediate-finish t
-         :unnarrowed t)
-        ("d" "dictionary" plain "%?"
-         :if-new
-         (file+head "dictionary/${title}.org" "#+title: ${title}\n")
-         :immediate-finish t
-         :unnarrowed t)
-        ("a" "article" plain "%?"
-         :if-new
-         (file+head "articles/${title}.org" "#+title: ${title}\n#+filetags: :article:\n")
-         :immediate-finish t
-         :unnarrowed t)))
+(after! org-pomodoro
+  (setq alert-user-configuration '((((:category . "org-pomodoro")) libnotify nil))
+        ;;      org-pomodoro-audio-player "/usr/bin/afplay"
+        ;;       org-pomodoro-finished-sound "~/audio/pomodoro_finished.mp3"
+        ;;        org-pomodoro-format " %s"
+        ;;        org-pomodoro-killed-sound "~/audio/pomodoro_killed.mp3"
+        ;;        org-pomodoro-long-break-sound "~/audio/pomodoro_long.mp3"
+        ;;        org-pomodoro-overtime-sound "~/audio/pomodoro_overtime.mp3"
+        ;;        org-pomodoro-short-break-sound "~/audio/pomodoro_short.mp3"
+        ;;        org-pomodoro-start-sound "~/audio/pomodoro_start.mp3"
+        org-pomodoro-start-sound-p t
+        org-pomodoro-length 30
+        org-pomodoro-short-break-length 10
+        ))
+
+;;(after! org-contacts
+ ;; (setq org-contacts-files '("~/.personal/agenda/contacts.org")))
+
+(after! org-roam
+  (setq my/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n"
+        my/daily-note-filename "%<%Y-%m-%d>.org"
+        )
+  (setq org-roam-capture-templates
+        '(("m" "main" plain
+           "%?"
+           :if-new (file+head "main/${slug}.org" "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("r" "reference" plain "%?"
+           :if-new
+           (file+head "reference/${title}.org" "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("d" "dictionary" plain "%?"
+           :if-new
+           (file+head "dictionary/${title}.org" "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("a" "article" plain "%?"
+           :if-new
+           (file+head "articles/${title}.org" "#+title: ${title}\n#+filetags: :article:\n")
+           :immediate-finish t
+           :unnarrowed t)[[id:6f1231c5-7c97-4f0d-af7b-62dced3e9cbd][test]])
+        org-roam-completion-everywhere t
+        org-roam-dailies-directory "journal/"
+        org-roam-dailies-capture-templates
+        `(("d" "default" plain
+           "* %?"
+           :if-new (file+head ,my/daily-note-filename
+                              ,my/daily-note-header)
+           :empty-lines 1)
+
+          ("j" "journal" plain
+           "** %<%I:%M %p>  :journal:\n\n%?\n\n"
+           :if-new (file+head+olp ,my/daily-note-filename
+                                  ,my/daily-note-header
+                                  ("Journal"))
+           :empty-lines 1)
+          ("m" "meeting" entry
+           "** %<%I:%M %p> - %^{Meeting Title}  :meeting:\n\n%?\n\n"
+           :if-new (file+head+olp ,my/daily-note-filename
+                                  ,my/daily-note-header
+                                  ("Meetings"))
+           :empty-lines 1))
+        org-roam-directory "~/.personal/notes"
+        org-roam-graph-viewer "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+        )
+  )
+
 (setq anajulia/default-bibliography `(,(expand-file-name "roam/biblio.bib" org-directory)))
 
 (after! citar
@@ -406,3 +479,78 @@
                       ;; ispell-set-spellchecker-params has to be called
                       ;; before ispell-hunspell-add-multi-dic will work
                       (ispell-set-spellchecker-params)   (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
+
+(setq auth-sources '("~/.authinfo.gpg"))
+
+
+(add-hook 'code-review-mode-hook
+          (lambda ()
+            ;; include *Code-Review* buffer into current workspace
+            (persp-add-buffer (current-buffer))))
+
+;; Grammarly
+;;(use-package! lsp-grammarly
+;;  :defer t
+;;  :commands lsp-grammarly-check-grammar
+;;  :hook ((text-mode . lsp)
+;;         (markdown-mode . lsp))
+;;  :init
+;;  (setq lsp-grammarly-auto-activate nil
+;;        lsp-grammarly-domain "technical"
+;;        lsp-grammarly-audience "expert"))
+
+;;(use-package! lsp-grammarly
+;;  :after lsp-mode
+;;  :config
+;;  (setq lsp-grammarly-active-modes +grammarly-enabled-modes
+;;        lsp-grammarly-domain "technical"
+;;        lsp-grammarly-audience "expert"
+;;        ))
+;;
+
+(use-package! lsp-mode
+  :config
+  (add-to-list 'lsp-file-watch-ignored-directories "classes")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\minio\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\terraform\\'")
+  ;; fix "bug"
+  (advice-remove #'lsp #'+lsp-dont-prompt-to-install-servers-maybe-a)
+
+  (advice-add #'lsp-rename :after (lambda (&rest _) (projectile-save-project-buffers))))
+
+
+ (use-package! lsp-grammarly
+   :defer t ; Even though the hook implies defer still add it for clarity
+   :hook (text-mode . (lambda ()
+                          (require 'lsp-grammarly)
+                          (lsp))))
+
+(use-package! keytar
+  :defer t
+  :config
+  (setq keytar-install-dir (concat doom-data-dir "keytar")))
+
+(use-package! eglot-grammarly
+  :after eglot
+  :init
+  (setq eglot-grammarly-active-modes +grammarly-enabled-modes))
+
+(use-package! define-it
+  :defer t
+  :commands define-it-at-point
+  :config
+  (setq define-it-show-google-translate t
+        define-it-show-header nil
+        google-translate-default-source-language "auto"
+        google-translate-default-target-language "pt_BR"))
+
+;; Jump to buffer when results are fetched
+(defun define-it--find-buffer (x)
+  (let ((buf (format define-it--buffer-name-format define-it--current-word)))
+    (pop-to-buffer buf)))
+
+(advice-add 'define-it--in-buffer :after #'define-it--find-buffer)
+
+;; Set popup rule to define-it
+(after! define-it
+  (set-popup-rule! "\\*define-it:" :side 'right))

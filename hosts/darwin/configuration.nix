@@ -40,7 +40,7 @@
       "ledger-live"
       "zoom"
     ];
-    brews = [ "libusb" "languagetool" ];
+    brews = [ "libusb" ];
   };
 
   users.users.anajulia = {

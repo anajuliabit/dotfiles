@@ -40,10 +40,12 @@
       comma # run software from without installing it
 
       ledger
+      # grammar
       ispell
       hunspell
       hunspellDicts.en-us
       hunspellDicts.pt-br
+      languagetool
 
       # latex
       texlive.combined.scheme-full

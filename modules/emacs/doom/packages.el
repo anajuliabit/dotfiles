@@ -59,5 +59,18 @@
 (package! solidity-flycheck)
 (package! centered-cursor-mode)
 (package! citar-org-roam)
-
 (package! svg-tag-mode)
+(package! org-contacts)
+;;(package! org-crypt)
+(package! lsp-grammarly)
+(package! keytar)
+(package! define-it)
+(package! eglot-grammarly
+  :recipe (:host github :repo "emacs-grammarly/eglot-grammarly")
+  :pin "8c5d09643d73cd961c364ab2785e421bcab905f1")
+
+
+(unpin! lsp-mode
+        lsp-treemacs
+        lsp-mode
+        lsp-ui)
