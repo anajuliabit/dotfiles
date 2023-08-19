@@ -177,10 +177,6 @@
         org-hide-emphasis-markers t
         org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t
-        org-habit-completed-glyph ?✓
-        org-habit-graph-column 80
-        org-habit-show-habits-only-for-today nil
-        org-habit-today-glyph ?‖
         org-track-ordered-property-with-tag t
         org-log-into-drawer t
         org-log-state-notes-into-drawer t
@@ -249,7 +245,19 @@
         ;;   :map org-mode-map
         ;;   "C-M-i" . completion-at-point)
         ;;  )
-        ))
+        )
+                                        ; Make calendars in agenda start on Monday
+  (setq calendar-week-start-day 1)
+  (setq         ;;org-habit-completed-glyph ?✓
+   org-habit-graph-column 80
+   org-habit-preceding-days 35
+   ;;org-habit-today-glyph ?‖
+   org-habit-show-habits t
+   org-habit-show-all-today t
+   )
+  (defun +org-habit-resize-graph-h nil)
+  )
+
 
 ;;;; The built-in calendar mode mappings for org-journal
 ;;;; conflict with evil bindings
@@ -370,8 +378,8 @@
         ;;        org-pomodoro-short-break-sound "~/audio/pomodoro_short.mp3"
         ;;        org-pomodoro-start-sound "~/audio/pomodoro_start.mp3"
         org-pomodoro-start-sound-p t
-        org-pomodoro-length 30
-        org-pomodoro-short-break-length 10
+        org-pomodoro-length 25
+        org-pomodoro-short-break-length 5
         ))
 
 ;;(after! org-contacts
@@ -521,9 +529,12 @@
 
  (use-package! lsp-grammarly
    :defer t ; Even though the hook implies defer still add it for clarity
-   :hook (text-mode . (lambda ()
-                          (require 'lsp-grammarly)
-                          (lsp))))
+   :commands lsp-grammarly-resume
+    :hook ((text-mode . lsp)
+         (markdown-mode . lsp))
+   :init
+   (setq lsp-grammarly-domain "technical"
+         lsp-grammarly-audience "expert"))
 
 (use-package! keytar
   :defer t
