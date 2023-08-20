@@ -280,12 +280,6 @@
 ;;
 ;;
 (after! org
-  (defvar my/org-active-task-template
-    (concat "* NEXT %^{Task}\n"
-            ":PROPERTIES:\n"
-            ":Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}\n"
-            ":CAPTURED: %<%Y-%m-%d %H:%M>\n"
-            ":END:") "Template for basic task.")
   (defvar my/org-appointment
     (concat "* TODO %^{Appointment}\n"
             "SCHEDULED: %t\n") "Template for appointment task.")
@@ -333,11 +327,11 @@
            :immediate-finish t)
 
           ("t" "New Task")
-          ("ta" "Active" entry (file+headline "~/.personal/agenda/inbox.org" "Active"),
-           my/org-active-task-template
+          ("tw" "Work" entry (file+headline "~/.personal/agenda/work.org" "Work"),
+           my/org-basic-task-template
            :empty-lines 1
            :immediate-finish t)
-          ("tb" "Backlog" entry (file+headline "~/.personal/agenda/inbox.org" "Backlog"),
+          ("th" "Home" entry (file+headline "~/.personal/agenda/home.org" "Home"),
            my/org-basic-task-template
            :empty-lines 1
            :immediate-finish t)))
@@ -369,14 +363,6 @@
 
 (after! org-pomodoro
   (setq alert-user-configuration '((((:category . "org-pomodoro")) libnotify nil))
-        ;;      org-pomodoro-audio-player "/usr/bin/afplay"
-        ;;       org-pomodoro-finished-sound "~/audio/pomodoro_finished.mp3"
-        ;;        org-pomodoro-format " %s"
-        ;;        org-pomodoro-killed-sound "~/audio/pomodoro_killed.mp3"
-        ;;        org-pomodoro-long-break-sound "~/audio/pomodoro_long.mp3"
-        ;;        org-pomodoro-overtime-sound "~/audio/pomodoro_overtime.mp3"
-        ;;        org-pomodoro-short-break-sound "~/audio/pomodoro_short.mp3"
-        ;;        org-pomodoro-start-sound "~/audio/pomodoro_start.mp3"
         org-pomodoro-start-sound-p t
         org-pomodoro-length 25
         org-pomodoro-short-break-length 5
@@ -409,7 +395,7 @@
            :if-new
            (file+head "articles/${title}.org" "#+title: ${title}\n#+filetags: :article:\n")
            :immediate-finish t
-           :unnarrowed t)[[id:6f1231c5-7c97-4f0d-af7b-62dced3e9cbd][test]])
+           :unnarrowed t))
         org-roam-completion-everywhere t
         org-roam-dailies-directory "journal/"
         org-roam-dailies-capture-templates
@@ -496,26 +482,6 @@
             ;; include *Code-Review* buffer into current workspace
             (persp-add-buffer (current-buffer))))
 
-;; Grammarly
-;;(use-package! lsp-grammarly
-;;  :defer t
-;;  :commands lsp-grammarly-check-grammar
-;;  :hook ((text-mode . lsp)
-;;         (markdown-mode . lsp))
-;;  :init
-;;  (setq lsp-grammarly-auto-activate nil
-;;        lsp-grammarly-domain "technical"
-;;        lsp-grammarly-audience "expert"))
-
-;;(use-package! lsp-grammarly
-;;  :after lsp-mode
-;;  :config
-;;  (setq lsp-grammarly-active-modes +grammarly-enabled-modes
-;;        lsp-grammarly-domain "technical"
-;;        lsp-grammarly-audience "expert"
-;;        ))
-;;
-
 (use-package! lsp-mode
   :config
   (add-to-list 'lsp-file-watch-ignored-directories "classes")
@@ -541,10 +507,10 @@
   :config
   (setq keytar-install-dir (concat doom-data-dir "keytar")))
 
-(use-package! eglot-grammarly
-  :after eglot
-  :init
-  (setq eglot-grammarly-active-modes +grammarly-enabled-modes))
+;;(use-package! eglot-grammarly
+;;  :after eglot
+;;  :init
+;;  (setq eglot-grammarly-active-modes +grammarly-enabled-modes))
 
 (use-package! define-it
   :defer t
