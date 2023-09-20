@@ -2,6 +2,7 @@
   description = "My first nix flake";
 
   inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
     # Package sets
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-21.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -11,13 +12,27 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+    foundry = {
+      url = "github:shazow/foundry.nix/monthly";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, home-manager, ... }:
+  outputs = inputs@{ self, darwin, nixpkgs, home-manager, foundry, ... }:
+    with nixpkgs;
+    with lib;
+
     let
       inherit (darwin.lib) darwinSystem;
       inherit (inputs.nixpkgs-unstable.lib)
         attrValues makeOverridable optionalAttrs singleton;
+
+      foundry-overlay = final: prev: {
+        foundry = import inputs.foundry { inherit (prev) lib stdenv fetchurl; };
+      };
 
       nixpkgsConfig = {
         config = {
@@ -29,8 +44,9 @@
           final: prev:
           (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
             inherit (final.pkgs-x86) idris2 nix-index niv;
-          }));
+          })) ++ [ foundry-overlay ];
       };
+
     in {
       # My `nix-darwin` configs
       darwinConfigurations = rec {

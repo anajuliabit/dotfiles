@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   home.stateVersion = "22.05";
 
   home.packages = with pkgs;
@@ -15,12 +15,14 @@
       #clang-tools
       #clang
       #cmake
+      #ripgrep
       pkg-config
 
       # rust
-      rustc
-      cargo
-      rust-analyzer
+      rustup
+      #rust-analyzer
+      iconv
+      libiconv
 
       # nix
       rnix-lsp
@@ -52,6 +54,7 @@
 
       graphviz
 
+      #foundry-bin
       #zotero
     ] ++ lib.optionals stdenv.isDarwin [
       m-cli # useful macOS CLI commands
@@ -62,6 +65,9 @@
     PATH =
       "/Users/anajulia/.config/emacs/bin:/Users/$USER/Library/Python/3.9/bin:$PATH";
     CXX = "clang++";
+    LIBRARY_PATH = "${
+        lib.makeLibraryPath [ pkgs.libiconv ]
+      }\${LIBRARY_PATH:+:$LIBRARY_PATH}";
   };
 
   programs.home-manager.enable = true;

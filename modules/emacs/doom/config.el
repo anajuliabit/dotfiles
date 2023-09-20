@@ -124,9 +124,9 @@
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
 (after! org
-  (setq org-directory "~/.personal/"
+  (setq org-directory "~/org/"
         org-agenda-start-with-log-mode t
-        org-agenda-files '("~/.personal/agenda")
+        org-agenda-files '("~/org/agenda")
         org-agenda-category-icon-alist
         `(("home" ,(list (all-the-icons-faicon "home" :v-adjust -0.05)) nil nil :ascent center :mask heuristic)
           ("inbox" ,(list (all-the-icons-faicon "inbox" :v-adjust -0.1)) nil nil :ascent center :mask heuristic)
@@ -234,10 +234,10 @@
                         ("watch" . ?l)
                         ("writing" . ?W))
         org-tags-exclude-from-inheritance '("crypt" "project")
-        org-todo-keywords '((sequence "TODO(t)" "STARTED(s)"
+        org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)"
                              "NEXT(n)"
                              "SOMEDAY(.)"
-                             "WAITING(w)""|" "DONE(d!)" "CANCELLED(c@)") )
+                             "WAITING(w)""|" "DONE(d!)" "CANCELLED(c@)" "SKIP(s@)"))
         org-use-effective-time t
         ;;  org-use-speed-commands 'my/org-use-speed-commands-for-headings-and-lists
         org-yank-adjusted-subtrees t
@@ -353,7 +353,7 @@
                  :step week :fileskip0 t :stepskip0 t :narrow 50
                  :properties ("Effort" "CLOCKSUM" "TODO"))
         org-clock-continuously nil
-        org-clock-in-switch-to-state "STARTED"
+        org-clock-in-switch-to-state "PROGRESS"
         org-clock-out-remove-zero-time-clocks t
         org-clock-persist t
         org-clock-persist-file (expand-file-name "~/.cache/emacs/org-clock-save.el")
@@ -364,7 +364,7 @@
 (after! org-pomodoro
   (setq alert-user-configuration '((((:category . "org-pomodoro")) libnotify nil))
         org-pomodoro-start-sound-p t
-        org-pomodoro-length 25
+        org-pomodoro-length 40
         org-pomodoro-short-break-length 5
         ))
 
@@ -531,3 +531,7 @@
 ;; Set popup rule to define-it
 (after! define-it
   (set-popup-rule! "\\*define-it:" :side 'right))
+
+
+;; disable lsp in org mode
+(add-hook 'org-mode-hook (lambda () (lsp-mode -1)))
