@@ -79,11 +79,11 @@
               ("TAB" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word))
-        :config
-        ;; turn on by default
-        (copilot-mode 1)
-        ;; use company as a fallback
-        (setq copilot-use-company-fallback t)
+  :config
+  ;; turn on by default
+  (copilot-mode 1)
+  ;; use company as a fallback
+  (setq copilot-use-company-fallback t)
   )
 
 
@@ -124,128 +124,133 @@
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
 (after! org
-  (setq org-directory "~/org/"
-        org-agenda-start-with-log-mode t
-        org-agenda-files '("~/org/agenda")
-        org-agenda-category-icon-alist
-        `(("home" ,(list (all-the-icons-faicon "home" :v-adjust -0.05)) nil nil :ascent center :mask heuristic)
-          ("inbox" ,(list (all-the-icons-faicon "inbox" :v-adjust -0.1)) nil nil :ascent center :mask heuristic)
-          ("people" ,(list (all-the-icons-material "people" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
-          ("work" ,(list (all-the-icons-material "work" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
-          ("routine" ,(list (all-the-icons-material "repeat" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
-          )
-        org-agenda-custom-commands
-        '(("d" "Dashboard"
-           ((agenda "" ((org-deadline-warning-days 7)))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))
-            (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
 
-          ("n" "Next Tasks"
-           ((agenda "" ((org-deadline-warning-days 7)))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Next Tasks")))))
+  (when (require 'all-the-icons nil t)
+    (declare-function all-the-icons-faicon 'all-the-icons)
+    (declare-function all-the-icons-material 'all-the-icons)
+    (declare-function all-the-icons-octicon 'all-the-icons)
+    (setq org-directory "~/org/"
+          org-agenda-start-with-log-mode t
+          org-agenda-files '("~/org/agenda")
+          org-agenda-category-icon-alist
+          `(("home" ,(list (all-the-icons-faicon "home" :v-adjust -0.05)) nil nil :ascent center :mask heuristic)
+            ("inbox" ,(list (all-the-icons-faicon "inbox" :v-adjust -0.1)) nil nil :ascent center :mask heuristic)
+            ("people" ,(list (all-the-icons-material "people" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
+            ("work" ,(list (all-the-icons-material "work" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
+            ("routine" ,(list (all-the-icons-material "repeat" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
+            )
+          org-agenda-custom-commands
+          '(("d" "Dashboard"
+             ((agenda "" ((org-deadline-warning-days 7)))
+              (todo "NEXT"
+                    ((org-agenda-overriding-header "Next Tasks")))
+              (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
 
-          ("h" "Home Tasks" tags-todo "@home")
-          ("w" "Work Tasks" tags-todo "@work")
+            ("n" "Next Tasks"
+             ((agenda "" ((org-deadline-warning-days 7)))
+              (todo "NEXT"
+                    ((org-agenda-overriding-header "Next Tasks")))))
 
-          ("E" "Easy Tasks" tags-todo "easy")
-          ("C" "Challenging Tasks" tags-todo "challenging")
+            ("h" "Home Tasks" tags-todo "@home")
+            ("w" "Work Tasks" tags-todo "@work")
 
-          ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-           ((org-agenda-overriding-header "Low Effort Tasks")
-            (org-agenda-max-todos 20)
-            (org-agenda-files org-agenda-files))))
-        org-agenda-dim-blocked-tasks t
-        org-agenda-inhibit-startup t
-        org-agenda-show-log t
-        org-agenda-skip-deadline-if-done t
-        org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
-        org-agenda-skip-scheduled-if-done t
-        org-agenda-span 6
-        org-agenda-start-on-weekday 6
-        org-agenda-start-with-log-mode t
-        org-agenda-sticky nil
-        org-agenda-tags-column 90
-        org-agenda-time-grid '((daily today require-timed))
-        org-agenda-use-tag-inheritance t
-        org-columns-default-format "%14SCHEDULED %Effort{:} %1PRIORITY %TODO %50ITEM %TAGS"
-        org-default-notes-file "~/.personal/agenda/inbox.org"
-        org-ellipsis "  "                ; nerd fonts chevron character
-        org-use-property-inheritance t
-        org-log-done 'time
-        org-hide-emphasis-markers t
-        org-enforce-todo-dependencies t
-        org-enforce-todo-checkbox-dependencies t
-        org-track-ordered-property-with-tag t
-        org-log-into-drawer t
-        org-log-state-notes-into-drawer t
-        org-log-repeat 'time
-        org-todo-repeat-to-state "TODO"
-        +org-capture-todo-file "inbox.org"
-        +org-capture-notes-file "inbox.org"
-        org-archive-location "~/.personal/archives/%s::"
-        org-refile-targets
-        '(("archive.org" :maxlevel . 1))
-        deft-directory "~/.personal"
-        deft-recursive t
-        org-blank-before-new-entry '((heading . t) (plain-list-item . t))
-        org-confirm-babel-evaluate nil
-        org-cycle-include-plain-lists 'integrate
-        org-export-backends '(ascii beamer html icalendar latex man md org texinfo)
-        org-hide-emphasis-markers t
-        org-modules '(org-crypt org-habit org-mouse org-protocol org-tempo)
-        org-refile-allow-creating-parent-nodes 'confirm
-        org-refile-targets '((org-agenda-files :maxlevel . 3)
-                             ("~/.personal/agenda/home.org" :maxlevel . 5)
-                             ("~/.personal/agenda/work.org" :maxlevel . 5))
-        org-refile-use-cache nil
-        org-refile-use-outline-path nil
-        org-startup-indented t
-        org-startup-with-inline-images t
-        org-tag-alist '((:startgroup . "Context")  ("@errands" . ?e)
-                        ("@home" . ?h)
-                        ("@work" . ?w)
-                        (:endgroup)
-                        (:startgroup . "Difficulty")
-                        ("easy" . ?E)
-                        ("medium" . ?M)
-                        ("challenging" . ?C)
-                        (:endgroup)
-                        ("bug" . ?b)
-                        ("car" . ?v)
-                        ("future" . ?F)
-                        ("goal" . ?g)
-                        ("health" . ?H)
-                        ("house" . ?O)
-                        ("meeting" . ?m)
-                        ("planning" . ?p)
-                        ("phone" . ?0)
-                        ("purchase" . ?P)
-                        ("reading" . ?r)
-                        ("review" . ?R)
-                        ("study" . ?s)
-                        ("sport" . ?S)
-                        ("talk" . ?T)
-                        ("tech" . ?t)
-                        ("trip" . ?I)
-                        ("thinking" . ?i)
-                        ("update" . ?u)
-                        ("watch" . ?l)
-                        ("writing" . ?W))
-        org-tags-exclude-from-inheritance '("crypt" "project")
-        org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)"
-                             "NEXT(n)"
-                             "SOMEDAY(.)"
-                             "WAITING(w)""|" "DONE(d!)" "CANCELLED(c@)" "SKIP(s@)"))
-        org-use-effective-time t
-        ;;  org-use-speed-commands 'my/org-use-speed-commands-for-headings-and-lists
-        org-yank-adjusted-subtrees t
-        ;;  (map!
-        ;;   :map org-mode-map
-        ;;   "C-M-i" . completion-at-point)
-        ;;  )
-        )
+            ("E" "Easy Tasks" tags-todo "easy")
+            ("C" "Challenging Tasks" tags-todo "challenging")
+
+            ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+             ((org-agenda-overriding-header "Low Effort Tasks")
+              (org-agenda-max-todos 20)
+              (org-agenda-files org-agenda-files))))
+          org-agenda-dim-blocked-tasks t
+          org-agenda-inhibit-startup t
+          org-agenda-show-log t
+          org-agenda-skip-deadline-if-done t
+          org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
+          org-agenda-skip-scheduled-if-done t
+          org-agenda-span 6
+          org-agenda-start-on-weekday 6
+          org-agenda-start-with-log-mode t
+          org-agenda-sticky nil
+          org-agenda-tags-column 90
+          org-agenda-time-grid '((daily today require-timed))
+          org-agenda-use-tag-inheritance t
+          org-columns-default-format "%14SCHEDULED %Effort{:} %1PRIORITY %TODO %50ITEM %TAGS"
+          org-default-notes-file "~/.personal/agenda/inbox.org"
+          org-ellipsis "  "                ; nerd fonts chevron character
+          org-use-property-inheritance t
+          org-log-done 'time
+          org-hide-emphasis-markers t
+          org-enforce-todo-dependencies t
+          org-enforce-todo-checkbox-dependencies t
+          org-track-ordered-property-with-tag t
+          org-log-into-drawer t
+          org-log-state-notes-into-drawer t
+          org-log-repeat 'time
+          org-todo-repeat-to-state "TODO"
+          +org-capture-todo-file "inbox.org"
+          +org-capture-notes-file "inbox.org"
+          org-archive-location "~/.personal/archives/%s::"
+          org-refile-targets
+          '(("archive.org" :maxlevel . 1))
+          deft-directory "~/.personal"
+          deft-recursive t
+          org-blank-before-new-entry '((heading . t) (plain-list-item . t))
+          org-confirm-babel-evaluate nil
+          org-cycle-include-plain-lists 'integrate
+          org-export-backends '(ascii beamer html icalendar latex man md org texinfo)
+          org-hide-emphasis-markers t
+          org-modules '(org-crypt org-habit org-mouse org-protocol org-tempo)
+          org-refile-allow-creating-parent-nodes 'confirm
+          org-refile-targets '((org-agenda-files :maxlevel . 3)
+                               ("~/.personal/agenda/home.org" :maxlevel . 5)
+                               ("~/.personal/agenda/work.org" :maxlevel . 5))
+          org-refile-use-cache nil
+          org-refile-use-outline-path nil
+          org-startup-indented t
+          org-startup-with-inline-images t
+          org-tag-alist '((:startgroup . "Context")  ("@errands" . ?e)
+                          ("@home" . ?h)
+                          ("@work" . ?w)
+                          (:endgroup)
+                          (:startgroup . "Difficulty")
+                          ("easy" . ?E)
+                          ("medium" . ?M)
+                          ("challenging" . ?C)
+                          (:endgroup)
+                          ("bug" . ?b)
+                          ("car" . ?v)
+                          ("future" . ?F)
+                          ("goal" . ?g)
+                          ("health" . ?H)
+                          ("house" . ?O)
+                          ("meeting" . ?m)
+                          ("planning" . ?p)
+                          ("phone" . ?0)
+                          ("purchase" . ?P)
+                          ("reading" . ?r)
+                          ("review" . ?R)
+                          ("study" . ?s)
+                          ("sport" . ?S)
+                          ("talk" . ?T)
+                          ("tech" . ?t)
+                          ("trip" . ?I)
+                          ("thinking" . ?i)
+                          ("update" . ?u)
+                          ("watch" . ?l)
+                          ("writing" . ?W))
+          org-tags-exclude-from-inheritance '("crypt" "project")
+          org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)"
+                               "NEXT(n)"
+                               "SOMEDAY(.)"
+                               "WAITING(w)""|" "DONE(d!)" "CANCELLED(c@)" "SKIP(s@)"))
+          org-use-effective-time t
+          ;;  org-use-speed-commands 'my/org-use-speed-commands-for-headings-and-lists
+          org-yank-adjusted-subtrees t
+          ;;  (map!
+          ;;   :map org-mode-map
+          ;;   "C-M-i" . completion-at-point)
+          ;;  )
+          ))
                                         ; Make calendars in agenda start on Monday
   (setq calendar-week-start-day 1)
   (setq         ;;org-habit-completed-glyph ?✓
@@ -335,6 +340,10 @@
            my/org-basic-task-template
            :empty-lines 1
            :immediate-finish t)))
+  (require 'ox-bibtex)
+  (setq org-latex-pdf-process (list
+                               "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
+
   )
 
 (after! org-clock
@@ -350,8 +359,8 @@
   (add-hook 'org-clock-in-prepare-hook 'my/org-mode-ask-effort)
   (setq org-clock-clocktable-default-properties
         '(:block thisweek :maxlevel 2 :scope agenda :link t :compact t :formula %
-                 :step week :fileskip0 t :stepskip0 t :narrow 50
-                 :properties ("Effort" "CLOCKSUM" "TODO"))
+          :step week :fileskip0 t :stepskip0 t :narrow 50
+          :properties ("Effort" "CLOCKSUM" "TODO"))
         org-clock-continuously nil
         org-clock-in-switch-to-state "PROGRESS"
         org-clock-out-remove-zero-time-clocks t
@@ -369,7 +378,7 @@
         ))
 
 ;;(after! org-contacts
- ;; (setq org-contacts-files '("~/.personal/agenda/contacts.org")))
+;; (setq org-contacts-files '("~/.personal/agenda/contacts.org")))
 
 (after! org-roam
   (setq my/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n"
@@ -422,8 +431,7 @@
         )
   )
 
-(setq anajulia/default-bibliography `(,(expand-file-name "roam/biblio.bib" org-directory)))
-
+(setq anajulia/default-bibliography `(,(expand-file-name "org/notes/references.bib" org-directory)))
 (after! citar
   (map! :map org-mode-map
         :desc "Insert citation" "C-c b" #'citar-insert-citation)
@@ -493,14 +501,14 @@
   (advice-add #'lsp-rename :after (lambda (&rest _) (projectile-save-project-buffers))))
 
 
- (use-package! lsp-grammarly
-   :defer t ; Even though the hook implies defer still add it for clarity
-   :commands lsp-grammarly-resume
-    :hook ((text-mode . lsp)
+(use-package! lsp-grammarly
+  :defer t ; Even though the hook implies defer still add it for clarity
+  :commands lsp-grammarly-resume
+  :hook ((text-mode . lsp)
          (markdown-mode . lsp))
-   :init
-   (setq lsp-grammarly-domain "technical"
-         lsp-grammarly-audience "expert"))
+  :init
+  (setq lsp-grammarly-domain "technical"
+        lsp-grammarly-audience "expert"))
 
 (use-package! keytar
   :defer t

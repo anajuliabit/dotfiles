@@ -19,7 +19,7 @@
       pkg-config
 
       # rust
-      rustup
+      #rustup
       #rust-analyzer
       iconv
       libiconv
@@ -51,6 +51,7 @@
 
       # latex
       texlive.combined.scheme-full
+      texlab
 
       graphviz
 
