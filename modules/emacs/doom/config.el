@@ -123,15 +123,16 @@
 ;; Save Org buffers after refiling!
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
-(after! org
 
+(after! org
   (when (require 'all-the-icons nil t)
     (declare-function all-the-icons-faicon 'all-the-icons)
     (declare-function all-the-icons-material 'all-the-icons)
     (declare-function all-the-icons-octicon 'all-the-icons)
-    (setq org-directory "~/org/"
+    (setq my/org-path "~/org/")
+    (setq org-directory my/org-path
           org-agenda-start-with-log-mode t
-          org-agenda-files '("~/org/agenda")
+          org-agenda-files (list (concat my/org-path "agenda"))
           org-agenda-category-icon-alist
           `(("home" ,(list (all-the-icons-faicon "home" :v-adjust -0.05)) nil nil :ascent center :mask heuristic)
             ("inbox" ,(list (all-the-icons-faicon "inbox" :v-adjust -0.1)) nil nil :ascent center :mask heuristic)
@@ -143,24 +144,22 @@
           '(("d" "Dashboard"
              ((agenda "" ((org-deadline-warning-days 7)))
               (todo "NEXT"
-                    ((org-agenda-overriding-header "Next Tasks")))
-              (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
-
+                    ((org-agenda-overriding-header "Next Tasks")))))
             ("n" "Next Tasks"
              ((agenda "" ((org-deadline-warning-days 7)))
               (todo "NEXT"
                     ((org-agenda-overriding-header "Next Tasks")))))
 
             ("h" "Home Tasks" tags-todo "@home")
-            ("w" "Work Tasks" tags-todo "@work")
+            ("w" "Work Tasks" tags-todo "@work"))
 
-            ("E" "Easy Tasks" tags-todo "easy")
-            ("C" "Challenging Tasks" tags-todo "challenging")
+          ;;  ("E" "Easy Tasks" tags-todo "easy"))
+          ;;  ("C" "Challenging Tasks" tags-todo "challenging")
 
-            ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-             ((org-agenda-overriding-header "Low Effort Tasks")
-              (org-agenda-max-todos 20)
-              (org-agenda-files org-agenda-files))))
+          ;; ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+          ;;  ((org-agenda-overriding-header "Low Effort Tasks")
+          ;;   (org-agenda-max-todos 20)
+          ;;   (org-agenda-files org-agenda-files))))
           org-agenda-dim-blocked-tasks t
           org-agenda-inhibit-startup t
           org-agenda-show-log t
@@ -175,7 +174,7 @@
           org-agenda-time-grid '((daily today require-timed))
           org-agenda-use-tag-inheritance t
           org-columns-default-format "%14SCHEDULED %Effort{:} %1PRIORITY %TODO %50ITEM %TAGS"
-          org-default-notes-file "~/.personal/agenda/inbox.org"
+          org-default-notes-file (concat my/org-path "agenda/inbox.org")
           org-ellipsis "  "                ; nerd fonts chevron character
           org-use-property-inheritance t
           org-log-done 'time
@@ -189,10 +188,10 @@
           org-todo-repeat-to-state "TODO"
           +org-capture-todo-file "inbox.org"
           +org-capture-notes-file "inbox.org"
-          org-archive-location "~/.personal/archives/%s::"
+          org-archive-location (concat my/org-path "archives/%s::")
           org-refile-targets
           '(("archive.org" :maxlevel . 1))
-          deft-directory "~/.personal"
+          deft-directory my/org-path
           deft-recursive t
           org-blank-before-new-entry '((heading . t) (plain-list-item . t))
           org-confirm-babel-evaluate nil
@@ -202,8 +201,8 @@
           org-modules '(org-crypt org-habit org-mouse org-protocol org-tempo)
           org-refile-allow-creating-parent-nodes 'confirm
           org-refile-targets '((org-agenda-files :maxlevel . 3)
-                               ("~/.personal/agenda/home.org" :maxlevel . 5)
-                               ("~/.personal/agenda/work.org" :maxlevel . 5))
+                               (concat my/org-path "agenda/home.org" :maxlevel . 5)
+                               (concat my/org-path "agenda/work.org" :maxlevel . 5))
           org-refile-use-cache nil
           org-refile-use-outline-path nil
           org-startup-indented t
@@ -250,199 +249,188 @@
           ;;   :map org-mode-map
           ;;   "C-M-i" . completion-at-point)
           ;;  )
-          ))
-                                        ; Make calendars in agenda start on Monday
-  (setq calendar-week-start-day 1)
-  (setq         ;;org-habit-completed-glyph ?✓
-   org-habit-graph-column 80
-   org-habit-preceding-days 35
-   ;;org-habit-today-glyph ?‖
-   org-habit-show-habits t
-   org-habit-show-all-today t
-   )
-  (defun +org-habit-resize-graph-h nil)
-  )
+          ;;  (setq calendar-week-start-day 1)
+          )
+    (setq org-habit-graph-column 80
+          org-habit-preceding-days 30
+          org-habit-today-glyph ?‖
+          org-habit-show-habits t
+          org-habit-show-all-today t
+          )
+    ;;(defun +org-habit-resize-graph-h nil)
+    (defvar my/org-appointment
+      (concat "* TODO %^{Appointment}\n"
+              "SCHEDULED: %t\n") "Template for appointment task.")
+    (defvar my/org-basic-task-template
+      (concat "* TODO %^{Task}\n"
+              ":PROPERTIES:\n"
+              ":Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}\n"
+              ":CAPTURED: %<%Y-%m-%d %H:%M>\n"
+              ":END:") "Template for basic task.")
+    (defvar my/org-contacts-template
+      (concat "* %^{Name}\n"
+              ":PROPERTIES:\n"
+              ":EMAIL: %^{Email}\n"
+              ":PHONE: %^{Phone}\n"
+              ":BIRTHDAY: %^{YYYY-MM-DD}\n"
+              ":END:") "Template for a contact.")
+    (setq org-capture-templates
+          `(
+            ("c" "Contact" entry (file+headline, (concat my/org-path "agenda/contacts.org") "Inbox"),
+             my/org-contacts-template
+             :empty-lines 1)
+            ("p" "People" entry (file+headline, (concat my/org-path "agenda/people.org") "Tasks"),
+             my/org-basic-task-template
+             :empty-lines 1)
+            ("a" "Appointment" entry (file+headline, (concat my/org-path "agenda/people.org") "Appointments"),
+             my/org-appointment
+             :empty-lines 1)
+            ("m" "Meeting" entry (file+headline, (concat my/org-path "agenda/people.org") "Meetings")
+             "* Meeting with %? :meeting:\n%U" :clock-in t :clock-resume t :empty-lines 1)
+            ("i" "New Item")
+            ("ib" "Book" checkitem (file+headline, (concat my/org-path  "items/books.org") "Books")
+             "- [ ] %^{Title} - %^{Author}\n"
+             :immediate-finish t)
+            ("il" "Learning" checkitem (file+headline, (concat my/org-path "items/learning.org") "Things")
+             "- [ ] %^{Thing}\n"
+             :immediate-finish t)
+            ("im" "Movie" checkitem (file+headline, (concat my/org-path "items/movies.org") "Movies")
+             "- [ ] %^{Title}\n"
+             :immediate-finish t)
+            ("ip" "Purchase" checkitem (file+headline, (concat my/org-path "items/purchases.org") "Purchases")
+             "- [ ] %^{Item}\n"
+             :immediate-finish t)
+            ("t" "New Task")
+            ("tw" "Work" entry (file+headline, (concat my/org-path "agenda/work.org") "Work"),
+             my/org-basic-task-template
+             :empty-lines 1
+             :immediate-finish t)
+            ("th" "Home" entry (file+headline, (concat my/org-path "agenda/home.org") "Home"),
+             my/org-basic-task-template
+             :empty-lines 1
+             :immediate-finish t)))
 
 
 ;;;; The built-in calendar mode mappings for org-journal
 ;;;; conflict with evil bindings
-;;(map!
-;; (:map calendar-mode-map
-;;   :n "o" #'org-journal-display-entry
-;;   :n "p" #'org-journal-previous-entry
-;;   :n "n" #'org-journal-next-entry
-;;   :n "O" #'org-journal-new-date-entry))
+    ;;(map!
+    ;; (:map calendar-mode-map
+    ;;   :n "o" #'org-journal-display-entry
+    ;;   :n "p" #'org-journal-previous-entry
+    ;;   :n "n" #'org-journal-next-entry
+    ;;   :n "O" #'org-journal-new-date-entry))
 
-;; Local leader (<SPC m>) bindings for org-journal in calendar-mode
-;; I was running out of bindings, and these are used less frequently
-;; so it is convenient to have them under the local leader prefix
-;;(map!
-;; :map (calendar-mode-map)
-;; :localleader
-;; "w" #'org-journal-search-calendar-week
-;; "m" #'org-journal-search-calendar-month
-;; "y" #'org-journal-search-calendar-year)
-;;
-;;
-(after! org
-  (defvar my/org-appointment
-    (concat "* TODO %^{Appointment}\n"
-            "SCHEDULED: %t\n") "Template for appointment task.")
-  (defvar my/org-basic-task-template
-    (concat "* TODO %^{Task}\n"
-            ":PROPERTIES:\n"
-            ":Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}\n"
-            ":CAPTURED: %<%Y-%m-%d %H:%M>\n"
-            ":END:") "Template for basic task.")
-  (defvar my/org-contacts-template
-    (concat "* %^{Name}\n"
-            ":PROPERTIES:\n"
-            ":EMAIL: %^{Email}\n"
-            ":PHONE: %^{Phone}\n"
-            ":BIRTHDAY: %^{YYYY-MM-DD}\n"
-            ":END:") "Template for a contact.")
-  (setq org-capture-templates
-        `(
-          ("c" "Contact" entry (file+headline "~/.personal/agenda/contacts.org" "Inbox"),
-           my/org-contacts-template
-           :empty-lines 1)
-          ("p" "People" entry (file+headline "~/.personal/agenda/people.org" "Tasks"),
-           my/org-basic-task-template
-           :empty-lines 1)
-          ("a" "Appointment" entry (file+headline "~/.personal/agenda/people.org" "Appointments"),
-           my/org-appointment
-           :empty-lines 1)
-          ("m" "Meeting" entry (file+headline "~/.personal/agenda/people.org" "Meetings")
-           "* Meeting with %? :meeting:\n%U" :clock-in t :clock-resume t :empty-lines 1)
-          ("P" "Phone Call" entry (file+headline "~/.personal/agenda/people.org" "Phone Calls")
-           "* Phone %? :phone:\n%U" :clock-in t :clock-resume t)
+    ;; Local leader (<SPC m>) bindings for org-journal in calendar-mode
+    ;; I was running out of bindings, and these are used less frequently
+    ;; so it is convenient to have them under the local leader prefix
+    ;;(map!
+    ;; :map (calendar-mode-map)
+    ;; :localleader
+    ;; "w" #'org-journal-search-calendar-week
+    ;; "m" #'org-journal-search-calendar-month
+    ;; "y" #'org-journal-search-calendar-year)
+    ;;
+    ;;
+    ;;    (require 'ox-bibtex)
+    ;;    (setq org-latex-pdf-process (list
+    ;;                                 "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
 
-          ("i" "New Item")
-          ("ib" "Book" checkitem (file+headline "~/.personal/items/books.org" "Books")
-           "- [ ] %^{Title} - %^{Author}\n  %U"
-           :immediate-finish t)
-          ("il" "Learning" checkitem (file+headline "~/.personal/items/learning.org" "Things")
-           "- [ ] %^{Thing}\n  %U"
-           :immediate-finish t)
-          ("im" "Movie" checkitem (file+headline "~/.personal/items/movies.org" "Movies")
-           "- [ ] %^{Title}\n  %U"
-           :immediate-finish t)
-          ("ip" "Purchase" checkitem (file+headline "~/.personal/items/purchases.org" "Purchases")
-           "- [ ] %^{Item}\n  %U"
-           :immediate-finish t)
 
-          ("t" "New Task")
-          ("tw" "Work" entry (file+headline "~/.personal/agenda/work.org" "Work"),
-           my/org-basic-task-template
-           :empty-lines 1
-           :immediate-finish t)
-          ("th" "Home" entry (file+headline "~/.personal/agenda/home.org" "Home"),
-           my/org-basic-task-template
-           :empty-lines 1
-           :immediate-finish t)))
-  (require 'ox-bibtex)
-  (setq org-latex-pdf-process (list
-                               "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
+    (after! org-clock
+      (defun my/org-mode-ask-effort ()
+        "Ask for an effort estimate when clocking in."
+        (unless (org-entry-get (point) "Effort")
+          (let ((effort
+                 (completing-read
+                  "Effort: "
+                  (org-entry-get-multivalued-property (point) "Effort"))))
+            (unless (equal effort "")
+              (org-set-property "Effort" effort)))))
+      (add-hook 'org-clock-in-prepare-hook 'my/org-mode-ask-effort)
+      (setq org-clock-clocktable-default-properties
+            '(:block thisweek :maxlevel 2 :scope agenda :link t :compact t :formula %
+              :step week :fileskip0 t :stepskip0 t :narrow 50
+              :properties ("Effort" "CLOCKSUM" "TODO"))
+            org-clock-continuously nil
+            org-clock-in-switch-to-state "PROGRESS"
+            org-clock-out-remove-zero-time-clocks t
+            org-clock-persist t
+            org-clock-persist-file (expand-file-name "~/.cache/emacs/org-clock-save.el")
+            org-clock-persist-query-resume nil
+            org-clock-report-include-clocking-task t
+            org-show-notification-handler (lambda (msg) (alert msg))))
 
-  )
+    (after! org-pomodoro
+      (setq alert-user-configuration '((((:category . "org-pomodoro")) libnotify nil))
+            org-pomodoro-start-sound-p t
+            org-pomodoro-length 40
+            org-pomodoro-short-break-length 5
+            ))
 
-(after! org-clock
-  (defun my/org-mode-ask-effort ()
-    "Ask for an effort estimate when clocking in."
-    (unless (org-entry-get (point) "Effort")
-      (let ((effort
-             (completing-read
-              "Effort: "
-              (org-entry-get-multivalued-property (point) "Effort"))))
-        (unless (equal effort "")
-          (org-set-property "Effort" effort)))))
-  (add-hook 'org-clock-in-prepare-hook 'my/org-mode-ask-effort)
-  (setq org-clock-clocktable-default-properties
-        '(:block thisweek :maxlevel 2 :scope agenda :link t :compact t :formula %
-          :step week :fileskip0 t :stepskip0 t :narrow 50
-          :properties ("Effort" "CLOCKSUM" "TODO"))
-        org-clock-continuously nil
-        org-clock-in-switch-to-state "PROGRESS"
-        org-clock-out-remove-zero-time-clocks t
-        org-clock-persist t
-        org-clock-persist-file (expand-file-name "~/.cache/emacs/org-clock-save.el")
-        org-clock-persist-query-resume nil
-        org-clock-report-include-clocking-task t
-        org-show-notification-handler (lambda (msg) (alert msg))))
+    ;;(after! org-contacts
+    ;; (setq org-contacts-files '("~/.personal/agenda/contacts.org")))
 
-(after! org-pomodoro
-  (setq alert-user-configuration '((((:category . "org-pomodoro")) libnotify nil))
-        org-pomodoro-start-sound-p t
-        org-pomodoro-length 40
-        org-pomodoro-short-break-length 5
-        ))
+    (after! org-roam
+      (setq my/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n"
+            my/daily-note-filename "%<%Y-%m-%d>.org"
+            )
+      (setq org-roam-capture-templates
+            '(("m" "main" plain
+               "%?"
+               :if-new (file+head "main/${slug}.org" "#+title: ${title}\n")
+               :immediate-finish t
+               :unnarrowed t)
+              ("d" "dictionary" plain "%?"
+               :if-new
+               (file+head "dictionary/${title}.org" "#+title: ${title}\n")
+               :immediate-finish t
+               :unnarrowed t)
+              ("a" "article" plain "%?"
+               :if-new
+               (file+head "articles/${title}.org" "#+title: ${title}\n#+filetags: :article:\n")
+               :immediate-finish t
+               :unnarrowed t))
+            org-roam-completion-everywhere t
+            org-roam-dailies-directory "journal/"
+            org-roam-dailies-capture-templates
+            `(("d" "default" plain
+               "* %?"
+               :if-new (file+head ,my/daily-note-filename
+                                  ,my/daily-note-header)
+               :empty-lines 1)
 
-;;(after! org-contacts
-;; (setq org-contacts-files '("~/.personal/agenda/contacts.org")))
+              ("j" "journal" plain
+               "** %<%I:%M %p>  :journal:\n\n%?\n\n"
+               :if-new (file+head+olp ,my/daily-note-filename
+                                      ,my/daily-note-header
+                                      ("Journal"))
+               :empty-lines 1)
+              ("m" "meeting" entry
+               "** %<%I:%M %p> - %^{Meeting Title}  :meeting:\n\n%?\n\n"
+               :if-new (file+head+olp ,my/daily-note-filename
+                                      ,my/daily-note-header
+                                      ("Meetings"))
+               :empty-lines 1))
 
-(after! org-roam
-  (setq my/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n"
-        my/daily-note-filename "%<%Y-%m-%d>.org"
-        )
-  (setq org-roam-capture-templates
-        '(("m" "main" plain
-           "%?"
-           :if-new (file+head "main/${slug}.org" "#+title: ${title}\n")
-           :immediate-finish t
-           :unnarrowed t)
-          ("r" "reference" plain "%?"
-           :if-new
-           (file+head "reference/${title}.org" "#+title: ${title}\n")
-           :immediate-finish t
-           :unnarrowed t)
-          ("d" "dictionary" plain "%?"
-           :if-new
-           (file+head "dictionary/${title}.org" "#+title: ${title}\n")
-           :immediate-finish t
-           :unnarrowed t)
-          ("a" "article" plain "%?"
-           :if-new
-           (file+head "articles/${title}.org" "#+title: ${title}\n#+filetags: :article:\n")
-           :immediate-finish t
-           :unnarrowed t))
-        org-roam-completion-everywhere t
-        org-roam-dailies-directory "journal/"
-        org-roam-dailies-capture-templates
-        `(("d" "default" plain
-           "* %?"
-           :if-new (file+head ,my/daily-note-filename
-                              ,my/daily-note-header)
-           :empty-lines 1)
+            org-roam-directory (concat my/org-path "notes")
+            org-roam-graph-viewer "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+            )
+      )
 
-          ("j" "journal" plain
-           "** %<%I:%M %p>  :journal:\n\n%?\n\n"
-           :if-new (file+head+olp ,my/daily-note-filename
-                                  ,my/daily-note-header
-                                  ("Journal"))
-           :empty-lines 1)
-          ("m" "meeting" entry
-           "** %<%I:%M %p> - %^{Meeting Title}  :meeting:\n\n%?\n\n"
-           :if-new (file+head+olp ,my/daily-note-filename
-                                  ,my/daily-note-header
-                                  ("Meetings"))
-           :empty-lines 1))
-        org-roam-directory "~/.personal/notes"
-        org-roam-graph-viewer "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
-        )
-  )
+    (setq my/default-bibliography `(,(expand-file-name "notes/references.bib" org-directory)))
+    (after! citar
+      (map! :map org-mode-map
+            :desc "Insert citation" "C-c b" #'citar-insert-citation)
+      (setq citar-bibliography my/default-bibliography
+            citar-at-point-function 'embark-act
+            citar-symbol-separator "  "
+            citar-format-reference-function 'citar-citeproc-format-reference
+            org-cite-csl-styles-dir "~/Zotero/styles"
+            citar-citeproc-csl-styles-dir org-cite-csl-styles-dir
+            citar-citeproc-csl-locales-dir "~/Zotero/locales"
+            citar-citeproc-csl-style (file-name-concat org-cite-csl-styles-dir "apa.csl")))
 
-(setq anajulia/default-bibliography `(,(expand-file-name "org/notes/references.bib" org-directory)))
-(after! citar
-  (map! :map org-mode-map
-        :desc "Insert citation" "C-c b" #'citar-insert-citation)
-  (setq citar-bibliography anajulia/default-bibliography
-        citar-at-point-function 'embark-act
-        citar-symbol-separator "  "
-        citar-format-reference-function 'citar-citeproc-format-reference
-        org-cite-csl-styles-dir "~/Zotero/styles"
-        citar-citeproc-csl-styles-dir org-cite-csl-styles-dir
-        citar-citeproc-csl-locales-dir "~/Zotero/locales"
-        citar-citeproc-csl-style (file-name-concat org-cite-csl-styles-dir "apa.csl")))
+    ))
 
 ;; (defun jethro/tag-new-node-as-draft ()
 ;;    (org-roam-tag-add '("draft")))
@@ -542,4 +530,5 @@
 
 
 ;; disable lsp in org mode
-(add-hook 'org-mode-hook (lambda () (lsp-mode -1)))
+;;(add-hook 'org-mode-hook (lambda () (lsp-mode -1)))
+(set-default-coding-systems 'utf-8)
