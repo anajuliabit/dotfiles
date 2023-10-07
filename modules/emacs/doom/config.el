@@ -86,7 +86,6 @@
   (setq copilot-use-company-fallback t)
   )
 
-
 (setq solidity-comment-style 'slash)
 
 (use-package! solidity-flycheck  ; included with solidity-mode
@@ -149,7 +148,6 @@
              ((agenda "" ((org-deadline-warning-days 7)))
               (todo "NEXT"
                     ((org-agenda-overriding-header "Next Tasks")))))
-
             ("h" "Home Tasks" tags-todo "@home")
             ("w" "Work Tasks" tags-todo "@work"))
 
@@ -188,9 +186,7 @@
           org-todo-repeat-to-state "TODO"
           +org-capture-todo-file "inbox.org"
           +org-capture-notes-file "inbox.org"
-          org-archive-location (concat my/org-path "archives/%s::")
-          org-refile-targets
-          '(("archive.org" :maxlevel . 1))
+          org-archive-location (concat my/org-path "agenda/archives/%s::")
           deft-directory my/org-path
           deft-recursive t
           org-blank-before-new-entry '((heading . t) (plain-list-item . t))
@@ -201,8 +197,8 @@
           org-modules '(org-crypt org-habit org-mouse org-protocol org-tempo)
           org-refile-allow-creating-parent-nodes 'confirm
           org-refile-targets '((org-agenda-files :maxlevel . 3)
-                               (concat my/org-path "agenda/home.org" :maxlevel . 5)
-                               (concat my/org-path "agenda/work.org" :maxlevel . 5))
+                               ("~/org/agenda/home.org" :maxlevel . 5)
+                               ("~/org/agenda/work.org" :maxlevel . 5))
           org-refile-use-cache nil
           org-refile-use-outline-path nil
           org-startup-indented t
@@ -251,6 +247,8 @@
           ;;  )
           ;;  (setq calendar-week-start-day 1)
           )
+
+
     (setq org-habit-graph-column 80
           org-habit-preceding-days 30
           org-habit-today-glyph ?‖
