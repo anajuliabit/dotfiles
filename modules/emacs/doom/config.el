@@ -123,12 +123,12 @@
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
 
+(setq my/org-path "~/org/")
 (after! org
   (when (require 'all-the-icons nil t)
     (declare-function all-the-icons-faicon 'all-the-icons)
     (declare-function all-the-icons-material 'all-the-icons)
     (declare-function all-the-icons-octicon 'all-the-icons)
-    (setq my/org-path "~/org/")
     (setq org-directory my/org-path
           org-agenda-start-with-log-mode t
           org-agenda-files (list (concat my/org-path "agenda"))
@@ -203,8 +203,8 @@
           org-refile-use-outline-path nil
           org-startup-indented t
           org-startup-with-inline-images t
-          org-tag-alist '((:startgroup . "Context")  ("@errands" . ?e)
-                          ("@home" . ?h)
+          org-tag-alist '((:startgroup . "Context")
+                          ("@personal" . ?h)
                           ("@work" . ?w)
                           (:endgroup)
                           (:startgroup . "Difficulty")
@@ -378,11 +378,6 @@
                :if-new (file+head "main/${slug}.org" "#+title: ${title}\n")
                :immediate-finish t
                :unnarrowed t)
-              ("d" "dictionary" plain "%?"
-               :if-new
-               (file+head "dictionary/${title}.org" "#+title: ${title}\n")
-               :immediate-finish t
-               :unnarrowed t)
               ("a" "article" plain "%?"
                :if-new
                (file+head "articles/${title}.org" "#+title: ${title}\n#+filetags: :article:\n")
@@ -413,22 +408,36 @@
             org-roam-directory (concat my/org-path "notes")
             org-roam-graph-viewer "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
             )
-      )
 
-    (setq my/default-bibliography `(,(expand-file-name "notes/references.bib" org-directory)))
-    (after! citar
-      (map! :map org-mode-map
-            :desc "Insert citation" "C-c b" #'citar-insert-citation)
-      (setq citar-bibliography my/default-bibliography
-            citar-at-point-function 'embark-act
-            citar-symbol-separator "  "
-            citar-format-reference-function 'citar-citeproc-format-reference
-            org-cite-csl-styles-dir "~/Zotero/styles"
-            citar-citeproc-csl-styles-dir org-cite-csl-styles-dir
-            citar-citeproc-csl-locales-dir "~/Zotero/locales"
-            citar-citeproc-csl-style (file-name-concat org-cite-csl-styles-dir "apa.csl")))
+      (setq my/default-bibliography `(,(expand-file-name "notes/references/references.bib" org-directory)))
+      (after! citar
+        (map! :map org-mode-map
+              :desc "Insert citation" "C-c b" #'citar-insert-citation)
+        (setq citar-bibliography my/default-bibliography
+              citar-at-point-function 'embark-act
+              citar-symbol-separator "  "
+              citar-format-reference-function 'citar-citeproc-format-reference
+              org-cite-csl-styles-dir "~/Zotero/styles"
+              citar-citeproc-csl-styles-dir org-cite-csl-styles-dir
+              citar-citeproc-csl-locales-dir "~/Zotero/locales"
+              citar-citeproc-csl-style (file-name-concat org-cite-csl-styles-dir "apa.csl")))
+      )))
 
-    ))
+
+(use-package! org-noter
+  :after (:any org pdf-view)
+  :config
+  (setq
+   ;; The WM can handle splits
+   ;;org-noter-notes-window-location 'other-frame
+   ;; Please stop opening frames
+   ;;org-noter-always-create-frame nil
+   ;; I want to see the whole file
+   org-noter-hide-other nil
+   ;; Everything is relative to the rclone mega
+   org-noter-notes-search-path '("~/org/notes/references")
+   )
+  )
 
 ;; (defun jethro/tag-new-node-as-draft ()
 ;;    (org-roam-tag-add '("draft")))
@@ -530,3 +539,6 @@
 ;; disable lsp in org mode
 ;;(add-hook 'org-mode-hook (lambda () (lsp-mode -1)))
 (set-default-coding-systems 'utf-8)
+
+;; Show hidden files in Dired
+(setq-default dired-hidden-regexp nil)

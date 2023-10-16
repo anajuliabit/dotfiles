@@ -19,7 +19,7 @@
       pkg-config
 
       # rust
-      #rustup
+      rustup
       #rust-analyzer
       iconv
       libiconv

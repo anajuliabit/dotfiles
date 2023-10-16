@@ -58,6 +58,7 @@
       yabai -m rule --add app="App Store" manage=off
       yabai -m rule --add app="System Information" manage=off
       yabai -m rule --add app="^Emacs$" title!='^$' manage=on
+      yabai -m rule --add app="Spotify" manage=off
 
 
       # Taken from https://github.com/koekeishiya/yabai/issues/719#issuecomment-728140216
