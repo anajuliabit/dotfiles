@@ -54,6 +54,9 @@
       texlab
 
       graphviz
+      gnuplot
+      nim
+      python3
 
       #foundry-bin
       #zotero

@@ -148,7 +148,7 @@
              ((agenda "" ((org-deadline-warning-days 7)))
               (todo "NEXT"
                     ((org-agenda-overriding-header "Next Tasks")))))
-            ("h" "Home Tasks" tags-todo "@home")
+            ("h" "Home Tasks" tags-todo "@personal")
             ("w" "Work Tasks" tags-todo "@work"))
 
           ;;  ("E" "Easy Tasks" tags-todo "easy"))
@@ -202,7 +202,7 @@
           org-refile-use-cache nil
           org-refile-use-outline-path nil
           org-startup-indented t
-          org-startup-with-inline-images t
+          ;;org-startup-with-inline-images t
           org-tag-alist '((:startgroup . "Context")
                           ("@personal" . ?h)
                           ("@work" . ?w)
@@ -439,6 +439,22 @@
    )
   )
 
+(use-package! websocket
+  :after org-roam)
+
+(use-package! org-roam-ui
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+
+
 ;; (defun jethro/tag-new-node-as-draft ()
 ;;    (org-roam-tag-add '("draft")))
 ;;  (add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
@@ -542,3 +558,8 @@
 
 ;; Show hidden files in Dired
 (setq-default dired-hidden-regexp nil)
+
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t) (org . t) (nim . t)  ...))

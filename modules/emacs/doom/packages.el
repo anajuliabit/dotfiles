@@ -74,3 +74,5 @@
         lsp-treemacs
         lsp-mode
         lsp-ui)
+
+(package! org-roam-ui)
