@@ -85,7 +85,7 @@
       (null-device . "/dev/null"))))
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(package-selected-packages
-   '(github-browse-file ob-nim nim-mode org-table-color djvu org-pdftools pdf-tools org-noter org-roam-ui ob-rust auctex valign org-bullets solidity-mode nix-mode)))
+   '(mermaid-mode ob-mermaid github-browse-file ob-nim nim-mode org-table-color djvu org-pdftools pdf-tools org-noter org-roam-ui ob-rust auctex valign org-bullets solidity-mode nix-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -93,3 +93,4 @@
  ;; If there is more than one, they won't work right.
  )
 (put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)

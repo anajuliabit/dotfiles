@@ -164,8 +164,8 @@
           org-agenda-skip-deadline-if-done t
           org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled
           org-agenda-skip-scheduled-if-done t
-          org-agenda-span 6
-          org-agenda-start-on-weekday 6
+          ;;org-agenda-span 7
+          ;;org-agenda-start-on-weekday 1
           org-agenda-start-with-log-mode t
           org-agenda-sticky nil
           org-agenda-tags-column 90
@@ -241,16 +241,11 @@
           org-use-effective-time t
           ;;  org-use-speed-commands 'my/org-use-speed-commands-for-headings-and-lists
           org-yank-adjusted-subtrees t
-          ;;  (map!
-          ;;   :map org-mode-map
-          ;;   "C-M-i" . completion-at-point)
-          ;;  )
-          ;;  (setq calendar-week-start-day 1)
           )
 
 
     (setq org-habit-graph-column 80
-          org-habit-preceding-days 30
+          org-habit-preceding-days 7
           org-habit-today-glyph ?‖
           org-habit-show-habits t
           org-habit-show-all-today t
@@ -360,9 +355,13 @@
 
     (after! org-pomodoro
       (setq alert-user-configuration '((((:category . "org-pomodoro")) libnotify nil))
-            org-pomodoro-start-sound-p t
+            org-pomodoro-start-sound-p nil
             org-pomodoro-length 40
             org-pomodoro-short-break-length 5
+            org-pomodoro-long-break-length 15
+            org-pomodoro-format "Pomodoro %s"
+            org-pomodoro-finished-sound-p nil
+            org-pomodoro-killed-sound-p nill
             ))
 
     ;;(after! org-contacts

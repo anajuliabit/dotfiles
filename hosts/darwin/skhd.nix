@@ -43,6 +43,9 @@
     "ctrl - 2 : yabai -m space --focus 2"
     "ctrl - 3 : yabai -m space --focus 3"
     "ctrl - 4 : yabai -m space --focus 4"
+
+    # emacs everywhere
+    "ctrl + shift - e : emacsclient --eval '(emacs-everywhere)"
   ];
 
   system = {
