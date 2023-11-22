@@ -76,3 +76,5 @@
         lsp-ui)
 
 (package! org-roam-ui)
+(package! org-present)
+(package! visual-fill-column)

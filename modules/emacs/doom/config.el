@@ -111,12 +111,12 @@
 ;; disable in terminal modes
 ;; http://stackoverflow.com/a/6849467/519736
 ;; also disable in Info mode, because it breaks going back with the backspace key
-(define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
-  (lambda ()
-    (when (not (memq major-mode
-                     (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode 'vterm-mode)))
-      (centered-cursor-mode))))
-(my-global-centered-cursor-mode 1)
+;;(define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
+;;  (lambda ()
+;;    (when (not (memq major-mode
+;;                     (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode 'vterm-mode)))
+;;      (centered-cursor-mode))))
+;;(my-global-centered-cursor-mode 1)
 
 
 ;; Save Org buffers after refiling!
@@ -355,13 +355,13 @@
 
     (after! org-pomodoro
       (setq alert-user-configuration '((((:category . "org-pomodoro")) libnotify nil))
-            org-pomodoro-start-sound-p nil
+            org-pomodoro-start-sound-p t
+            ;;org-pomodoro-start-sound-p nil
             org-pomodoro-length 40
             org-pomodoro-short-break-length 5
             org-pomodoro-long-break-length 15
             org-pomodoro-format "Pomodoro %s"
-            org-pomodoro-finished-sound-p nil
-            org-pomodoro-killed-sound-p nill
+            ;;org-pomodoro-finished-sound-p nil
             ))
 
     ;;(after! org-contacts
@@ -562,3 +562,92 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t) (org . t) (nim . t)  ...))
+
+(setq visual-fill-column-width 100
+      visual-fill-column-center-text t)
+
+;; Transparence
+(set-frame-parameter nil 'alpha '(85 . 85))
+
+(defun my/org-present-prepare-slide ()
+  (org-overview)
+  (org-fold-show-entry)
+  (org-fold-show-children))
+
+(defun my/org-present-hook ()
+  (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+                                     (header-line (:height 4.5) variable-pitch)
+                                     (org-code (:height 1.55) org-code)
+                                     (org-verbatim (:height 1.55) org-verbatim)
+                                     (org-block (:height 1.25) org-block)
+                                     (org-block-begin-line (:height 0.7) org-block)))
+  (setq header-line-format " ")
+  (visual-fill-column-mode 1)
+  (visual-line-mode 1)
+  (org-display-inline-images)
+  (my/org-present-prepare-slide))
+
+(defun my/org-present-quit-hook ()
+  (setq-local face-remapping-alist '((default variable-pitch default)))
+  (setq header-line-format nil)
+  (org-present-small)
+  (org-remove-inline-images))
+
+(defun my/org-present-prev ()
+  (interactive)
+  (org-present-prev)
+  (my/org-present-prepare-slide))
+
+(defun my/org-present-next ()
+  (interactive)
+  (org-present-next)
+  (my/org-present-prepare-slide))
+
+(use-package org-present
+  :bind (:map org-present-mode-keymap
+              ("C-c C-j" . my/org-present-next)
+              ("C-c C-k" . my/org-present-prev))
+  :hook ((org-present-mode . my/org-present-hook)
+         (org-present-mode-quit . my/org-present-quit-hook)))
+
+
+;; Turn on indentation and auto-fill mode for Org files
+(defun my/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (visual-line-mode 1)
+  (setq evil-auto-indent nil)
+  (diminish org-indent-mode))
+
+(use-package org
+  :hook (org-mode . my/org-mode-setup))
+
+;; Set the font face based on platform
+(pcase system-type
+  ((or 'gnu/linux 'windows-nt 'cygwin)
+   (set-face-attribute 'default nil
+                       :font "JetBrains Mono"
+                       :weight 'light
+                       ;;:height (my/system-settings-get 'emacs/default-face-size)))
+                       ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 120)))
+
+   ;; Set the fixed pitch face
+   (set-face-attribute 'fixed-pitch nil
+                       :font "JetBrains Mono"
+                       :weight 'light
+                       ;;:height (my/system-settings-get 'emacs/fixed-face-size))
+
+                       ;; Set the variable pitch face
+                       (set-face-attribute 'variable-pitch nil
+                                           ;; :font "Cantarell"
+                                           :font "Iosevka Aile"
+                                           :height (my/system-settings-get 'emacs/variable-face-size)))))
+
+;; Theme
+(use-package spacegray-theme :defer t)
+(use-package doom-themes :defer t)
+(load-theme 'doom-palenight t)
+(doom-themes-visual-bell-config)
+
+
