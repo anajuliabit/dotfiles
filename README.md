@@ -5,7 +5,6 @@ nix build .#darwinConfigurations.darwin.system
 ```
 
 After first build, rebuild and load changes. Using impure as a workaround until
-I migrate nvim conf to nix (loads ~/.config/nvim-bkp)
 
 ```bash
 git add .

@@ -1,69 +1,66 @@
-{ pkgs, lib, ... }: {
+{ config, inputs, pkgs, lib, ... }: {
   home.stateVersion = "22.05";
 
-  home.packages = with pkgs;
-    [
-      tldr
-      (nerdfonts.override { fonts = [ "Cousine" ]; })
-      htop
-      httpie
-      jq
-      yq
+  home.packages = with pkgs; [
+    tldr
+    (nerdfonts.override { fonts = [ "Cousine" ]; })
+    htop
+    httpie
+    jq
+    yq
 
-      # dev tools
-      gdb
-      #clang-tools
-      #clang
-      #cmake
-      #ripgrep
-      pkg-config
+    # dev tools
+    gdb
+    #clang-tools
+    #clang
+    #cmake
+    #ripgrep
+    pkg-config
 
-      # rust
-      rustup
-      #rust-analyzer
-      iconv
-      libiconv
+    rustup
+    #rust-analyzer
+    iconv
+    libiconv
 
-      # nix
-      rnix-lsp
-      nixfmt
-      niv # easy dependency management for nix projects
+    # nix
+    rnix-lsp
+    nixfmt
+    niv # easy dependency management for nix projects
 
-      # lua
-      lua
-      sumneko-lua-language-server
-      stylua
+    # lua
+    lua
+    sumneko-lua-language-server
+    stylua
 
-      nodePackages.typescript
-      nodejs
+    nodePackages.typescript
+    nodejs
 
-      yubikey-manager
-      nodePackages.node2nix
-      comma # run software from without installing it
+    yubikey-manager
+    nodePackages.node2nix
+    comma # run software from without installing it
 
-      ledger
-      # grammar
-      ispell
-      hunspell
-      hunspellDicts.en-us
-      hunspellDicts.pt-br
-      languagetool
+    ledger
+    # grammar
+    ispell
+    hunspell
+    hunspellDicts.en-us
+    hunspellDicts.pt-br
+    languagetool
 
-      # latex
-      texlive.combined.scheme-full
-      texlab
+    # latex
+    texlive.combined.scheme-full
+    texlab
 
-      graphviz
-      gnuplot
-      nim
-      python3
+    graphviz
+    gnuplot
+    nim
+    python3
 
-      #foundry-bin
-      #zotero
-    ] ++ lib.optionals stdenv.isDarwin [
-      m-cli # useful macOS CLI commands
-    ];
+    foundry-bin
 
+    #zotero
+    m-cli # useful macOS CLI commands
+  ];
   home.sessionVariables = {
     EDITOR = "emacs";
     PATH =
@@ -80,7 +77,6 @@
 
   imports = [
     ./git.nix
-    ./nvim.nix
     ./tmux.nix
     ./zsh.nix
     # ../../modules/emacs

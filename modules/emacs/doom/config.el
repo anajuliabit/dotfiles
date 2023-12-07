@@ -80,7 +80,6 @@
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word))
   :config
-  ;; turn on by default
   (copilot-mode 1)
   ;; use company as a fallback
   (setq copilot-use-company-fallback t)
@@ -107,21 +106,8 @@
   (delq! 'company-solidity company-backends)
   (set-company-backend! 'solidity-mode 'company-solidity))
 
-;; keep the cursor centered to avoid sudden scroll jumps
-;; disable in terminal modes
-;; http://stackoverflow.com/a/6849467/519736
-;; also disable in Info mode, because it breaks going back with the backspace key
-;;(define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
-;;  (lambda ()
-;;    (when (not (memq major-mode
-;;                     (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode 'vterm-mode)))
-;;      (centered-cursor-mode))))
-;;(my-global-centered-cursor-mode 1)
-
-
 ;; Save Org buffers after refiling!
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
-
 
 (setq my/org-path "~/org/")
 (after! org
@@ -525,11 +511,6 @@
   :config
   (setq keytar-install-dir (concat doom-data-dir "keytar")))
 
-;;(use-package! eglot-grammarly
-;;  :after eglot
-;;  :init
-;;  (setq eglot-grammarly-active-modes +grammarly-enabled-modes))
-
 (use-package! define-it
   :defer t
   :commands define-it-at-point
@@ -552,7 +533,9 @@
 
 
 ;; disable lsp in org mode
-;;(add-hook 'org-mode-hook (lambda () (lsp-mode -1)))
+(add-hook 'org-mode-hook (lambda ()
+                           (lsp-mode -1)
+                           (org-bullets-mode 1)))
 (set-default-coding-systems 'utf-8)
 
 ;; Show hidden files in Dired
@@ -613,41 +596,41 @@
 
 ;; Turn on indentation and auto-fill mode for Org files
 (defun my/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (auto-fill-mode 0)
-  (visual-line-mode 1)
-  (setq evil-auto-indent nil)
-  (diminish org-indent-mode))
+  ;; (org-bullets-mode 1)
+  ;;(org-indent-mode)
+  ;;(variable-pitch-mode 1)
+  ;;(auto-fill-mode 0)
+  ;;(visual-line-mode 1)
+  ;;(setq evil-auto-indent nil)
+  ;;(diminish org-indent-mode)
+  )
 
 (use-package org
   :hook (org-mode . my/org-mode-setup))
 
 ;; Set the font face based on platform
-(pcase system-type
-  ((or 'gnu/linux 'windows-nt 'cygwin)
-   (set-face-attribute 'default nil
-                       :font "JetBrains Mono"
-                       :weight 'light
-                       ;;:height (my/system-settings-get 'emacs/default-face-size)))
-                       ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 120)))
-
-   ;; Set the fixed pitch face
-   (set-face-attribute 'fixed-pitch nil
-                       :font "JetBrains Mono"
-                       :weight 'light
-                       ;;:height (my/system-settings-get 'emacs/fixed-face-size))
-
-                       ;; Set the variable pitch face
-                       (set-face-attribute 'variable-pitch nil
-                                           ;; :font "Cantarell"
-                                           :font "Iosevka Aile"
-                                           :height (my/system-settings-get 'emacs/variable-face-size)))))
+;;(pcase system-type
+;;  ((or 'gnu/linux 'windows-nt 'cygwin)
+;;   (set-face-attribute 'default nil
+;;                       :font "JetBrains Mono"
+;;                       :weight 'light
+;;                       ;;:height (my/system-settings-get 'emacs/default-face-size)))
+;;                       ('darwin (set-face-attribute 'default nil :font "Fira Mono" :height 120)))
+;;
+;;   ;; Set the fixed pitch face
+;;   (set-face-attribute 'fixed-pitch nil
+;;                       :font "JetBrains Mono"
+;;                       :weight 'light
+;;                       ;;:height (my/system-settings-get 'emacs/fixed-face-size))
+;;
+;;                       ;; Set the variable pitch face
+;;                       (set-face-attribute 'variable-pitch nil
+;;                                           ;; :font "Cantarell"
+;;                                           :font "Iosevka Aile"
+;;                                           :height (my/system-settings-get 'emacs/variable-face-size)))))
 
 ;; Theme
 (use-package spacegray-theme :defer t)
 (use-package doom-themes :defer t)
 (load-theme 'doom-palenight t)
 (doom-themes-visual-bell-config)
-
-

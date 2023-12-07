@@ -8,36 +8,20 @@
     package = pkgs.yabai;
     enableScriptingAddition = true;
     config = {
-      #focus_follows_mouse = "autoraise";
-      #mouse_follows_focus = "on";
-      #external_bar = "all:24:0";
-      #window_opacity = "on";
-      #window_opacity_duration = "0.0";
-      #window_border = "off";
-      #window_border_placement = "inset";
-      # window_border_width = 2;
-      # window_border_radius = 3;
-      # active_window_border_topmost = "off";
-      #window_topmost = "on";
-      #window_shadow = "float";
-      #active_window_border_color = "0xff5c7e81";
-      #normal_window_border_color = "0xff505050";
-      #insert_window_border_color = "0xffd75f5f";
-      #active_window_opacity = "1.0";
-      #normal_window_opacity = "1.0";
-      #auto_balance = "on";
-
-      focus_follows_mouse = "off";
-      mouse_follows_focus = "off";
+      active_window_border_color = "0xff5c7e81";
+      normal_window_border_color = "0xff505050";
+      insert_window_border_color = "0xffd75f5f";
+      focus_follows_mouse = "on";
+      mouse_follows_focus = "on";
       window_placement = "second_child";
       window_topmost = "off";
-      window_opacity = "off";
+      window_opacity = "on";
       window_opacity_duration = "0.0";
-      window_shadow = "on";
-      window_border = "on";
+      window_shadow = "off";
+      window_border = "off";
       window_border_width = 4;
       active_window_opacity = "1.0";
-      normal_window_opacity = "0.90";
+      normal_window_opacity = "0.80";
       split_ratio = "0.50";
       auto_balance = "off";
       mouse_modifier = "alt";
@@ -49,8 +33,8 @@
       left_padding = 6;
       right_padding = 6;
       window_gap = 6;
-
     };
+
     extraConfig = ''
       yabai -m rule --add app="System Preferences" manage=off
       yabai -m rule --add app="Activity Monitor" manage=off
@@ -60,8 +44,7 @@
       yabai -m rule --add app="^Emacs$" title!='^$' manage=on
       yabai -m rule --add app="Spotify" manage=off
       yabai -m rule --add app="WhatsApp" manage=off
-      yabai -m rule --add app="1Password", manage=off
-
+      yabai -m rule --add app="1Password" sticky=on layer=above manage=off
 
       # Taken from https://github.com/koekeishiya/yabai/issues/719#issuecomment-728140216
 

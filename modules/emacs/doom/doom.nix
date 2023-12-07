@@ -10,7 +10,6 @@
   ];
 
   services.emacs.package = pkgs.emacs-unstable;
-
   services.emacs.enable = true;
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
@@ -25,7 +24,6 @@
         text = ''
           source ${config.system.build.setEnvironment}
           EMACS="/Users/anajulia/.config/emacs"
-
           if [ ! -d "$EMACS" ]; then
             ${pkgs.git}/bin/git clone https://github.com/hlissner/doom-emacs.git $EMACS
             yes | $EMACS/bin/doom install

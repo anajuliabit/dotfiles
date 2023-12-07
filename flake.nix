@@ -3,25 +3,16 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    # Package sets
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-21.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    # Environment/system management
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
-    foundry = {
-      url = "github:shazow/foundry.nix/monthly";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
+    foundry.url = "github:shazow/foundry.nix/monthly";
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, home-manager, foundry, ... }:
+  outputs = { self, darwin, nixpkgs, home-manager, foundry, ... }@inputs:
     with nixpkgs;
     with lib;
 
@@ -30,21 +21,18 @@
       inherit (inputs.nixpkgs-unstable.lib)
         attrValues makeOverridable optionalAttrs singleton;
 
-      foundry-overlay = final: prev: {
-        foundry = import inputs.foundry { inherit (prev) lib stdenv fetchurl; };
-      };
-
       nixpkgsConfig = {
         config = {
           allowUnfree = true;
           allowUnsupportedSystem = true;
         };
-        overlays = attrValues self.overlays ++ singleton (
-          # Sub in x86 version of packages that don't build on Apple Silicon yet
-          final: prev:
-          (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-            inherit (final.pkgs-x86) idris2 nix-index niv;
-          })) ++ [ foundry-overlay ];
+        overlays = attrValues self.overlays ++ [ foundry.overlay ] ++ singleton
+          (
+            # Sub in x86 version of packages that don't build on Apple Silicon yet
+            final: prev:
+            (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
+              inherit (final.pkgs-x86) idris2 nix-index niv;
+            }));
       };
 
     in {
@@ -75,7 +63,6 @@
               inherit nixpkgsConfig;
             };
           };
-        #emacs = import inputs.emacs-overlay.overlay;
       };
 
       # My `nix-darwin` modules that are pending upstream, or patched versions waiting on upstream fixes.
