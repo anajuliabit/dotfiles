@@ -19,7 +19,7 @@
     "shift + alt - r : yabai -m space --rotate 270"
     "shift + alt - y : yabai -m space --mirror y-axis"
     "shift + alt - x : yabai -m space --mirror x-axis"
-    #  "shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2"
+    "shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2"
 
     # move window to prev and next space
     "shift + alt - p : yabai -m window --space prev;"
@@ -46,8 +46,6 @@
 
     # emacs everywhere
     "shift + alt + control : emacsclient --eval '(emacs-everywhere)'"
-
-    #    "ctrl + shift - e : emacsclient --eval '(emacs-everywhere)"
   ];
 
   system = {

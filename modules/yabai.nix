@@ -45,6 +45,7 @@
       yabai -m rule --add app="Spotify" manage=off
       yabai -m rule --add app="WhatsApp" manage=off
       yabai -m rule --add app="1Password" sticky=on layer=above manage=off
+      yabai -m rule --add app="Telegram" manage=off
 
       # Taken from https://github.com/koekeishiya/yabai/issues/719#issuecomment-728140216
 

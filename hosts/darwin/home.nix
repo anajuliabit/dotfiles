@@ -57,6 +57,7 @@
     python3
 
     foundry-bin
+    #cairo-bin.stable.scarb
 
     #zotero
     m-cli # useful macOS CLI commands

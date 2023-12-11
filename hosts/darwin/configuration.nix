@@ -1,7 +1,11 @@
 { pkgs, channel, lib, config, inputs, ... }:
 
 {
-  imports = [ ./yabai.nix ./skhd.nix ../../modules/emacs/doom/doom.nix ];
+  imports = [
+    ../../modules/yabai.nix
+    ../../modules/skhd.nix
+    ../../modules/emacs/doom/doom.nix
+  ];
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;

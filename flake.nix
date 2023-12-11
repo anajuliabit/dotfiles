@@ -10,9 +10,11 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
     foundry.url = "github:shazow/foundry.nix/monthly";
+    cairo-nix.url = "github:cairo-nix/cairo-nix";
   };
 
-  outputs = { self, darwin, nixpkgs, home-manager, foundry, ... }@inputs:
+  outputs =
+    { self, darwin, nixpkgs, home-manager, foundry, cairo-nix, ... }@inputs:
     with nixpkgs;
     with lib;
 
@@ -26,8 +28,8 @@
           allowUnfree = true;
           allowUnsupportedSystem = true;
         };
-        overlays = attrValues self.overlays ++ [ foundry.overlay ] ++ singleton
-          (
+        overlays = attrValues self.overlays
+          ++ [ foundry.overlay (import cairo-nix) ] ++ singleton (
             # Sub in x86 version of packages that don't build on Apple Silicon yet
             final: prev:
             (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {

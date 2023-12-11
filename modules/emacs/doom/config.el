@@ -496,7 +496,6 @@
 
   (advice-add #'lsp-rename :after (lambda (&rest _) (projectile-save-project-buffers))))
 
-
 (use-package! lsp-grammarly
   :defer t ; Even though the hook implies defer still add it for clarity
   :commands lsp-grammarly-resume
@@ -634,3 +633,58 @@
 (use-package doom-themes :defer t)
 (load-theme 'doom-palenight t)
 (doom-themes-visual-bell-config)
+
+
+(defvar cairo-mode-syntax-table nil "Syntax table for `cairo-mode'.")
+
+(setq cairo-mode-syntax-table
+      (let ((syntax-table (make-syntax-table)))
+        ;; Comments start with '#' and go to the end of the line
+        (modify-syntax-entry ?# "<" syntax-table)
+        (modify-syntax-entry ?\n ">" syntax-table)
+        syntax-table))
+
+(defvar cairo-font-lock-keywords
+  (let* (
+         ;; Updated list of keywords
+         (x-keywords '("break" "const" "continue" "else" "enum" "false" "for" "fn" "hint" "if" "impl" "in" "match" "pub" "return" "struct" "trait" "true" "type" "use"))
+         ;; Create the regex string for each category of keywords
+         (x-keywords-regexp (regexp-opt x-keywords 'words)))
+
+    `(
+      (,x-keywords-regexp . font-lock-keyword-face)
+      )))
+
+
+(define-derived-mode cairo-mode prog-mode "Cairo"
+  "Major mode for editing Cairo language files."
+
+  ;; Set up syntax highlighting
+  (setq font-lock-defaults '((cairo-font-lock-keywords)))
+
+  ;; Set up syntax table
+  (set-syntax-table cairo-mode-syntax-table))
+
+;; Add the mode to the `features' list
+(provide 'cairo-mode)
+
+;; Automatically use cairo-mode for .cairo files
+(add-to-list 'auto-mode-alist '("\\.cairo\\'" . cairo-mode))
+
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook ((cairo-mode . lsp-deferred)) ;; Automatically start LSP in cairo-mode
+  :init
+  (setq lsp-enable-snippet nil)
+  :config
+  ;; Add cairo to lsp-language-id-configuration
+  (add-to-list 'lsp-language-id-configuration '(cairo-mode . "cairo"))
+
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection (lambda ()
+                                            '("~/code/cairo/target/release/cairo-language-server" "/C" "--node-ipc")))
+    :major-modes '(cairo-mode)
+    :server-id 'cairo-ls
+    :activation-fn (lsp-activate-on "cairo"))))
