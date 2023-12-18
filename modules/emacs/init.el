@@ -10,7 +10,7 @@
 ;; Set up the visible bell
 ;;(setq visible-bell t)
 
-(set-face-attribute 'default nil :font "Fira Mono" :height 160)
+(set-face-attribute 'default nil :font "Fira Mono" :height 140)
 
 ;; Display numbers
 (column-number-mode)
@@ -74,16 +74,26 @@
 	 ("C-r". counsel-minibuffer-history))
   )
 
+(setq evil-want-keybinding nil)
+
 (use-package evil
+  :ensure t
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal)
-  )
+ )
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 (use-package all-the-icons
+  :ensure t
   :if (display-graphic-p)
   :commands all-the-icons-install-fonts
   :config (unless (find-font (font-spec :name "all-the-icons"))
@@ -129,7 +139,7 @@
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
   :init
-  (marginalia-mode))
+  (marginalia-mode 1))
 
 (use-package helpful
   :custom
@@ -142,34 +152,69 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-key] . helpful-key))
 
-
+;;; package --- lsp mode settings
 (use-package lsp-mode
+  :defer t
   :ensure t
-  :commands lsp
-  :hook ((typescript-mode js2-mode web-mode) . lsp)
-  :bind (:map lsp-mode-map
-         ("TAB" . completion-at-point))
+  :hook ((nix-mode rustic-mode) . lsp)
+  :commands (lsp lsp-deferred lsp-register-client)
+  :config
+  (lsp-enable-which-key-integration t)
+  (setq lsp-lens-enable t)
+  )
+
+(use-package lsp-ui
+  :ensure t
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-doc-position 'bottom
+        lsp-ui-sideline-delay 0.5
+        lsp-ui-sideline-enable nil))
+
+;(use-package dap-mode)
+;(require 'dap-gdb-lldb)
+;(require 'dap-codelldb)
+;(use-package realgud)
+;(use-package realgud-lldb)
+
+(use-package solidity-mode
+  :ensure t
+  :mode ("\\.sol\\'" . solidity-mode)
+  :config
+  (setq solidity-comment-style 'slash)
 )
+
+;;; package --- Company (autocomplete) settings
+(use-package company
+  :ensure t
+  :after (lsp-mode)
+  :commands (company-mode)
+  :bind (:map company-active-map
+              ("<tab>" . company-complete-selection)
+              :map lsp-mode-map
+              ("<tab>" . company-indent-or-complete-common))
+  :config
+  (global-company-mode 1)
+  :custom
+  (company-minimum-prefix-length 3)
+  (company-idle-delay 0.0))
+
 
 ;; solidity LSP
 ;;(after! eglot
 ;;  (add-to-list 'eglot-server-programs
 ;;               '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio"))))
 
-(use-package solidity-mode)
+(use-package magit
+  :bind (("C-x g" . magit-status)
+         ("C-x C-g" . magit-status)))
 
-(after! lsp-mode
-  (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
-  (lsp-register-client
-    (make-lsp-client :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
-                     :activation-fn (lsp-activateon "solidity")
-                     :priority -1
-                     :server-id 'solidity-language-server)))
-(after! solidity-mode
-  (setq solidity-comment-style 'slash)
-  (set-docsets! 'solidity-mode "Solidity")
-  (if (modulep! +lsp)
-      (add-hook 'solidity-mode-local-vars-hook #'lsp! 'append))
-  (if (modulep! +tree-sitter)
-      (add-hook 'solidity-mode-local-vars-hook #'tree-sitter! 'append)))
+(use-package projectile
+  :ensure t
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("s-p" . projectile-command-map)
+              ("C-c p" . projectile-command-map)))
+
 

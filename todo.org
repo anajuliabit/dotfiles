@@ -19,11 +19,11 @@
 ** DONE emacs
 
 * Mac
-
 ** DONE Yabai
 ** DONE Skhd
 ** TODO Spacebar
 ** TODO replace yabai for i3 or awesomewm
+** TODO fix skhd
 
 * Configs
 ** TODO https://bryce**s.com/yabai/ add yabai desktop managment
