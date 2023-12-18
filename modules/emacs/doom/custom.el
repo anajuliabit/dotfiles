@@ -4,14 +4,18 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(connection-local-criteria-alist
-   '(((:application tramp :machine "localhost")
+   '(((:application eshell)
+      eshell-connection-default-profile)
+     ((:application tramp :machine "localhost")
       tramp-connection-local-darwin-ps-profile)
      ((:application tramp :machine "MacBook")
       tramp-connection-local-darwin-ps-profile)
      ((:application tramp)
       tramp-connection-local-default-system-profile tramp-connection-local-default-shell-profile)))
  '(connection-local-profile-alist
-   '((tramp-connection-local-darwin-ps-profile
+   '((eshell-connection-default-profile
+      (eshell-path-env-list))
+     (tramp-connection-local-darwin-ps-profile
       (tramp-process-attributes-ps-args "-acxww" "-o" "pid,uid,user,gid,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "state=abcde" "-o" "ppid,pgid,sess,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etime,pcpu,pmem,args")
       (tramp-process-attributes-ps-format
        (pid . number)
@@ -85,7 +89,7 @@
       (null-device . "/dev/null"))))
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(package-selected-packages
-   '(lsp-mode markdownfmt md-readme org-present mermaid-mode ob-mermaid github-browse-file ob-nim nim-mode org-table-color djvu org-pdftools pdf-tools org-noter org-roam-ui ob-rust auctex valign org-bullets solidity-mode nix-mode)))
+   '(counsel lsp-mode markdownfmt md-readme org-present mermaid-mode ob-mermaid github-browse-file ob-nim nim-mode org-table-color djvu org-pdftools pdf-tools org-noter org-roam-ui ob-rust auctex valign org-bullets solidity-mode nix-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

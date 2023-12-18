@@ -15,51 +15,50 @@
 
   outputs =
     { self, darwin, nixpkgs, home-manager, foundry, cairo-nix, ... }@inputs:
-    with nixpkgs;
-    with lib;
-
     let
-      inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs-unstable.lib)
-        attrValues makeOverridable optionalAttrs singleton;
+      inherit (inputs.nixpkgs-unstable.lib) optionalAttrs;
+
+      emacsOverlay = (import (builtins.fetchTarball {
+        url =
+          "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+      }));
 
       nixpkgsConfig = {
         config = {
           allowUnfree = true;
           allowUnsupportedSystem = true;
         };
-        overlays = attrValues self.overlays
-          ++ [ foundry.overlay (import cairo-nix) ] ++ singleton (
-            # Sub in x86 version of packages that don't build on Apple Silicon yet
-            final: prev:
-            (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-              inherit (final.pkgs-x86) idris2 nix-index niv;
-            }));
+        overlays = [
+          foundry.overlay
+          (import cairo-nix)
+          emacsOverlay
+          #          (final: prev:
+          #            optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
+          #              inherit (final.pkgs-x86) idris2 nix-index niv;
+          #            })
+        ];
+      };
+
+      darwinConfig = {
+        system = "aarch64-darwin";
+        modules = [
+          ./hosts/darwin/configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            nixpkgs = nixpkgsConfig;
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.anajulia = import ./hosts/darwin/home.nix;
+          }
+        ];
       };
 
     in {
-      # My `nix-darwin` configs
-      darwinConfigurations = rec {
-        darwin = darwinSystem {
-          system = "aarch64-darwin";
-          modules = attrValues self.darwinModules ++ [
-            ./hosts/darwin/configuration.nix
-            home-manager.darwinModules.home-manager
-            {
-              nixpkgs = nixpkgsConfig;
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.anajulia = import ./hosts/darwin/home.nix;
-            }
-          ];
-        };
-      };
+      darwinConfigurations = { darwin = darwin.lib.darwinSystem darwinConfig; };
 
       overlays = {
-        # Overlay useful on Macs with Apple Silicon
         apple-silicon = final: prev:
           optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-            # Add access to x86 packages system is running Apple Silicon
             pkgs-x86 = import inputs.nixpkgs-unstable {
               system = "x86_64-darwin";
               inherit nixpkgsConfig;
@@ -67,32 +66,14 @@
           };
       };
 
-      # My `nix-darwin` modules that are pending upstream, or patched versions waiting on upstream fixes.
       darwinModules = {
-        programs-nix-index =
-          # Additional configuration for `nix-index` to enable `command-not-found` functionality with zsh.
-          { config, lib, pkgs, ... }: {
-            config = lib.mkIf config.programs.nix-index.enable {
-              programs.zsh.interactiveShellInit = ''
-                # This function is called whenever a command is not found.
-                command_not_found_handler() {
-                  local p=/run/current-system/sw/bin/command-not-found
-                  if [ -x $p -a -f /nix/var/nix/profiles/per-user/root/channels/nixos/programs.sqlite ]; then
-                    # Run the helper program.
-                    $p "$@"
-
-                    # Retry the command if we just installed it.
-                    if [ $? = 126 ]; then
-                      "$@"
-                    fi
-                  else
-                    # Indicate than there was an error so ZSH falls back to its default handler
-                    return 127
-                  fi
-                }
-              '';
-            };
+        programs-nix-index = { config, lib, pkgs, ... }: {
+          config = lib.mkIf config.programs.nix-index.enable {
+            programs.zsh.interactiveShellInit = ''
+              # command_not_found_handler function...
+            '';
           };
+        };
       };
     };
 }

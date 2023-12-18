@@ -85,13 +85,18 @@
   (setq copilot-use-company-fallback t)
   )
 
-(setq solidity-comment-style 'slash)
+(use-package! solidity-mode
+  :config
+  (setq solidity-comment-style 'slash)
+  (define-key solidity-mode-map (kbd "C-c C-g") 'solidity-estimate-gas-at-point)
+  )
 
 (use-package! solidity-flycheck  ; included with solidity-mode
   :when (modulep! :checkers syntax)
   :after solidity-mode
   :config
   (set-docsets! 'solidity-mode "Solidity")
+  (setq solidity-flycheck-solc-checker-active t)
   (setq flycheck-solidity-solc-addstd-contracts t)
   (when (funcall flycheck-executable-find solidity-solc-path)
     (add-to-list 'flycheck-checkers 'solidity-checker nil #'eq))
@@ -647,7 +652,7 @@
 (defvar cairo-font-lock-keywords
   (let* (
          ;; Updated list of keywords
-         (x-keywords '("break" "const" "continue" "else" "enum" "false" "for" "fn" "hint" "if" "impl" "in" "match" "pub" "return" "struct" "trait" "true" "type" "use"))
+         (x-keywords '("break" "const" "continue" "else" "enum" "false" "for" "fn" "hint" "if" "impl" "in" "match" "pub" "return" "struct" "trait" "true" "type" "use" "loop" "mod"))
          ;; Create the regex string for each category of keywords
          (x-keywords-regexp (regexp-opt x-keywords 'words)))
 
