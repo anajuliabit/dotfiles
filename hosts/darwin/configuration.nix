@@ -2,9 +2,10 @@
 
 {
   imports = [
-    ../../modules/yabai.nix
-    ../../modules/skhd.nix
+    ../../modules/desktop/yabai.nix
+    ../../modules/desktop/skhd.nix
     ../../modules/emacs/doom/doom.nix
+    ../../modules/dev/node.nix
   ];
 
   # Auto upgrade nix package and the daemon service.

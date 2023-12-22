@@ -1,4 +1,5 @@
 (setq inhibit-startup-message t)
+(defvar chidori-cache-dir (expand-file-name "cache/" user-emacs-directory))
 
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
@@ -9,6 +10,9 @@
 
 ;; Set up the visible bell
 ;;(setq visible-bell t)
+
+;; Disable backup files
+(setq make-backup-files nil)
 
 (set-face-attribute 'default nil :font "Fira Mono" :height 140)
 
@@ -41,6 +45,23 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+
+;; straight
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 (use-package ivy
   :diminish
@@ -86,6 +107,7 @@
   (evil-set-initial-state 'dashboard-mode 'normal)
  )
 
+
 (use-package evil-collection
   :after evil
   :ensure t
@@ -94,10 +116,13 @@
 
 (use-package all-the-icons
   :ensure t
+  :if (display-graphic-p))
+
+(use-package all-the-icons-completion
+  :ensure t
+  :hook (after-init . all-the-icons-completion-mode)
   :if (display-graphic-p)
-  :commands all-the-icons-install-fonts
-  :config (unless (find-font (font-spec :name "all-the-icons"))
-            (all-the-icons-install-fonts t)))
+)
 
 (use-package doom-themes
   :config
@@ -199,6 +224,13 @@
   (company-minimum-prefix-length 3)
   (company-idle-delay 0.0))
 
+(use-package flycheck
+  :ensure t
+  :after lsp-mode
+  :config
+  (global-flycheck-mode)
+  (setq flycheck-display-errors-function nil))
+
 
 ;; solidity LSP
 ;;(after! eglot
@@ -217,4 +249,6 @@
               ("s-p" . projectile-command-map)
               ("C-c p" . projectile-command-map)))
 
-
+(use-package copilot
+  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :ensure t)
