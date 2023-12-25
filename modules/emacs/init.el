@@ -16,7 +16,6 @@
 
 (set-face-attribute 'default nil :font "Fira Mono" :height 140)
 
-;; Display numbers
 (column-number-mode)
 (global-display-line-numbers-mode t)
 
@@ -177,30 +176,13 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-key] . helpful-key))
 
-;;; package --- lsp mode settings
-(use-package lsp-mode
-  :defer t
-  :ensure t
-  :hook ((nix-mode rustic-mode) . lsp)
-  :commands (lsp lsp-deferred lsp-register-client)
-  :config
-  (lsp-enable-which-key-integration t)
-  (setq lsp-lens-enable t)
+(use-package solidity-flycheck
+  :straight t
   )
 
-(use-package lsp-ui
-  :ensure t
-  :hook (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-doc-position 'bottom
-        lsp-ui-sideline-delay 0.5
-        lsp-ui-sideline-enable nil))
+(use-package company-solidity
+  :straight t)
 
-;(use-package dap-mode)
-;(require 'dap-gdb-lldb)
-;(require 'dap-codelldb)
-;(use-package realgud)
-;(use-package realgud-lldb)
 (use-package solidity-mode
   :straight t
   :defer t
@@ -209,10 +191,9 @@
   ("C-c C-g" . solidity-mode-map)
   :config
   (setq solidity-comment-style 'slash)
-  (when nema-use-flycheck
     (require 'solidity-flycheck)
     (setq solidity-flycheck-solc-checker-active t
-          flycheck-solidity-solc-addstd-contracts t))
+	  flycheck-solidity-solc-addstd-contracts t)
   (when (functionp 'company-mode)
     (require 'company-solidity)
     (add-hook 'solidity-mode-hook
@@ -235,6 +216,37 @@
       :priority -1))
     (add-to-list 'company-backends '(company-lsp))))
 
+
+
+(use-package lsp-mode
+  :defer t
+  :straight t
+  :hook ((nix-mode . lsp)
+         (rustic-mode . lsp)
+         (solidity-mode . lsp-deferred)
+         (lisp-mode . lsp-deferred)
+         (js-mode . lsp-deferred)
+         (js2-mode . lsp-deferred)
+         (typescript-mode . lsp-deferred))
+  :commands (lsp lsp-deferred lsp-register-client)
+  :config
+  (lsp-enable-which-key-integration t)
+  (setq lsp-lens-enable t))
+
+(use-package lsp-ui
+  :after lsp-mode
+  :straight t
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-doc-position 'bottom
+        lsp-ui-sideline-delay 0.5
+        lsp-ui-sideline-enable nil))
+
+;(use-package dap-mode)
+;(require 'dap-gdb-lldb)
+;(require 'dap-codelldb)
+;(use-package realgud)
+;(use-package realgud-lldb)
 
 (provide 'pkg-solidity-mode)
 ;;; package --- Company (autocomplete) settings
@@ -285,3 +297,19 @@
   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
   (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
   )
+
+(use-package org-roam
+  :straight t
+  :custom
+  (org-roam-directory (file-truename "/Users/anajulia/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/notes/"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode))
