@@ -2,7 +2,6 @@
 
 {
   environment.systemPackages = with pkgs; [ yabai ];
-
   services.yabai = {
     enable = true;
     package = pkgs.yabai;
@@ -58,8 +57,8 @@
       #  action="yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id)"
 
       # load scripting additions
-      sudo yabai --load-sa
-      yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+      #sudo yabai --load-sa
+      #yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
     '';
   };
 }

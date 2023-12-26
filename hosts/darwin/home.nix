@@ -1,100 +1,64 @@
-{ config, inputs, pkgs, lib, ... }: {
-  home.stateVersion = "22.05";
+{ config, inputs, pkgs, lib, ... }:
+let
+  hm-config = import ../../modules/home-manager.nix { config = config; pkgs = pkgs; lib = lib; };
+  home-manager = builtins.fetchTarball
+    "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+in {
+  imports = [ "${home-manager}/nix-darwin" ];
+  home-manager = {
+    useGlobalPkgs = true;
+    users.anajulia = { pkgs, lib, ... }: lib.recursiveUpdate hm-config {
+      programs = {
+        rtx.enable = true;
+        command-not-found.enable = true;
+      };
+      home.enableNixpkgsReleaseCheck = false;
+      home.packages = pkgs.callPackage ./packages.nix {};
+      home.stateVersion = "22.11";
+      home.sessionVariables = {
+        XDG_CACHE_HOME = "\${HOME}/.cache";
+        XDG_CONFIG_HOME = "\${HOME}/.config";
+        XDG_BIN_HOME = "\${HOME}/.local/bin";
+        XDG_DATA_HOME = "\${HOME}/.local/share";
+        EDITOR = "emacs";
+        PATH =
+          "/Users/anajulia/.config/emacs/bin:/Users/$USER/Library/Python/3.9/bin:$PATH";
+        #CXX = "clang++";
+        LIBRARY_PATH = "${
+          lib.makeLibraryPath [ pkgs.libiconv ]
+        }\${LIBRARY_PATH:+:$LIBRARY_PATH}";
+      };
+      disabledModules = [ "targets/darwin/linkapps.nix" ];
+      home.activation.copyApplications = let
+          apps = pkgs.buildEnv {
+            name = "home-manager-applications";
+            paths = pkgs.callPackage ./packages.nix {};
+            pathsToLink = "/Applications";
+          };
+        in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      baseDir="$HOME/Applications/Home Manager Apps"
+      if [ -d "$baseDir" ]; then
+        rm -rf "$baseDir"
+      fi
+      mkdir -p "$baseDir"
+      for appFile in ${apps}/Applications/*; do
+        target="$baseDir/$(basename "$appFile")"
+        $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
+        $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
+      done
+    '';
 
-  home.packages = with pkgs; [
-    tldr
-    (nerdfonts.override { fonts = [ "Cousine" ]; })
-    htop
-    httpie
-    jq
-    yq
+    #  home.sessionVariables = rec {
 
-    # dev tools
-    gdb
-    #clang-tools
-    #clang
-    #cmake
-    #ripgrep
-    pkg-config
+    #  };
 
-    rustup
-    #rust-analyzer
-    iconv
-    libiconv
+    #  PATH = [
+    #    "\${HOME}/.bin"
+    #    "\${XDG_BIN_HOME}"
+    #    "\${HOME}/.node_modules"
+    #  ];
 
-    # nix
-    rnix-lsp
-    nixfmt
-    niv # easy dependency management for nix projects
-
-    # lua
-    lua
-    sumneko-lua-language-server
-    stylua
-
-    nodePackages.typescript
-    nodejs
-
-    yubikey-manager
-    nodePackages.node2nix
-    comma # run software from without installing it
-
-    ledger
-    # grammar
-    ispell
-    hunspell
-    hunspellDicts.en-us
-    hunspellDicts.pt-br
-    languagetool
-
-    # latex
-    texlive.combined.scheme-full
-    texlab
-
-    graphviz
-    gnuplot
-    nim
-    python3
-
-    foundry-bin
-    #cairo-bin.stable.scarb
-
-    #zotero
-    m-cli # useful macOS CLI commands
-  ];
-  home.sessionVariables = {
-    EDITOR = "emacs";
-    PATH =
-      "/Users/anajulia/.config/emacs/bin:/Users/$USER/Library/Python/3.9/bin:$PATH";
-    CXX = "clang++";
-    LIBRARY_PATH = "${
-        lib.makeLibraryPath [ pkgs.libiconv ]
-      }\${LIBRARY_PATH:+:$LIBRARY_PATH}";
+        #   modules.emacs.enable = true;
+    };
   };
-
-  programs.home-manager.enable = true;
-  programs.command-not-found.enable = true;
-  programs.rtx.enable = true;
-
-  imports = [
-    ./git.nix
-    ./tmux.nix
-    ./zsh.nix
-    # ../../modules/emacs
-  ];
-
-  #  home.sessionVariables = rec {
-  #    XDG_CACHE_HOME = "\${HOME}/.cache";
-  #    XDG_CONFIG_HOME = "\${HOME}/.config";
-  #    XDG_BIN_HOME = "\${HOME}/.local/bin";
-  #    XDG_DATA_HOME = "\${HOME}/.local/share";
-  #  };
-
-  #  PATH = [
-  #    "\${HOME}/.bin"
-  #    "\${XDG_BIN_HOME}"
-  #    "\${HOME}/.node_modules"
-  #  ];
-
-  #   modules.emacs.enable = true;
 }

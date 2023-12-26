@@ -1,5 +1,4 @@
 { pkgs, ... }:
-
 {
   programs.zsh = {
     enable = true;
@@ -66,7 +65,7 @@
   # Direnv, load and unload environment variables depending on the current directory.
   # https://direnv.net
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.direnv.enable
-  programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
+  #programs.direnv.enable = true;
+  #programs.direnv.nix-direnv.enable = true;
   #programs.starship.enable = true;
 }

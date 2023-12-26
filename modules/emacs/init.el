@@ -1,3 +1,6 @@
+(defvar org-config-file "~/nix-dotfiles/modules/emacs/init.el")
+(defvar default-config-file "~/nix-dotfiles/modules/emacs/init.el")
+
 (setq inhibit-startup-message t)
 (defvar chidori-cache-dir (expand-file-name "cache/" user-emacs-directory))
 
@@ -176,54 +179,65 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-key] . helpful-key))
 
-(use-package solidity-flycheck
-  :straight t
-  )
-
-(use-package company-solidity
-  :straight t)
-
+;; Solidity mode setup
 (use-package solidity-mode
-  :straight t
-  :defer t
   :mode "\\.sol\\'"
-  :bind-keymap
-  ("C-c C-g" . solidity-mode-map)
   :config
   (setq solidity-comment-style 'slash)
-    (require 'solidity-flycheck)
-    (setq solidity-flycheck-solc-checker-active t
-	  flycheck-solidity-solc-addstd-contracts t)
-  (when (functionp 'company-mode)
-    (require 'company-solidity)
-    (add-hook 'solidity-mode-hook
-	      (lambda ()
-	        (set (make-local-variable 'company-backends)
-                     '((company-solidity company-capf company-dabbrev-code))))))
-  ;; LSP config
-  ;; https://github.com/hyperledger-labs/solang-vscode
-  ;; cd solang-server && cargo build --release
-  (when (and
-         (functionp 'lsp)
-         (executable-find "nomicfoundation-solidity-language-server"))
-    (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
-    (lsp-register-client
-     (make-lsp-client
-      :new-connection (lsp-stdio-connection (lambda () (executable-find "nomicfoundation-solidity-language-server")))
-      :server-id "solidity-ls"
-      :language-id 'solidity
-      :major-modes '(solidity-mode)
-      :priority -1))
-    (add-to-list 'company-backends '(company-lsp))))
+  (add-hook 'solidity-mode-hook
+            (lambda ()
+              ;; Company mode setup for Solidity
+              (when (functionp 'company-mode)
+                (use-package company-solidity
+                  :config
+                  (setq-local company-backends '((company-solidity company-capf company-dabbrev-code))))
+                (company-mode 1))
+
+              ;; Flycheck setup for Solidity
+              (use-package solidity-flycheck
+                :config
+                (setq solidity-flycheck-solc-checker-active t
+                      flycheck-solidity-solc-addstd-contracts t)
+                (flycheck-mode 1))
+
+              ;; LSP setup for Solidity
+              (when (and (functionp 'lsp)
+                         (executable-find "nomicfoundation-solidity-language-server"))
+                (lsp-deferred)))))
 
 
+;; Tree-sitter setup for Solidity
+(use-package tree-sitter
+  :config
+  (defun my/setup-install-grammars ()
+    "Install Tree-sitter grammars if they are absent."
+    (interactive)
+    (dolist (grammar
+	     '((css "https://github.com/tree-sitter/tree-sitter-css")
+	       (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+	       (python "https://github.com/tree-sitter/tree-sitter-python")
+	       (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+	       (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+	       (solidity "https://github.com/JoranHonig/tree-sitter-solidity/"))
+	       (nix "https://github.com/nix-community/tree-sitter-nix")
+	     )
+      (add-to-list 'treesit-language-source-alist grammar)
+      ;; Only install `grammar' if we don't already have it
+      ;; installed. However, if you want to *update* a grammar then
+      ;; this obviously prevents that from happening.
+      (unless (treesit-language-available-p (car grammar))
+	(treesit-install-language-grammar (car grammar)))))
+
+  (global-tree-sitter-mode)
+  (setq treesit-extra-load-path nil)
+  (my/setup-install-grammars))
 
 (use-package lsp-mode
   :defer t
   :straight t
   :hook ((nix-mode . lsp)
          (rustic-mode . lsp)
-         (solidity-mode . lsp-deferred)
+         (solidity-mode . lsp)
          (lisp-mode . lsp-deferred)
          (js-mode . lsp-deferred)
          (js2-mode . lsp-deferred)
@@ -231,7 +245,14 @@
   :commands (lsp lsp-deferred lsp-register-client)
   :config
   (lsp-enable-which-key-integration t)
-  (setq lsp-lens-enable t))
+  (setq lsp-lens-enable t)
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
+    :major-modes '(solidity-mode)
+    :priority -1
+    :server-id 'solidity-ls))
+  )
 
 (use-package lsp-ui
   :after lsp-mode
@@ -295,8 +316,8 @@
   :config
   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-  (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
-  )
+;;  (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
+  (add-hook 'prog-mode-hook 'copilot-mode))
 
 (use-package org-roam
   :straight t
@@ -313,3 +334,7 @@
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
+
+;; Define key for open dired with C-x C-d (default is C-x d)
+(global-set-key (kbd "C-x C-d") 'dired)
+

@@ -2,10 +2,10 @@
 
 {
   imports = [
-    ../../modules/desktop/yabai.nix
     ../../modules/desktop/skhd.nix
-    ../../modules/emacs/doom/doom.nix
     ../../modules/dev/node.nix
+    ./home.nix
+#    ../../modules/desktop/yabai.nix
   ];
 
   # Auto upgrade nix package and the daemon service.
@@ -21,13 +21,7 @@
     extraOptions = ''
       auto-optimise-store = true
       experimental-features = nix-command flakes
-    '' + lib.optionalString (pkgs.system == "aarch64-darwin") ''
-      extra-platforms = x86_64-darwin aarch64-darwin
     '';
-    #  nixPath = [
-    #    "nixpkgs=${channel.input}"
-    #    "home-manager=${home}"
-    # ];
   };
 
   # Create /etc/bashrc that loads the nix-darwin environment.
@@ -39,11 +33,10 @@
     onActivation.autoUpdate = true;
     casks = [
       # "amethyst"
-      "discord"
       #"iterm2"
-      "spotify"
       "ledger-live"
       "zoom"
+      "emacs"
     ];
     brews = [ "libusb" ];
   };
@@ -51,10 +44,10 @@
   users.users.anajulia = {
     name = "anajulia";
     home = "/Users/anajulia";
+    shell = pkgs.zsh;
   };
 
   #fonts.fontconfig.enable = true;
-
   environment.systemPackages = with pkgs; [
     #ansible
     git
@@ -70,7 +63,6 @@
     neofetch # system info cli
     procs # alternative to ps
     sd # alternative to sed
-    exa # Replacement for ls
   ];
 
   system = {
@@ -94,24 +86,27 @@
         tilesize = 40;
       };
       finder = { # Finder settings
-        QuitMenuItem =
-          false; # I believe this probably will need to be true if using spacebar
-        #        ShowExternalHardDrivesOnDesktop = true;
-        #        ShowHardDrivesOnDesktop = true;
-        #        ShowMountedServersOnDesktop = true;
-        #        ShowRemovableMediaOnDesktop = true;
-        #        _FXSortFoldersFirst = true;
+        QuitMenuItem = false; # I believe this probably will need to be true if using spacebar
       };
-      trackpad = { # Trackpad settings
+      trackpad = { 
         Clicking = true;
         TrackpadRightClick = true;
       };
     };
-    activationScripts.postUserActivation.text = ''
-      # Following line should allow us to avoid a logout/login cycle
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    '';
+  activationScripts.applications.text = pkgs.lib.mkForce (
+    ''
+      echo "setting up ~/Applications..." >&2
+      rm -rf ~/Applications/Nix\ Apps
+      mkdir -p ~/Applications/Nix\ Apps
+      for app in $(find ${config.system.build.applications}/Applications -maxdepth 1 -type l); do
+        src="$(/usr/bin/stat -f%Y "$app")"
+        cp -r "$src" ~/Applications/Nix\ Apps
+      done
+    ''
+  );
+#    activationScripts.postUserActivation.text = ''
+#      # Following line should allow us to avoid a logout/login cycle
+#      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+#    '';
   };
-
-  nixpkgs.config.permittedInsecurePackages = [ "nodejs-16.20.1" ];
 }
