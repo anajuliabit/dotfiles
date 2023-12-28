@@ -107,7 +107,7 @@
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal)
- )
+  )
 
 
 (use-package evil-collection
@@ -124,12 +124,12 @@
   :ensure t
   :hook (after-init . all-the-icons-completion-mode)
   :if (display-graphic-p)
-)
+  )
 
 (use-package doom-themes
   :config
   (load-theme 'doom-tomorrow-night t)
-)
+  )
 
 (use-package doom-modeline
   :ensure t
@@ -149,10 +149,10 @@
 ;; completions
 (use-package vertico
   :bind (:map vertico-map
-              ("C-j" . vertico-next)
-              ("C-k" . vertico-previous)
-              ("C-f" . vertico-exit)
-              :map minibuffer-local-map)
+         ("C-j" . vertico-next)
+         ("C-k" . vertico-previous)
+         ("C-f" . vertico-exit)
+         :map minibuffer-local-map)
   :custom
   (vertico-cycle t)
   :custom-face
@@ -219,7 +219,7 @@
 	       (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
 	       (yaml "https://github.com/ikatyang/tree-sitter-yaml")
 	       (solidity "https://github.com/JoranHonig/tree-sitter-solidity/"))
-	       (nix "https://github.com/nix-community/tree-sitter-nix")
+	     (nix "https://github.com/nix-community/tree-sitter-nix")
 	     )
       (add-to-list 'treesit-language-source-alist grammar)
       ;; Only install `grammar' if we don't already have it
@@ -263,11 +263,11 @@
         lsp-ui-sideline-delay 0.5
         lsp-ui-sideline-enable nil))
 
-;(use-package dap-mode)
-;(require 'dap-gdb-lldb)
-;(require 'dap-codelldb)
-;(use-package realgud)
-;(use-package realgud-lldb)
+                                        ;(use-package dap-mode)
+                                        ;(require 'dap-gdb-lldb)
+                                        ;(require 'dap-codelldb)
+                                        ;(use-package realgud)
+                                        ;(use-package realgud-lldb)
 
 (provide 'pkg-solidity-mode)
 ;;; package --- Company (autocomplete) settings
@@ -276,9 +276,9 @@
   :after (lsp-mode)
   :commands (company-mode)
   :bind (:map company-active-map
-              ("<tab>" . company-complete-selection)
-              :map lsp-mode-map
-              ("<tab>" . company-indent-or-complete-common))
+         ("<tab>" . company-complete-selection)
+         :map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
   :config
   (global-company-mode 1)
   :custom
@@ -312,11 +312,10 @@
 
 (use-package copilot
   :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-  :ensure t
   :config
   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-;;  (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
+  ;;  (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
   (add-hook 'prog-mode-hook 'copilot-mode))
 
 (use-package org-roam

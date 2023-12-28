@@ -3,7 +3,7 @@
 
   inputs = {
     #flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     #nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     darwin = {
       url = "github:LnL7/nix-darwin/master";
@@ -17,8 +17,7 @@
     #cairo-nix.url = "github:cairo-nix/cairo-nix";
   };
 
-  outputs =
-    { self, darwin, nixpkgs, home-manager, foundry, ... }@inputs:
+  outputs = { self, darwin, nixpkgs, home-manager, foundry, ... }@inputs:
     let
       overlays = [
         foundry.overlay
