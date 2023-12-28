@@ -4,7 +4,6 @@
   imports = [
     ../../modules/desktop/skhd.nix
     ../../modules/dev/node.nix
-    ../../modules/emacs
     ./home.nix
     #    ../../modules/desktop/yabai.nix
   ];
@@ -32,6 +31,7 @@
     enable = true;
     onActivation.autoUpdate = true;
     casks = [ "emacs" ];
+    brewPrefix = "/opt/homebrew/bin";
   };
   users.users.anajulia = {
     name = "anajulia";
@@ -55,6 +55,8 @@
     neofetch # system info cli
     procs # alternative to ps
     sd # alternative to sed
+    semgrep
+    gnupg
   ];
 
   launchd.user.agents.emacs.path = [ config.environment.systemPath ];

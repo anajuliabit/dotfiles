@@ -1,6 +1,3 @@
-(defvar org-config-file "~/nix-dotfiles/modules/emacs/init.el")
-(defvar default-config-file "~/nix-dotfiles/modules/emacs/init.el")
-
 (setq inhibit-startup-message t)
 (defvar chidori-cache-dir (expand-file-name "cache/" user-emacs-directory))
 
@@ -11,8 +8,9 @@
 
 (menu-bar-mode -1)            ; Disable the menu bar
 
-;; Set up the visible bell
-;;(setq visible-bell t)
+
+;; Fullscreen by default
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; Disable backup files
 (setq make-backup-files nil)
@@ -207,30 +205,30 @@
 
 
 ;; Tree-sitter setup for Solidity
-(use-package tree-sitter
-  :config
-  (defun my/setup-install-grammars ()
-    "Install Tree-sitter grammars if they are absent."
-    (interactive)
-    (dolist (grammar
-	     '((css "https://github.com/tree-sitter/tree-sitter-css")
-	       (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
-	       (python "https://github.com/tree-sitter/tree-sitter-python")
-	       (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-	       (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-	       (solidity "https://github.com/JoranHonig/tree-sitter-solidity/"))
-	     (nix "https://github.com/nix-community/tree-sitter-nix")
-	     )
-      (add-to-list 'treesit-language-source-alist grammar)
-      ;; Only install `grammar' if we don't already have it
-      ;; installed. However, if you want to *update* a grammar then
-      ;; this obviously prevents that from happening.
-      (unless (treesit-language-available-p (car grammar))
-	(treesit-install-language-grammar (car grammar)))))
-
-  (global-tree-sitter-mode)
-  (setq treesit-extra-load-path nil)
-  (my/setup-install-grammars))
+;;(use-package treesit
+;;  :straight t
+;;  :config
+;;  (defun my/setup-install-grammars ()
+;;    (interactive)
+;;    (dolist (grammar
+;;	     '((css "https://github.com/tree-sitter/tree-sitter-css")
+;;	       (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+;;	       (python "https://github.com/tree-sitter/tree-sitter-python")
+;;	       (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+;;	       (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+;;	       (solidity "https://github.com/JoranHonig/tree-sitter-solidity/"))
+;;	     (nix "https://github.com/nix-community/tree-sitter-nix")
+;;	     )
+;;      (add-to-list 'treesit-language-source-alist grammar)
+;;      ;; Only install `grammar' if we don't already have it installed.
+;;      (unless (treesit-language-available-p (car grammar))
+;;	(treesit-install-language-grammar (car grammar)))))
+;;
+;;  (use-package treesit-auto
+;;    :config
+;;    (global-treesit-auto-mode))
+;;  (setq treesit-extra-load-path nil)
+;;  (my/setup-install-grammars))
 
 (use-package lsp-mode
   :defer t
@@ -305,6 +303,7 @@
 (use-package projectile
   :ensure t
   :init
+
   (projectile-mode +1)
   :bind (:map projectile-mode-map
               ("s-p" . projectile-command-map)
@@ -315,8 +314,9 @@
   :config
   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-  ;;  (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
-  (add-hook 'prog-mode-hook 'copilot-mode))
+  ;;(add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
+  ;;(add-hook 'prog-mode-hook 'copilot-mode)
+  :hook (prog-mode . copilot-mode))
 
 (use-package org-roam
   :straight t
@@ -337,3 +337,8 @@
 ;; Define key for open dired with C-x C-d (default is C-x d)
 (global-set-key (kbd "C-x C-d") 'dired)
 
+
+(use-package vterm
+   :straight t)
+
+(use-package nix-mode :mode "\\.nix\\'")

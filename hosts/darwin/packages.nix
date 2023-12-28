@@ -1,6 +1,7 @@
 { pkgs }:
-
-with pkgs; [
+let
+glibtool = pkgs.writeShellScriptBin "glibtool" ''exec ${pkgs.libtool}/bin/libtool "$@"'';
+in (with pkgs; [
   tldr
   (nerdfonts.override { fonts = [ "Cousine" ]; })
   htop
@@ -13,9 +14,9 @@ with pkgs; [
   yubikey-agent
   # dev tools
   gdb
-  #clang-tools
-  #clang
-  #cmake
+  clang-tools
+  clang
+  cmake
   #ripgrep
   pkg-config
   rustup
@@ -54,14 +55,13 @@ with pkgs; [
   #tdesktop # telegram desktop
   #chromedriver
   #direnv
-  #rofi
   #rofi-calc
   #rnix-lsp # lsp-mode for nix
   #qmk
   #emote # Emoji picker
   #feh # Manage wallpapers
   #screenkey
-  #tree
+  tree-sitter
   #unixtools.ifconfig
   #unixtools.netstat
   #xclip # For the org-download package in Emacs
@@ -80,4 +80,6 @@ with pkgs; [
   #google-chrome
   discord
   spotify
-]
+] ++ [
+    glibtool
+])

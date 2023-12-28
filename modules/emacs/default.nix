@@ -10,7 +10,7 @@
         "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
     }))
   ];
-  home-manager.users.anajulia = {
+  user.  home-manager.users.anajulia = {
     home.file = {
       ".emacs.d/init.el" = {
         source = ./init.el;
