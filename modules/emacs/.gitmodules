@@ -1,0 +1,3 @@
+[submodule "modules/emacs/straight/repos/el-get"]
+    path = modules/emacs/straight/repos/el-get
+    url = [URL to the el-get repository]
