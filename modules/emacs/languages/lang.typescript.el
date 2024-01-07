@@ -1,6 +1,8 @@
 ;;; lang.typescript.el --- Typescript configuration -*- lexical-binding: t; -*-
+;;; Commentary:
 ;;; Configuration of Typescript and tooling
 
+;;; Code:
 ;;  tree-sitter indentation minor mode for Emacs
 (use-package tsi
   :straight (tsi
@@ -36,3 +38,4 @@
    (typescript-mode . tide-hl-identifier-mode)))
 
 (provide 'lang.typescript)
+;;; lang.typescript.el ends here
