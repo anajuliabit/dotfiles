@@ -243,12 +243,6 @@
         lsp-ui-sideline-delay 0.5
         lsp-ui-sideline-enable nil))
 
-                                        ;(use-package dap-mode)
-                                        ;(require 'dap-gdb-lldb)
-                                        ;(require 'dap-codelldb)
-                                        ;(use-package realgud)
-                                        ;(use-package realgud-lldb)
-
 (provide 'pkg-solidity-mode)
 ;;; package --- Company (autocomplete) settings
 (use-package company
@@ -321,6 +315,11 @@
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
 
+(use-package org-bullets
+  :straight t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
 ;; Define key for open dired with C-x C-d (default is C-x d)
 (global-set-key (kbd "C-x C-d") 'dired)
 
@@ -329,3 +328,7 @@
    :straight t)
 
 (use-package nix-mode :mode "\\.nix\\'")
+
+(add-to-list 'load-path "~/nix-dotfiles/modules/emacs/languages")
+(require 'lang.typescript)
+(provide 'init.el)
