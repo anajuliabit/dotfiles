@@ -107,7 +107,6 @@
   (evil-set-initial-state 'dashboard-mode 'normal)
   )
 
-
 (use-package evil-collection
   :after evil
   :ensure t
@@ -203,32 +202,15 @@
                          (executable-find "nomicfoundation-solidity-language-server"))
                 (lsp-deferred)))))
 
+(add-hook 'js-mode-hook #'lsp)
+(add-hook 'typescript-mode-hook #'lsp)
 
-;; Tree-sitter setup for Solidity
-;;(use-package treesit
-;;  :straight t
-;;  :config
-;;  (defun my/setup-install-grammars ()
-;;    (interactive)
-;;    (dolist (grammar
-;;	     '((css "https://github.com/tree-sitter/tree-sitter-css")
-;;	       (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
-;;	       (python "https://github.com/tree-sitter/tree-sitter-python")
-;;	       (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-;;	       (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-;;	       (solidity "https://github.com/JoranHonig/tree-sitter-solidity/"))
-;;	     (nix "https://github.com/nix-community/tree-sitter-nix")
-;;	     )
-;;      (add-to-list 'treesit-language-source-alist grammar)
-;;      ;; Only install `grammar' if we don't already have it installed.
-;;      (unless (treesit-language-available-p (car grammar))
-;;	(treesit-install-language-grammar (car grammar)))))
-;;
-;;  (use-package treesit-auto
-;;    :config
-;;    (global-treesit-auto-mode))
-;;  (setq treesit-extra-load-path nil)
-;;  (my/setup-install-grammars))
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 (use-package lsp-mode
   :defer t
@@ -297,8 +279,13 @@
 ;;               '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio"))))
 
 (use-package magit
+  :straight t
   :bind (("C-x g" . magit-status)
          ("C-x C-g" . magit-status)))
+
+(use-package forge
+  :straight t
+  :after magit)
 
 (use-package projectile
   :ensure t
