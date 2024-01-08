@@ -59,9 +59,13 @@
 (setq select-enable-clipboard t)
 
 ;; Indentation defaults
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 2)
-(setq-default js-indent-level 2)
+(setq-default indent-tabs-mode nil) ;; use space instead of tabs
+(setq-default tab-width 2) ;; set tab width to 2 spaces
+(setq-default js-indent-level 2) ;; indent by 2 spaces
+(setq-default lisp-indentation-offset 2) ;; indent by 2 spaces
+(setq-default nix-indentation-offset 2) ;; indent by 2 spaces
+(setq-default org-indentation-offset 2) ;; indent by 2 spaces
+(setq-default standard-indent 2) ;; indent by 2 spaces
 
 ;; yes-or-no shortcut for dialogues
 (defalias 'yes-or-no-p 'y-or-n-p)

@@ -10,6 +10,7 @@
 (load (expand-file-name "features/feat.completion.el" config-path))
 (load (expand-file-name "features/feat.editor.el" config-path))
 (load (expand-file-name "features/feat.evil.el" config-path))
+(load (expand-file-name "features/feat.functions.el" config-path))
 (load (expand-file-name "features/feat.git.el" config-path))
 (load (expand-file-name "features/feat.hydra.el" config-path))
 (load (expand-file-name "features/feat.org.el" config-path))
@@ -79,9 +80,6 @@
 ;;(after! eglot
 ;;  (add-to-list 'eglot-server-programs
 ;;               '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio"))))
-
-; Define key for open dired with C-x C-d (default is C-x d)
-(global-set-key (kbd "C-x C-d") 'dired)
 
 (use-package vterm
    :straight t)

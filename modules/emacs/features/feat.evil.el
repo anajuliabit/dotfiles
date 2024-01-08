@@ -32,6 +32,7 @@
     "p"        'counsel-projectile-switch-project
     "f"        'counsel-projectile-find-file
     "g"        'counsel-ag
+    "d"        'counsel-dired
     "w"        'save-buffer
     "j"        'swiper-avy
     "t"        'treemacs

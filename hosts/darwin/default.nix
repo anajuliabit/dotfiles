@@ -31,6 +31,7 @@
     enable = true;
     onActivation.autoUpdate = true;
     #brews = [ "koekeishiya/formulae/yabai" ];
+    brews = [ "pinentry-mac"];
     casks = [ "emacs" ];
     brewPrefix = "/opt/homebrew/bin";
   };
