@@ -1,11 +1,11 @@
-{ pkgs, channel, lib, config, inputs, ... }:
+{ pkgs, changnel, lib, config, inputs, ... }:
 
 {
   imports = [
+    ./home.nix
     ../../modules/desktop/skhd.nix
     ../../modules/dev/node.nix
-    ./home.nix
-    #    ../../modules/desktop/yabai.nix
+#    ../../modules/desktop/yabai.nix
   ];
 
   # Auto upgrade nix package and the daemon service.
@@ -30,6 +30,7 @@
   homebrew = {
     enable = true;
     onActivation.autoUpdate = true;
+    #brews = [ "koekeishiya/formulae/yabai" ];
     casks = [ "emacs" ];
     brewPrefix = "/opt/homebrew/bin";
   };
@@ -109,9 +110,9 @@
         cp -r "$src" ~/Applications/Nix\ Apps
       done
     '');
-    #    activationScripts.postUserActivation.text = ''
-    #      # Following line should allow us to avoid a logout/login cycle
-    #      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    #    '';
+    activationScripts.postUserActivation.text = ''
+          # Following line should allow us to avoid a logout/login cycle
+          /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+        '';
   };
 }

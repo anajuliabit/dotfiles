@@ -70,12 +70,6 @@
         lsp-enable-text-document-color nil)
   (lsp-enable-which-key-integration t)
   (setq lsp-lens-enable t)
-  (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
-    :major-modes '(solidity-mode)
-    :priority -1
-    :server-id 'solidity-ls))
   ;; Reduce unexpected code modifications
   (setq lsp-enable-on-type-formatting nil)
   :hook ((nix-mode . lsp)

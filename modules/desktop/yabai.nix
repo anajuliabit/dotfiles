@@ -2,6 +2,11 @@
 
 {
   environment.systemPackages = with pkgs; [ yabai ];
+  environment.etc."sudoers.d/yabai".text =
+        let
+          sha = builtins.hashFile "sha256" "${pkgs.yabai}/bin/yabai";
+        in
+        "%admin ALL=(root) NOPASSWD: sha256:${sha} ${pkgs.yabai}/bin/yabai --load-sa";
   services.yabai = {
     enable = true;
     package = pkgs.yabai;
@@ -61,4 +66,16 @@
       #yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
     '';
   };
+  launchd.daemons.yabai-sa = {
+    script = ''
+          if [ ! $(${pkgs.yabai}/bin/yabai --check-sa) ]; then
+            ${pkgs.yabai}/bin/yabai --install-sa
+          fi
+
+          ${pkgs.yabai}/bin/yabai --load-sa
+        '';
+    serviceConfig.RunAtLoad = true;
+    serviceConfig.KeepAlive.SuccessfulExit = false;
+  };
+
 }

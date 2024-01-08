@@ -15,24 +15,19 @@
 (load (expand-file-name "features/feat.org.el" config-path))
 (load (expand-file-name "features/feat.copilot.el" config-path))
 (load (expand-file-name "features/feat.syntaxchecking.el" config-path))
+(load (expand-file-name "features/feat.modeline.el" config-path))
 (load (expand-file-name "features/feat.theme.el" config-path))
 (load (expand-file-name "languages/lang.typescript.el" config-path))
 (load (expand-file-name "languages/lang.nix.el" config-path))
 (load (expand-file-name "languages/lang.solidity.el" config-path))
 (load (expand-file-name "languages/lang.javascript.el" config-path))
 
-(dolist (mode '(org-mode-hook
-                term-mode-hook
-	        eshell-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+;;(dolist (mode '(org-mode-hook
+;;                term-mode-hook
+;;	        eshell-mode-hook))
+;;  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;;(setq use-package-always-ensure t)
-
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15))
-  )
 
 (use-package which-key
   :diminish which-key-mode

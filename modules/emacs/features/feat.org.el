@@ -6,6 +6,15 @@
 
 ;;; Code:
 
+;;(defun my/org-mode-setup ()
+;;  (org-bullets-mode 1)
+;;  (org-indent-mode)
+;;  (variable-pitch-mode 1)
+;;  (auto-fill-mode 0)
+;;  (visual-line-mode 1)
+;;  (setq evil-auto-indent nil)
+;;  (diminish org-indent-mode)
+
 ;;; Hide the emphasis markup
 ;;; (e.g. /.../ for italics, *...* for bold, etc.)
 (setq org-hide-emphasis-markers t)
@@ -28,9 +37,8 @@
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  ;;  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
-
 
 (provide 'feat.org)
 ;;; feat.org.el ends here

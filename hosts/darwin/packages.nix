@@ -17,7 +17,8 @@ in (with pkgs; [
   clang-tools
   clang
   cmake
-  #ripgrep
+  ripgrep
+  silver-searcher
   pkg-config
   rustup
   #rust-analyzer
@@ -30,6 +31,7 @@ in (with pkgs; [
   nodePackages.typescript
   nodejs
   nodePackages.node2nix
+  nodePackages.pnpm
   comma # run software from without installing it
   ledger
   ispell
