@@ -22,6 +22,7 @@
 (load (expand-file-name "languages/lang.nix.el" config-path))
 (load (expand-file-name "languages/lang.solidity.el" config-path))
 (load (expand-file-name "languages/lang.javascript.el" config-path))
+(load (expand-file-name "languages/lang.markdown.el" config-path))
 
 ;;(dolist (mode '(org-mode-hook
 ;;                term-mode-hook

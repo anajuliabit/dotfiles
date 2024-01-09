@@ -18,6 +18,7 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+(straight-use-package 'org)
 
 (provide 'core.straight)
 ;;; core.straight.el ends here

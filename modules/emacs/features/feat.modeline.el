@@ -43,16 +43,16 @@
           ((equal 'visual state) (propertize " V "
                                              'face 'evil-visual-state-face)))))
 
-(use-package sky-color-clock
-  :straight (sky-color-clock
-             :type git
-             :host github
-             :repo "zk-phi/sky-color-clock")
-  :config
- ;; (eval-when-compile
- ;;   (when calendar-latitude
- ;;     (sky-color-clock-initialize (round calendar-latitude))))
-  (setq sky-color-clock-enable-emoji-icon nil))
+;;(use-package sky-color-clock
+;;  :straight (sky-color-clock
+;;             :type git
+;;             :host github
+;;             :repo "zk-phi/sky-color-clock")
+;;  :config
+;; ;; (eval-when-compile
+;; ;;   (when calendar-latitude
+;; ;;     (sky-color-clock-initialize (round calendar-latitude))))
+;;  (setq sky-color-clock-enable-emoji-icon nil))
 
 (use-package mood-line
   :straight (mood-line

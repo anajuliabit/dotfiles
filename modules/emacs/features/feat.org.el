@@ -19,26 +19,39 @@
 ;;; (e.g. /.../ for italics, *...* for bold, etc.)
 (setq org-hide-emphasis-markers t)
 
-(use-package org-bullets
+  ;; Prettify UI
+(use-package org-modern
   :straight t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  :hook ((org-mode . org-modern-mode)
+         (org-agenda-finalize . org-modern-agenda)
+         (org-modern-mode . (lambda ()
+                              "Adapt `org-modern-mode'."
+                              ;; Disable Prettify Symbols mode
+                              (setq prettify-symbols-alist nil)
+                              (prettify-symbols-mode -1)))))
 
 (use-package org-roam
   :straight t
-  :custom
-  (org-roam-directory (file-truename "/Users/anajulia/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/notes/"))
+  :init
+  (setq org-roam-directory (file-truename "/Users/anajulia/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/notes/")
+        org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag))
+        )
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
-         ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  ;;  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (setq org-roam-database-connector 'sqlite-builtin)
   (org-roam-db-autosync-mode))
+
+(use-package org-roam-ui
+  :straight t
+  :bind ("C-c n u" . org-roam-ui-mode)
+  :init (when (featurep 'xwidget-internal)
+          (setq org-roam-ui-browser-function #'xwidget-webkit-browse-url)))
+
 
 (provide 'feat.org)
 ;;; feat.org.el ends here

@@ -65,6 +65,7 @@
 (setq-default lisp-indentation-offset 2) ;; indent by 2 spaces
 (setq-default nix-indentation-offset 2) ;; indent by 2 spaces
 (setq-default org-indentation-offset 2) ;; indent by 2 spaces
+(setq-default markdown-indent-offset 2) ;; indent by 2 spaces
 (setq-default standard-indent 2) ;; indent by 2 spaces
 
 ;; yes-or-no shortcut for dialogues
