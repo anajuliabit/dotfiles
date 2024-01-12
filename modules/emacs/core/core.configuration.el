@@ -23,7 +23,7 @@
 ;; Set max line width
 (setq-default fill-column 80)
 
-;; Define a file used for storing customization information.
+;; Define a file used for storing customization in////formation.
 (setq custom-file "~/.emacs.d/local/custom.el")
 
 ;; Apropos sortage by relevancy
@@ -58,15 +58,17 @@
 ;; Keymap basics
 (setq select-enable-clipboard t)
 
-;; Indentation defaults
-(setq-default indent-tabs-mode nil) ;; use space instead of tabs
-(setq-default tab-width 2) ;; set tab width to 2 spaces
-(setq-default js-indent-level 2) ;; indent by 2 spaces
-(setq-default lisp-indentation-offset 2) ;; indent by 2 spaces
-(setq-default nix-indentation-offset 2) ;; indent by 2 spaces
-(setq-default org-indentation-offset 2) ;; indent by 2 spaces
-(setq-default markdown-indent-offset 2) ;; indent by 2 spaces
-(setq-default standard-indent 2) ;; indent by 2 spaces
+;; Default indentation
+(setq-default indent-tabs-mode nil)  ;; Use spaces instead of tabs
+(setq-default tab-width 4)           ;; Set width of a tab to 4 spaces
+(setq-default standard-indent 4)     ;; Default indent by 4 spaces
+
+;; Set default-tab-width for modes that use it
+(setq default-tab-width 4)
+
+;; Set js indent level
+(setq js-indent-level 2)
+
 
 ;; yes-or-no shortcut for dialogues
 (defalias 'yes-or-no-p 'y-or-n-p)

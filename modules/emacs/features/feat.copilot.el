@@ -23,7 +23,8 @@
   :config  
   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-
+  ;; Disable warning when copilot--infer-indentation-offset cannot find indentation offset
+  (setq copilot-indent-offset-warning-disable t)
   ;; custom completion
   (with-eval-after-load 'copilot
 	(define-key copilot-mode-map (kbd "<tab>") #'my/copilot-tab)))

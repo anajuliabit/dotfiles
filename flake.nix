@@ -1,10 +1,12 @@
 {
   description = "My dotfiles with nix";
 
-  inputs = {
+  inputs = 
+
+{
     #flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    #nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     darwin = {
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,20 +17,22 @@
     };
     foundry.url = "github:shazow/foundry.nix/monthly";
     #cairo-nix.url = "github:cairo-nix/cairo-nix";
-  };
+  }
+;
 
-  outputs = { self, darwin, nixpkgs, home-manager, foundry, ... }@inputs:
+  outputs = { self, darwin, flake-utils, nixpkgs, nixpkgs-unstable, home-manager, foundry, ... }@inputs:
     let
+      pkgs = import nixpkgs { system = "aarch64-darwin"; };
       overlays = [
         foundry.overlay
-        #(import cairo-nix)
-      ];
+        (import ./overlays)
+      ] ;
     in {
       darwinConfigurations = {
         darwin = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           modules = [
-            ./hosts/darwin
+            ./darwin
             {
               nixpkgs = {
                 config = {

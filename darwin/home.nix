@@ -1,17 +1,16 @@
 { config, inputs, pkgs, lib, ... }:
 let
-  hm-config = import ../../modules/home-manager.nix {
+  hm-config = import ../modules/home-manager.nix {
     config = config;
     pkgs = pkgs;
     lib = lib;
     inputs = inputs;
   };
-  home-manager = builtins.fetchTarball
-    "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 in {
-  imports = [ "${home-manager}/nix-darwin" ];
+  imports = [
+    <home-manager/nix-darwin>
+  ];
   # Homebrew is used to install impure software only (Mac Apps)
-
   home-manager = {
     useGlobalPkgs = true;
     users.anajulia = { pkgs, lib, ... }:
@@ -31,7 +30,6 @@ in {
           EDITOR = "emacs";
           PATH =
             "/Users/anajulia/.config/emacs/bin:/Users/$USER/Library/Python/3.9/bin:$PATH";
-          #CXX = "clang++";
           LIBRARY_PATH = "${
               lib.makeLibraryPath [ pkgs.libiconv ]
             }\${LIBRARY_PATH:+:$LIBRARY_PATH}";
@@ -55,18 +53,6 @@ in {
             $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
           done
         '';
-
-        #  home.sessionVariables = rec {
-
-        #  };
-
-        #  PATH = [
-        #    "\${HOME}/.bin"
-        #    "\${XDG_BIN_HOME}"
-        #    "\${HOME}/.node_modules"
-        #  ];
-
-        #   modules.emacs.enable = true;
       };
   };
 }

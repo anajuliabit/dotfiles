@@ -95,6 +95,11 @@
               ("s-p" . projectile-command-map)
               ("C-c p" . projectile-command-map)))
 
+(with-eval-after-load 'projectile
+  (setq projectile-globally-ignored-directories
+        (append '("node_modules" "lib" "out")
+                projectile-globally-ignored-directories)))
+
 ;;; Smart M-x enhancement, e.g. sorting items in M-x minibuffer by usage
 (use-package smex
   :straight t)
