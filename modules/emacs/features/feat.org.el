@@ -17,7 +17,10 @@
 
 ;;; Hide the emphasis markup
 ;;; (e.g. /.../ for italics, *...* for bold, etc.)
-(setq org-hide-emphasis-markers t)
+(setq org-hide-emphasis-markers t
+      org-todo-keywords (quote ((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d!/!)")
+                                (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)")))
+      )
 
   ;; Prettify UI
 (use-package org-modern
@@ -33,7 +36,7 @@
 (use-package org-roam
   :straight t
   :init
-  (setq org-roam-directory (file-truename "/Users/anajulia/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/notes/")
+  (setq org-roam-directory (file-truename "/Users/anajulia/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/notes/main")
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag))
         )
   :bind (("C-c n l" . org-roam-buffer-toggle)
