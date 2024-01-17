@@ -2,10 +2,9 @@
   description = "My dotfiles with nix";
 
   inputs = 
-
 {
     #flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     darwin = {
       url = "github:LnL7/nix-darwin/master";
@@ -25,7 +24,7 @@
       pkgs = import nixpkgs { system = "aarch64-darwin"; };
       overlays = [
         foundry.overlay
-        (import ./overlays)
+        #(import ./overlays)
       ] ;
     in {
       darwinConfigurations = {

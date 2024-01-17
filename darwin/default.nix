@@ -4,6 +4,8 @@
   imports = [
     ./home.nix
     ../modules/dev/node.nix
+    ../modules/desktop/yabai.nix
+    ../modules/desktop/skhd.nix
   ];
     # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
@@ -27,7 +29,7 @@
   homebrew = {
     enable = true;
     onActivation.autoUpdate = true;
-    brews = [ "pinentry-mac" "yabai" "skhd"]; 
+    brews = [ "pinentry-mac" ]; 
     casks = [ "emacs" ];
     brewPrefix = "/opt/homebrew/bin";
   };

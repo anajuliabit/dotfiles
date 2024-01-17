@@ -20,11 +20,13 @@
 ;;  :custom ((copilot-node-executable "/usr/bin/node" "Set node executable.")
 ;;           (copilot-indent-warning-suppress t))
   :hook (prog-mode . copilot-mode)
+  (copilot-mode . (lambda ()
+                    (setq-local copilot--indent-warning-printed-p t)))
   :config  
+  (setq copilot-max-char 1000000)
   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
   ;; Disable warning when copilot--infer-indentation-offset cannot find indentation offset
-  (setq copilot-indent-offset-warning-disable t)
   ;; custom completion
   (with-eval-after-load 'copilot
 	(define-key copilot-mode-map (kbd "<tab>") #'my/copilot-tab)))
