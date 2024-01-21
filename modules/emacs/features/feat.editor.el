@@ -209,5 +209,18 @@
   :config
   (editorconfig-mode 1))
 
+(use-package eat
+  :straight t
+ )
+
+(use-package exec-path-from-shell
+  :straight t
+  :init
+  (exec-path-from-shell-initialize))
+
+(exec-path-from-shell-initialize)
+
+(add-hook 'eshell-load-hook #'eat-eshell-mode)
+
 (provide 'feat.editor)
 ;;; feat.editor.el ends here

@@ -17,6 +17,7 @@
 (load (expand-file-name "features/feat.copilot.el" config-path))
 (load (expand-file-name "features/feat.syntaxchecking.el" config-path))
 (load (expand-file-name "features/feat.modeline.el" config-path))
+(load (expand-file-name "features/feat.formatting.el" config-path))
 (load (expand-file-name "features/feat.theme.el" config-path))
 (load (expand-file-name "languages/lang.typescript.el" config-path))
 (load (expand-file-name "languages/lang.nix.el" config-path))

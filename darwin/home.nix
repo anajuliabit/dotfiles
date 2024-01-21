@@ -29,7 +29,7 @@ in {
           XDG_DATA_HOME = "\${HOME}/.local/share";
           EDITOR = "emacs";
           PATH =
-            "/Users/anajulia/.config/emacs/bin:/Users/$USER/Library/Python/3.9/bin:$PATH";
+            "/Users/$USER/.config/emacs/bin:/Users/$USER/Library/Python/3.9/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin/:$HOME/.local/bin:/Users/anajulia/.local/share/rtx/installs/node/18.19.0/bin:$PATH";
           LIBRARY_PATH = "${
               lib.makeLibraryPath [ pkgs.libiconv ]
             }\${LIBRARY_PATH:+:$LIBRARY_PATH}";

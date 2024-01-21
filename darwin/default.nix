@@ -3,7 +3,6 @@
 {
   imports = [
     ./home.nix
-    ../modules/dev/node.nix
     ../modules/desktop/yabai.nix
     ../modules/desktop/skhd.nix
   ];

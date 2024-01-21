@@ -28,7 +28,7 @@
       ] ;
     in {
       darwinConfigurations = {
-        darwin = darwin.lib.darwinSystem {
+        macbook = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           modules = [
             ./darwin

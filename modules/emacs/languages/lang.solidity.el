@@ -19,9 +19,11 @@
   (when (functionp 'company-mode)
     (require 'company-solidity)
     (add-hook 'solidity-mode-hook
-	      (lambda ()
-	        (set (make-local-variable 'company-backends)
-                     '((company-solidity company-capf company-dabbrev-code))))))
+          (lambda ()
+            (set (make-local-variable 'company-backends)
+                 '((company-solidity company-capf company-dabbrev-code)))
+            (setq fill-column 80)
+            (auto-fill-mode 1))))
   (add-to-list 'company-backends '(company-lsp)))
 
 (provide 'lang.solidity)

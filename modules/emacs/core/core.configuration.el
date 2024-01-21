@@ -144,5 +144,9 @@
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+
+(setq eshell-path-env (getenv "PATH"))
+
 (provide 'core.configuration)
 ;;; core.configuration.el ends here
+
