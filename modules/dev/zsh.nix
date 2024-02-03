@@ -4,6 +4,15 @@
     enable = true;
     plugins = with pkgs; [
       {
+        name = "alias-tips";
+        src = pkgs.fetchFromGitHub {
+          owner = "djui";
+          repo = "alias-tips";
+          rev = "41cb143ccc3b8cc444bf20257276cb43275f65c4";
+          sha256 = "ZFWrwcwwwSYP5d8k7Lr/hL3WKAZmgn51Q9hYL3bq9vE=";
+        };
+      }
+      {
         name = "agkozak-zsh-prompt";
         src = fetchFromGitHub {
           owner = "agkozak";
@@ -95,7 +104,6 @@
       [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
       source "$EAT_SHELL_INTEGRATION_DIR/zsh"
     '';
-
   };
 
   programs.fzf = {

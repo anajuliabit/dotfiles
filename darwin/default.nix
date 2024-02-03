@@ -4,7 +4,6 @@
   imports = [
     ./home.nix
     ../modules/desktop/yabai.nix
-    ../modules/desktop/skhd.nix
   ];
     # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
@@ -28,8 +27,8 @@
   homebrew = {
     enable = true;
     onActivation.autoUpdate = true;
-    brews = [ "pinentry-mac" ]; 
-    casks = [ "emacs" ];
+    brews = [ "pinentry-mac" "koekeishiya/formulae/skhd" "ekhtml" ]; 
+    casks = [ "emacs" "mactex" ];
     brewPrefix = "/opt/homebrew/bin";
   };
   users.users.anajulia = {
@@ -38,11 +37,12 @@
     shell = pkgs.zsh;
   };
 
+
   #fonts.fontconfig.enable = true;
   environment.systemPackages = with pkgs; [
     #ansible
-    git
     zoxide # fast alternative ot autojump and z-lua
+    git
     coreutils
     curl
     wget

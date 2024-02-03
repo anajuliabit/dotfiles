@@ -10,10 +10,9 @@
   :straight t
   :config
   (setq prettier-js-args '("--trailing-comma" "all"
-                           "--bracket-spacing" "true"
-                           "--single-quote" "true"
+                           "--bracket-spacing" "false"
+                           "--single-quote" "false"
                            "--print-width" "80"
-                           "--plugin" "/Users/anajulia/.local/share/rtx/installs/node/18.19.0/lib/node_modules/prettier-plugin-solidity"
                            ))
   :hook
   ((solidity-mode . prettier-js-mode)

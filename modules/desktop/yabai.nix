@@ -37,10 +37,7 @@
       yabai -m rule --add app="App Store" manage=off
       yabai -m rule --add app="System Information" manage=off
       yabai -m rule --add app="^Emacs$" title!='^$' manage=on
-      #yabai -m rule --add app="Spotify" manage=off
-      #yabai -m rule --add app="WhatsApp" manage=off
-      yabai -m rule --add app="1Password" sticky=on layer=above manage=off
-      #yabai -m rule --add app="Telegram" manage=off
+      $yabai -m rule --add app="1Password" sticky=on layer=above manage=off
 
       # Taken from https://github.com/koekeishiya/yabai/issues/719#issuecomment-728140216
       # Focus window after active display changes

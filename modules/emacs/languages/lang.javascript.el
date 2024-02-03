@@ -23,13 +23,5 @@ src: http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-
       (setq-local flycheck-javascript-eslint-executable
                   "~/.nvm/versions/node/v20.2.0/bin/eslint"))))
 
-(use-package prettier-js
-  :straight t
-  :config
-  :hook
-  (js2-mode        . prettier-js-mode)
-  (typescript-mode . prettier-js-mode)
-  (html-mode       . prettier-js-mode))
-
 (provide 'lang.javascript)
 ;;; lang.javascript.el ends here

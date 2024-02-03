@@ -1,9 +1,8 @@
 { pkgs, ... }:
-
 {
-    programs.git = {
-        enable = true;
-        userEmail = "anajuliabit@gmail.com";
-        userName = "Ana Bittencourt";
-    };
+  programs.git = {
+    enable = true;
+    userEmail = "anajuliabit@gmail.com";
+    userName = "Ana Bittencourt";
+  };
 }
