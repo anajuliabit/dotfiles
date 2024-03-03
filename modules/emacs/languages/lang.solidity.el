@@ -13,6 +13,8 @@
   ("C-c C-g" . solidity-mode-map)
   :config
   (setq solidity-comment-style 'slash)
+  (require ' lsp-mode)
+  (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity")))
   (require 'solidity-flycheck)
   (setq solidity-flycheck-solc-checker-active t
         flycheck-solidity-solc-addstd-contracts t)

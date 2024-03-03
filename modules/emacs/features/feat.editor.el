@@ -222,5 +222,12 @@
 
 (add-hook 'eshell-load-hook #'eat-eshell-mode)
 
+(use-package which-key
+  :diminish which-key-mode
+  :straight t
+  :config
+  (which-key-mode)
+  (setq which-key-idle-delay 0.3))
+
 (provide 'feat.editor)
 ;;; feat.editor.el ends here

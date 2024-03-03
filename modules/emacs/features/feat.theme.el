@@ -5,6 +5,7 @@
 
 ;;; Code:
 (use-package doom-themes
+  :straight t
   :config
   (load-theme 'doom-tomorrow-night t)
 )

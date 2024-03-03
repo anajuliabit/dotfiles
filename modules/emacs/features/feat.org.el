@@ -33,8 +33,19 @@
                               (setq prettify-symbols-alist nil)
                               (prettify-symbols-mode -1)))))
 
+(use-package emacsql-sqlite3
+  :straight t)
+
+(use-package emacsql-sqlite
+  :straight t)
+
+(use-package emacsql
+  :straight t)
+
 (use-package org-roam
   :straight t
+  :custom
+  (org-roam-database-connector 'sqlite-builtin)
   :init
   (setq org-roam-directory (file-truename "/Users/anajulia/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/notes/main")
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag))
