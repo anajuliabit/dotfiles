@@ -97,9 +97,10 @@
 ;; Time display
 (display-time-mode t)
 
-;; Enable line numbers
-(global-display-line-numbers-mode nil)
-(add-hook 'prog-mode 'display-line-numbers--turn-on)
+;; DIsable line numbers for certain modes
+(dolist (mode '(term-mode-hook
+	        eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode -1))))
 
 ;; Highlight current line
 (global-hl-line-mode t)
