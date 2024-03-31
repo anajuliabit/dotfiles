@@ -6,7 +6,7 @@
       font = {
         normal.family = "FiraCode Nerd Font";
         bold = { style = "Bold"; };
-        size = 11;
+        size = 14;
       };
       offset = {
         x = -1;
