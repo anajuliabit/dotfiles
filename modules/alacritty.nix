@@ -1,16 +1,17 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
+
 {
   programs.alacritty = {
     enable = true;
     settings = {
+      live_config_reload = false;
       font = {
-        normal.family = "FiraCode Nerd Font";
-        bold = { style = "Bold"; };
+        normal.family = "Iosevka";
         size = 14;
       };
-      offset = {
-        x = -1;
-        y = 0;
+      shell = {
+        program = "${pkgs.zsh}/bin/zsh";
+        args = [ "--interactive" ];
       };
     };
   };
