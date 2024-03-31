@@ -21,14 +21,15 @@ in {
       home.stateVersion = "22.11";
       home.sessionVariables = {
         EDITOR = "emacs";
-        PATH = lib.concatStringsSep ":" [
-          "$HOME/.config/emacs/bin"
-          "$HOME/Library/Python/3.9/bin"
-          "/etc/profiles/per-user/$USER/bin"
-          "/run/current-system/sw/bin"
-          "$HOME/.local/bin"
-        ];
+        PATH =
+            "/Users/$USER/.config/emacs/bin:/Users/$USER/Library/Python/3.9/bin/:/Users/$USER/Library/Python/3.9/lib/python/site-packages/:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin/:$HOME/.local/bin:/Users/anajulia/.local/share/rtx/installs/node/18.19.0/bin:/Library/Tex/Distributions/.DefaultTeX/Contents/Programs/x86-64/:/Users/$USER/.config/.foundry/bin:$PATH";
+       # PATH = lib.concatStringsSep ":" [
+        #  "$HOME/.config/emacs/bin"
+         # "$HOME/Library/Python/3.9/bin"
+        #  "/run/current-system/sw/bin"
+        #];
       };
+      # symlinks don't work with finder + spotlight, copy them instead
       disabledModules = [ "targets/darwin/linkapps.nix" ];
       # Define a 'buildEnv' environment containing applications.
       # This environment gathers all the applications specified in './packages.nix'.
