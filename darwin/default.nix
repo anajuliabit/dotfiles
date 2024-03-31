@@ -3,9 +3,9 @@
 {
   imports = [
     ./home.nix
-    ../modules/desktop/yabai.nix
   ];
-    # Auto upgrade nix package and the daemon service.
+
+  # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
   nix = {
@@ -28,7 +28,7 @@
     enable = true;
     onActivation.autoUpdate = true;
     brews = [ "pinentry-mac" "koekeishiya/formulae/skhd" "ekhtml" ]; 
-    casks = [ "emacs" "mactex" ];
+    casks = [ "emacs" "mactex" "amethyst"];
     brewPrefix = "/opt/homebrew/bin";
   };
   users.users.anajulia = {
@@ -37,11 +37,9 @@
     shell = pkgs.zsh;
   };
 
-
   #fonts.fontconfig.enable = true;
   environment.systemPackages = with pkgs; [
-    #ansible
-    zoxide # fast alternative ot autojump and z-lua
+    zoxide # fast alternative to autojump and z-lua
     git
     coreutils
     curl

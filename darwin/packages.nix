@@ -43,8 +43,6 @@ in (with pkgs; [
   gnuplot
   nim
   python3
-  foundry-bin
-  #cairo-bin.stable.scarb
   #zotero
   #appimage-run
   #gnumake
