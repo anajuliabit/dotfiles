@@ -13,7 +13,6 @@ in (with pkgs; [
   yubikey-manager
   yubikey-agent
   # dev tools
-  gdb
   clang-tools
   clang
   cmake
@@ -34,14 +33,12 @@ in (with pkgs; [
   nodePackages.pnpm
   comma # run software from without installing it
   ledger
-  ispell
   hunspell
   hunspellDicts.en-us
   hunspellDicts.pt-br
   languagetool
   graphviz
   gnuplot
-  nim
   python3
   #zotero
   #appimage-run
@@ -69,7 +66,6 @@ in (with pkgs; [
   #inotify-tools # inotifywait, inotifywatch - For file system events
   #i3lock-fancy-rapid
   #libnotify
-  #ledger-live-desktop
   #playerctl # Control media players from command line
   #pinentry-curses
   #pcmanfm # Our file browser

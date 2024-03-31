@@ -27,7 +27,7 @@
   homebrew = {
     enable = true;
     onActivation.autoUpdate = true;
-    brews = [ "pinentry-mac" "koekeishiya/formulae/skhd" "ekhtml" ]; 
+    brews = [ "pinentry-mac" "ekhtml" ]; 
     casks = [ "emacs" "mactex" "amethyst"];
     brewPrefix = "/opt/homebrew/bin";
   };
