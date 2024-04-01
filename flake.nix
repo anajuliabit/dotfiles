@@ -11,7 +11,7 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    foundry.url = "github:shazow/foundry.nix/monthly";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,7 +19,7 @@
   }
 ;
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager}: {
+  outputs = { self, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager, ...}@inputs: {
       darwinConfigurations = {
         MacBook = nix-darwin.lib.darwinSystem {
           system = "aarch64-darwin"; 
@@ -29,6 +29,9 @@
             {
 
               nixpkgs = {
+                overlays = with inputs; [
+                  foundry.overlay
+                ];
                 config = {
                   allowUnfree = true;
                   allowBroken = true;
