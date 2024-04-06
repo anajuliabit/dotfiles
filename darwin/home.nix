@@ -23,11 +23,12 @@ in {
         EDITOR = "emacs";
         PATH = lib.concatStringsSep ":" [
           "$HOME/.config/emacs/bin"
-          "$HOME/.config/.foundry/bin"
+          "$HOME/.foundry/bin"
           "$HOME/Library/Python/3.9/bin"
           "$HOME/.local/bin"
           "/run/current-system/sw/bin"
           "/etc/profiles/per-user/$USER/bin"
+          "NIX_LDFLAGS=-L${pkgs.libiconv}/lib"
           "$PATH"
         ];
       };

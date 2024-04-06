@@ -13,16 +13,12 @@ in (with pkgs; [
   yubikey-manager
   yubikey-agent
   # dev tools
-  clang-tools
-  clang
-  cmake
-  ripgrep
+ #  ripgrep
   silver-searcher
   pkg-config
   rustup
   #rust-analyzer
-  iconv
-  #libiconv
+  libiconv # charset conversion
   rnix-lsp
   nixfmt
   niv # easy dependency management for nix projects
@@ -76,6 +72,4 @@ in (with pkgs; [
   #google-chrome
   discord
   spotify
-] ++ [
-    glibtool
-])
+] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))
