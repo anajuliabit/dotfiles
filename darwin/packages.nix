@@ -72,4 +72,7 @@ in (with pkgs; [
   #google-chrome
   discord
   spotify
+  pkgs.texlive.combined.scheme-full # All of texlive (including LaTeX and ConTEXt)
+  pkgs.lua53Packages.digestif # Code analyze for TeX
+  pkgs.texlab # LSP for LaTeX
 ] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))
