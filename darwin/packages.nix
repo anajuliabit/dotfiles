@@ -12,8 +12,6 @@ in (with pkgs; [
   _1password-gui
   yubikey-manager
   yubikey-agent
-  # dev tools
- #  ripgrep
   silver-searcher
   pkg-config
   rustup
@@ -23,15 +21,13 @@ in (with pkgs; [
   nixfmt
   niv # easy dependency management for nix projects
   libtool # for Emacs vterm
+  # node packages
   nodePackages.typescript
   nodejs
   nodePackages.node2nix
   nodePackages.pnpm
+  nodePackages.prettier
   comma # run software from without installing it
-  ledger
-  hunspell
-  hunspellDicts.en-us
-  hunspellDicts.pt-br
   languagetool
   graphviz
   gnuplot
@@ -45,13 +41,11 @@ in (with pkgs; [
   #wineWowPackages.stable
   fontconfig
   #galculator
-  #tdesktop # telegram desktop
   #chromedriver
   #direnv
   #rofi-calc
   #rnix-lsp # lsp-mode for nix
   #qmk
-  #emote # Emoji picker
   #feh # Manage wallpapers
   #screenkey
   tree-sitter
@@ -62,17 +56,15 @@ in (with pkgs; [
   #inotify-tools # inotifywait, inotifywatch - For file system events
   #i3lock-fancy-rapid
   #libnotify
-  #playerctl # Control media players from command line
   #pinentry-curses
-  #pcmanfm # Our file browser
   sqlite
   xdg-utils
   #yad # I use yad-calendar with polybar
   #xdotool
   #google-chrome
+  tdesktop 
   discord
   spotify
   pkgs.texlive.combined.scheme-full # All of texlive (including LaTeX and ConTEXt)
-  pkgs.lua53Packages.digestif # Code analyze for TeX
   pkgs.texlab # LSP for LaTeX
 ] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))
