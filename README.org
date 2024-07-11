@@ -1,0 +1,17 @@
+- When nix store gets too large.
+
+```bash
+sudo nix-collect-garbage -d
+```
+
+- Find here a executable is inside nix store with
+
+```
+nix-build -E 'with import <nixpkgs> {}; executable' --no-out-link
+```
+
+- Nix info
+
+```
+nix-shell -p nix-info --run "nix-info -m"
+```
