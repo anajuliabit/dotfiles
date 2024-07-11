@@ -25,13 +25,10 @@ in (with pkgs; [
   libtool # for Emacs vterm
   nodePackages.typescript
   nodejs
+  yarn
   nodePackages.node2nix
   nodePackages.pnpm
   comma # run software from without installing it
-  ledger
-  hunspell
-  hunspellDicts.en-us
-  hunspellDicts.pt-br
   languagetool
   graphviz
   gnuplot
@@ -41,19 +38,14 @@ in (with pkgs; [
   #gnumake
   home-manager
   #gimp
-  #vlc
   #wineWowPackages.stable
   fontconfig
   #galculator
-  #tdesktop # telegram desktop
   #chromedriver
   #direnv
   #rofi-calc
   #rnix-lsp # lsp-mode for nix
   #qmk
-  #emote # Emoji picker
-  #feh # Manage wallpapers
-  #screenkey
   tree-sitter
   #unixtools.ifconfig
   #unixtools.netstat
@@ -62,12 +54,9 @@ in (with pkgs; [
   #inotify-tools # inotifywait, inotifywatch - For file system events
   #i3lock-fancy-rapid
   #libnotify
-  #playerctl # Control media players from command line
   #pinentry-curses
-  #pcmanfm # Our file browser
   sqlite
   xdg-utils
-  #yad # I use yad-calendar with polybar
   #xdotool
   #google-chrome
   discord

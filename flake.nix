@@ -21,13 +21,11 @@
 
   outputs = { self, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager, ...}@inputs: {
       darwinConfigurations = {
-        MacBook = nix-darwin.lib.darwinSystem {
+        "default" = nix-darwin.lib.darwinSystem {
           system = "aarch64-darwin"; 
           modules = [
-            ./darwin
-            #home-manager.darwinModules.home-manager
+            ./macos
             {
-
               nixpkgs = {
                 overlays = with inputs; [
                   foundry.overlay
@@ -41,7 +39,6 @@
             }
           ];
           specialArgs = { inherit inputs; };
-          #inputs = { inherit darwin home-manager nixpkgs; };
         };
       };
     };

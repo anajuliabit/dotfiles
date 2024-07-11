@@ -6,9 +6,16 @@
     settings = {
       live_config_reload = false;
       font = {
-        normal.family = "Iosevka";
-        size = 14;
+         family =  "Iosevka";
+        size = 20;
       };
+       keybindings = [
+      { key = "Equals";     mods = "Control";     action = "IncreaseFontSize"; }
+      { key = "Add";        mods = "Control";     action = "IncreaseFontSize"; }
+      { key = "Subtract";   mods = "Control";     action = "DecreaseFontSize"; }
+      { key = "Minus";      mods = "Control";     action = "DecreaseFontSize"; }
+      { key = "V";          mods = "Control";     action = "Paste"; }
+    ];
       shell = {
         program = "${pkgs.zsh}/bin/zsh";
         args = [ "--interactive" ];
