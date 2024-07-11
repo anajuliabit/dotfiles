@@ -76,7 +76,7 @@
         orientation = "bottom";
         tilesize = 40;
       };
-      finder = { # Finder settings
+      finder = { 
         QuitMenuItem =
           false; # I believe this probably will need to be true if using spacebar
       };

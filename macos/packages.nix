@@ -12,8 +12,6 @@ in (with pkgs; [
   _1password-gui
   yubikey-manager
   yubikey-agent
-  # dev tools
- #  ripgrep
   silver-searcher
   pkg-config
   rustup
@@ -23,11 +21,13 @@ in (with pkgs; [
   nixfmt
   niv # easy dependency management for nix projects
   libtool # for Emacs vterm
+  # node packages
   nodePackages.typescript
   nodejs
   yarn
   nodePackages.node2nix
   nodePackages.pnpm
+  nodePackages.prettier
   comma # run software from without installing it
   languagetool
   graphviz
@@ -59,6 +59,9 @@ in (with pkgs; [
   xdg-utils
   #xdotool
   #google-chrome
+  tdesktop 
   discord
   spotify
+  pkgs.texlive.combined.scheme-full # All of texlive (including LaTeX and ConTEXt)
+  pkgs.texlab # LSP for LaTeX
 ] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))
