@@ -20,6 +20,7 @@ in {
       home.packages = pkgs.callPackage ./packages.nix { };
       home.stateVersion = "22.11";
       home.sessionVariables = {
+        LSP_USE_PLISTS = "true";
         EDITOR = "emacs";
         PATH = lib.concatStringsSep ":" [
           "$HOME/.config/emacs/bin"
