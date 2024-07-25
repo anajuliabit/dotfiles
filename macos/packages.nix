@@ -21,13 +21,11 @@ in (with pkgs; [
   nixfmt
   niv # easy dependency management for nix projects
   libtool # for Emacs vterm
-  # node packages
   nodePackages.typescript
-  nodejs
-  yarn
-  nodePackages.node2nix
-  nodePackages.pnpm
+  nodePackages.typescript-language-server
+  nodePackages_latest.nodejs
   nodePackages.prettier
+  yarn
   comma # run software from without installing it
   languagetool
   graphviz
