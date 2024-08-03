@@ -31,6 +31,7 @@ in (with pkgs; [
   graphviz
   gnuplot
   python3
+  lcov
   #zotero
   #appimage-run
   #gnumake
