@@ -28,7 +28,7 @@
     enable = true;
     onActivation.autoUpdate = true;
     brews = [ "pinentry-mac" "ekhtml" ]; 
-    casks = [ "emacs" "mactex" "amethyst"];
+    casks = [ "emacs" "raycast" "grammarly-desktop" ];
     brewPrefix = "/opt/homebrew/bin";
   };
   users.users.anajulia = {
@@ -38,6 +38,15 @@
   };
 
   #fonts.fontconfig.enable = true;
+  fonts = {
+    fontDir.enable = true;    # Enables font directory
+    fonts = with pkgs; [
+      # Add any fonts you want to install here, for example:
+      # noto-fonts
+      # fira-code
+    ];
+  };
+
   environment.systemPackages = with pkgs; [
     zoxide # fast alternative to autojump and z-lua
     git
@@ -85,9 +94,10 @@
         TrackpadRightClick = true;
       };
     };
-    activationScripts.postUserActivation.text = ''
-          # Following line should allow us to avoid a logout/login cycle
-          /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-        '';
+
+    activationScripts.postActivation.text = ''
+      # Following line should allow us to avoid a logout/login cycle
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    '';
   };
 }

@@ -58,9 +58,8 @@ in (with pkgs; [
   xdg-utils
   #xdotool
   #google-chrome
-  tdesktop 
   discord
   spotify
-  pkgs.texlive.combined.scheme-full # All of texlive (including LaTeX and ConTEXt)
-  pkgs.texlab # LSP for LaTeX
+  iterm2
+  foundry-bin
 ] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))
