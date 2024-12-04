@@ -61,5 +61,4 @@ in (with pkgs; [
   discord
   spotify
   iterm2
-  foundry-bin
 ] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))
