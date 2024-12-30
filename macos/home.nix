@@ -21,7 +21,7 @@ in {
       home.stateVersion = "22.11";
       home.sessionVariables = {
         LSP_USE_PLISTS = "true";
-        EDITOR = "emacs";
+        EDITOR = "vim";
         PATH = lib.concatStringsSep ":" [
           "$HOME/.config/emacs/bin"
           "$HOME/.foundry/bin"
