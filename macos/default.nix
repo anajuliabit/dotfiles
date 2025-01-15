@@ -28,7 +28,7 @@
     enable = true;
     onActivation.autoUpdate = true;
     brews = [ "pinentry-mac" "ekhtml" ]; 
-    casks = [ "emacs" "raycast" "grammarly-desktop" "amethyst" "google-chrome" "1password"];
+    casks = [ "emacs" "raycast" "grammarly-desktop" "amethyst" "google-chrome" "1password" "slack"];
     brewPrefix = "/opt/homebrew/bin";
   };
   users.users.anajuliabittencourt = {
