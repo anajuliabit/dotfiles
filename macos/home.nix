@@ -32,13 +32,38 @@ in {
           "log-file" = "~/.gnupg/scdaemon.log";
           "debug-level" = "basic";
         };
+        mutableKeys = true;
+        mutableTrust = true;
       };
 
+      # GPG agent configuration for macOS
       home.file.".gnupg/gpg-agent.conf".text = ''
         enable-ssh-support
         default-cache-ttl 60
         max-cache-ttl 120
         pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
+      '';
+
+      # Add GPG agent to LaunchAgents to start at login
+      home.file."Library/LaunchAgents/org.gnupg.gpg-agent.plist".text = ''
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+          "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>Label</key>
+          <string>org.gnupg.gpg-agent</string>
+          <key>Program</key>
+          <string>${pkgs.gnupg}/bin/gpg-agent</string>
+          <key>ProgramArguments</key>
+          <array>
+            <string>${pkgs.gnupg}/bin/gpg-agent</string>
+            <string>--daemon</string>
+          </array>
+          <key>RunAtLoad</key>
+          <true/>
+        </dict>
+        </plist>
       '';
 
       programs.zsh.initExtra = ''
