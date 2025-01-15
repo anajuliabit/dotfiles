@@ -28,12 +28,12 @@
     enable = true;
     onActivation.autoUpdate = true;
     brews = [ "pinentry-mac" "ekhtml" ]; 
-    casks = [ "emacs" "raycast" "grammarly-desktop" "amethyst" ];
+    casks = [ "emacs" "raycast" "grammarly-desktop" "amethyst" "google-chrome" "1password"];
     brewPrefix = "/opt/homebrew/bin";
   };
-  users.users.anajulia = {
-    name = "anajulia";
-    home = "/Users/anajulia";
+  users.users.anajuliabittencourt = {
+    name = "anajuliabittencourt";
+    home = "/Users/anajuliabittencourt";
     shell = pkgs.zsh;
   };
 
