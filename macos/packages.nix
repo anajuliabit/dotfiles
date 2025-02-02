@@ -30,7 +30,7 @@ in (with pkgs; [
   languagetool
   graphviz
   gnuplot
-  python3
+  python312
   lcov
   #zotero
   #appimage-run
@@ -61,4 +61,5 @@ in (with pkgs; [
   discord
   spotify
   iterm2
+  solc-select
 ] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))
