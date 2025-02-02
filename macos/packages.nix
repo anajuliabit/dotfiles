@@ -2,6 +2,7 @@
 let
 glibtool = pkgs.writeShellScriptBin "glibtool" ''exec ${pkgs.libtool}/bin/libtool "$@"'';
 in (with pkgs; [
+  docker
   tldr
   (nerdfonts.override { fonts = [ "Cousine" ]; })
   htop
