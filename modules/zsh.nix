@@ -76,11 +76,21 @@
       md = "mkdir -p";
       b = "forge build";
       c = "forge compile --contracts";
+      gst = "git status"
+      gp =  "git push";
+      gd = "git diff";
+      gc = "git commit -m";
+      gac = "git add .; git commit -m";
+      gaa = "git add .";
+      gbr = "git branch";
+      gco = "git checkout";
+      gpl = "git pull";
+      gcm = "git checkout main";
     };
     shellGlobalAliases = { exa = "exa --icons --git"; };
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "vi-mode" ];
+      plugins = ["vi-mode" ];
     };
 
     initExtra = ''
