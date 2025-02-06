@@ -74,6 +74,8 @@
       l = "exa -l";
       la = "exa -la";
       md = "mkdir -p";
+      b = "forge build";
+      c = "forge compile --contracts";
     };
     shellGlobalAliases = { exa = "exa --icons --git"; };
     oh-my-zsh = {
