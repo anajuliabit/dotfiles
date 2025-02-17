@@ -87,6 +87,7 @@ in {
           "/etc/profiles/per-user/$USER/bin"
           "NIX_LDFLAGS=-L${pkgs.libiconv}/lib"
           "$PATH"
+          "$HOME/bin"
         ];
       };
     };

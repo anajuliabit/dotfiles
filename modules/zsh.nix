@@ -76,7 +76,7 @@
       md = "mkdir -p";
       b = "forge build";
       c = "forge compile --contracts";
-      gst = "git status"
+      gst = "git status";
       gp =  "git push";
       gd = "git diff";
       gc = "git commit -m";
@@ -110,6 +110,9 @@
       zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
       zstyle ':completion:*' verbose true
       _comp_options+=(globdots)
+
+      # paste faster
+      DISABLE_MAGIC_FUNCTIONS=true
 
       export LANG=en_US.UTF-8
 

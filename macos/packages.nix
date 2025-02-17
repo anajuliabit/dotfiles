@@ -33,7 +33,6 @@ in (with pkgs; [
   gnuplot
   python312
   lcov
-  #zotero
   #appimage-run
   #gnumake
   home-manager
@@ -48,11 +47,8 @@ in (with pkgs; [
   #qmk
   tree-sitter
   #unixtools.ifconfig
-  #unixtools.netstat
-  #xclip # For the org-download package in Emacs
   #xorg.xrandr
   #inotify-tools # inotifywait, inotifywatch - For file system events
-  #i3lock-fancy-rapid
   #libnotify
   #pinentry-curses
   sqlite
@@ -63,4 +59,5 @@ in (with pkgs; [
   spotify
   iterm2
   solc-select
+  vscode
 ] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))
