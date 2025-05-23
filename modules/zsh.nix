@@ -63,7 +63,7 @@
         file = "autopair.zsh";
       }
     ];
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
     autocd = true;
     dotDir = ".config/zsh";
@@ -71,8 +71,8 @@
       ll = "ls -l";
       grep = "grep --color";
       ip = "ip --color";
-      l = "exa -l";
       la = "exa -la";
+      ls = "exa --icons --git";
       md = "mkdir -p";
       b = "forge build";
       c = "forge compile --contracts";
@@ -87,13 +87,12 @@
       gpl = "git pull";
       gcm = "git checkout main";
     };
-    shellGlobalAliases = { exa = "exa --icons --git"; };
     oh-my-zsh = {
       enable = true;
       plugins = ["vi-mode" ];
     };
 
-    initExtra = ''
+    initContent = ''
       # search history based on what's typed in the prompt
       autoload -U history-search-end
       zle -N history-beginning-search-backward-end history-search-end
@@ -115,6 +114,12 @@
       DISABLE_MAGIC_FUNCTIONS=true
 
       export LANG=en_US.UTF-8
+
+      eval "$(zoxide init zsh)" 
+
+      export GPG_TTY="$(tty)"
+      export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+      gpg-connect-agent updatestartuptty /bye > /dev/null 2>&1
 
       [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
       source "$EAT_SHELL_INTEGRATION_DIR/zsh"

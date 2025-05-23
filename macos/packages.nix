@@ -4,7 +4,7 @@ glibtool = pkgs.writeShellScriptBin "glibtool" ''exec ${pkgs.libtool}/bin/libtoo
 in (with pkgs; [
   docker
   tldr
-  (nerdfonts.override { fonts = [ "Cousine" ]; })
+  nerd-fonts.droid-sans-mono
   htop
   httpie
   jq
@@ -18,14 +18,12 @@ in (with pkgs; [
   rustup
   #rust-analyzer
   libiconv # charset conversion
-  rnix-lsp
-  nixfmt
-  niv # easy dependency management for nix projects
   libtool # for Emacs vterm
   nodePackages.typescript
   nodePackages.typescript-language-server
   nodePackages_latest.nodejs
   nodePackages.prettier
+  bun
   yarn
   comma # run software from without installing it
   languagetool
@@ -35,14 +33,12 @@ in (with pkgs; [
   lcov
   #appimage-run
   #gnumake
-  home-manager
   #gimp
-  #wineWowPackages.stable
   fontconfig
-  #galculator
-  #chromedriver
+  #galculator 
+  # rofi-calc
   #direnv
-  #rofi-calc
+  #chromedriver
   #rnix-lsp # lsp-mode for nix
   #qmk
   tree-sitter
@@ -60,4 +56,10 @@ in (with pkgs; [
   iterm2
   solc-select
   vscode
+  eza # ls replacement
+  claude-code
+
+  # Nix 
+  nixfmt-rfc-style 
+  niv # easy dependency management for nix projects
 ] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))

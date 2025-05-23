@@ -14,10 +14,10 @@ export NIXPKGS_ALLOW_UNFREE=1
 cd $(dirname $(readlink -f $0))
 
 echo "${GREEN}Starting...${CLEAR}"
-nix --experimental-features 'nix-command flakes' build .#$SYSTEM --impure $@
+nix --experimental-features 'nix-command flakes' build .#$SYSTEM --impure --show-trace $@
 
 echo "${GREEN}Switching to new generation...${CLEAR}"
-./result/sw/bin/darwin-rebuild switch --flake .#$FLAKE --impure $@
+sudo ./result/sw/bin/darwin-rebuild switch --flake .#$FLAKE --impure $@
 
 echo "${GREEN}Cleaning up...${CLEAR}"
 rm -rf ./result

@@ -1,15 +1,13 @@
-{ pkgs, changnel, lib, config, inputs, ... }:
+{ pkgs, channel, lib, config, inputs, ... }:
 
 {
   imports = [
     ./home.nix
   ];
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-
   nix = {
-    package = pkgs.nixUnstable;
+    enable = true;
+    package = pkgs.nixVersions.stable;
     gc = {
       automatic = true;
       interval.Day = 7;
@@ -26,9 +24,16 @@
   programs.nix-index.enable = true;
   homebrew = {
     enable = true;
-    onActivation.autoUpdate = true;
-    brews = [ "pinentry-mac" "ekhtml" "postgresql@17" ]; 
-    casks = [ "emacs" "raycast" "grammarly-desktop" "amethyst" "google-chrome" "1password" "slack" "whatsapp" "telegram"];
+    onActivation = {
+      autoUpdate = true;
+      cleanup = "zap";
+      upgrade = true;
+    };
+    global = {
+      lockfiles = true;
+    };
+    brews = [ "pinentry-mac" "ekhtml" "postgresql@17"  ];
+    casks = [ "emacs" "raycast" "grammarly-desktop" "amethyst" "google-chrome" "1password" "slack" "whatsapp" "telegram" ];
     brewPrefix = "/opt/homebrew/bin";
   };
   users.users.anajuliabittencourt = {
@@ -37,15 +42,6 @@
     shell = pkgs.zsh;
   };
 
-  #fonts.fontconfig.enable = true;
-  fonts = {
-    fontDir.enable = true;    # Enables font directory
-    fonts = with pkgs; [
-      # Add any fonts you want to install here, for example:
-      # noto-fonts
-      # fira-code
-    ];
-  };
 
   environment.systemPackages = with pkgs; [
     zoxide # fast alternative to autojump and z-lua
@@ -66,6 +62,8 @@
   ];
 
   system = {
+    primaryUser = "anajuliabittencourt";
+    stateVersion = 6;
     defaults = {
       NSGlobalDomain = { # Global macOS system settings
         KeyRepeat = 1;
@@ -76,7 +74,7 @@
         autohide = true;
         autohide-delay = 0.0;
         autohide-time-modifier = 0.2;
-        expose-animation-duration = 0.2;
+        expose-animation-duration = 0.5;
         static-only = false;
         show-recents = false;
         show-process-indicators = true;
@@ -93,11 +91,14 @@
         Clicking = true;
         TrackpadRightClick = true;
       };
+      screencapture = {
+        location = "~/tmp/screenshots";
+      };
     };
 
-    activationScripts.postActivation.text = ''
-      # Following line should allow us to avoid a logout/login cycle
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    '';
+   # activationScripts.postActivation.text = ''
+   #   # Following line should allow us to avoid a logout/login cycle
+   #   /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+   # '';
   };
 }

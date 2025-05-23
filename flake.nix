@@ -1,28 +1,29 @@
 {
-  description = "Ana's darwin system";
+  description = "Ana's dotfiles";
 
   inputs = 
 {
-    # pinned darwin
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/master";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    # pinned home-manager
+
+    darwin = {
+      url = "github:LnL7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+
+    };
+
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
-      inputs.nixpkgs.follows = "nixpkgs";
+       url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     foundry.url = "github:shazow/foundry.nix/monthly";
-    nix-darwin = {
-      url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   }
 ;
 
   outputs = { self, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager, ...}@inputs: {
       darwinConfigurations = {
         "default" = nix-darwin.lib.darwinSystem {
-          system = "aarch64-darwin"; 
+          system = "aarch64-darwin";
           modules = [
             ./macos
             {
@@ -38,7 +39,7 @@
               };
             }
           ];
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs; }; # inputs.self, inputs.nix-darwin, and inputs.nixpkgs can be accessed from the modules
         };
       };
     };

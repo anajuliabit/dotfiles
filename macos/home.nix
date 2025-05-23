@@ -1,5 +1,8 @@
 { config, pkgs, lib, inputs, ... }:
 let
+  # Debug: Let's check what's available in the inputs
+  hm = inputs.home-manager.lib;
+  
   hm-config = import ../modules/home-manager.nix {
     config = config;
     pkgs = pkgs;
@@ -8,17 +11,24 @@ let
   };
 in {
   imports = [
-    <home-manager/nix-darwin>
+    inputs.home-manager.darwinModules.home-manager
   ];
 
   home-manager = {
     useGlobalPkgs = true;
+    # Override the lib module to include mdDoc for home-manager modules
     users.anajuliabittencourt = { pkgs, lib, ... }:
     lib.recursiveUpdate hm-config {
       programs.command-not-found.enable = true;
       home.enableNixpkgsReleaseCheck = false;
       home.packages = pkgs.callPackage ./packages.nix { };
-      home.stateVersion = "22.11";
+      # Personal configuration shared between `nix-darwin` and plain `home-manager` configs.
+      # This value determines the Home Manager release that your configuration is compatible with. This
+      # helps avoid breakage when a new Home Manager release introduces backwards incompatible changes.
+      #
+      # You can update Home Manager without changing this value. See the Home Manager release notes for
+      # a list of state version changes in each release.
+      home.stateVersion = "23.05";
       
       programs.gpg = {
         enable = true;
@@ -64,12 +74,6 @@ in {
           <true/>
         </dict>
         </plist>
-      '';
-
-      programs.zsh.initExtra = ''
-        export GPG_TTY="$(tty)"
-        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-        gpg-connect-agent updatestartuptty /bye > /dev/null 2>&1
       '';
 
       home.sessionVariables = {
