@@ -33,7 +33,7 @@
       lockfiles = true;
     };
     brews = [ "pinentry-mac" "ekhtml" "postgresql@17"  ];
-    casks = [ "emacs" "raycast" "grammarly-desktop" "amethyst" "google-chrome" "1password" "slack" "whatsapp" "telegram" ];
+    casks = [ "raycast" "grammarly-desktop" "amethyst" "google-chrome" "1password" "slack" "whatsapp" "telegram" ];
     brewPrefix = "/opt/homebrew/bin";
   };
   users.users.anajuliabittencourt = {

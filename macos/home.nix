@@ -1,8 +1,5 @@
 { config, pkgs, lib, inputs, ... }:
 let
-  # Debug: Let's check what's available in the inputs
-  hm = inputs.home-manager.lib;
-  
   hm-config = import ../modules/home-manager.nix {
     config = config;
     pkgs = pkgs;
@@ -82,7 +79,6 @@ in {
         GPG_TTY = "$(tty)";
         SSH_AUTH_SOCK = "$(gpgconf --list-dirs agent-ssh-socket)";
         PATH = lib.concatStringsSep ":" [
-          "$HOME/.config/emacs/bin"
           "$HOME/.foundry/bin"
           "$HOME/.gnupg"
           "$HOME/Library/Python/3.9/bin"

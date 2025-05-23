@@ -18,7 +18,7 @@ in (with pkgs; [
   rustup
   #rust-analyzer
   libiconv # charset conversion
-  libtool # for Emacs vterm
+  libtool
   nodePackages.typescript
   nodePackages.typescript-language-server
   nodePackages_latest.nodejs
@@ -58,7 +58,6 @@ in (with pkgs; [
   vscode
   eza # ls replacement
   claude-code
-
   # Nix 
   nixfmt-rfc-style 
   niv # easy dependency management for nix projects
