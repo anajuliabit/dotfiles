@@ -119,6 +119,7 @@
 
       export GPG_TTY="$(tty)"
       export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+      export FOUNDRY_DISABLE_NIGHTLY_WARNING=1
       gpg-connect-agent updatestartuptty /bye > /dev/null 2>&1
 
       [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \

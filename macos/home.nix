@@ -13,6 +13,7 @@ in {
 
   home-manager = {
     useGlobalPkgs = true;
+    backupFileExtension = "bak";
     # Override the lib module to include mdDoc for home-manager modules
     users.anajuliabittencourt = { pkgs, lib, ... }:
     lib.recursiveUpdate hm-config {
