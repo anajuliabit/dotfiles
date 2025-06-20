@@ -1,6 +1,23 @@
 { pkgs }:
 let
 glibtool = pkgs.writeShellScriptBin "glibtool" ''exec ${pkgs.libtool}/bin/libtool "$@"'';
+safe-cli = pkgs.writeShellScriptBin "safe-cli" ''
+  VENV_DIR="$HOME/.local/safe-cli-venv"
+  
+  if [ ! -d "$VENV_DIR" ]; then
+    echo "Setting up safe-cli virtual environment..."
+    ${pkgs.python312}/bin/python -m venv "$VENV_DIR"
+    source "$VENV_DIR/bin/activate"
+    pip install --upgrade pip
+    pip install --upgrade "safe-cli[ledger]"
+  fi
+  
+  # Always activate the virtual environment and set PYTHONPATH
+  source "$VENV_DIR/bin/activate"
+  export PYTHONPATH="$VENV_DIR/lib/python3.12/site-packages:$PYTHONPATH"
+  
+  exec "$VENV_DIR/bin/safe-cli" "$@"
+'';
 in (with pkgs; [
   docker
   tldr
@@ -30,6 +47,7 @@ in (with pkgs; [
   graphviz
   gnuplot
   python312
+  safe-cli
   lcov
   #appimage-run
   #gnumake
