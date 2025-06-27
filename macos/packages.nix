@@ -75,7 +75,8 @@ in (with pkgs; [
   solc-select
   vscode
   eza # ls replacement
-  claude-code
+  # claude-code # Already included with nodejs
+  # ledger-live-desktop # Install manually from https://www.ledger.com/ledger-live
   # Nix 
   nixfmt-rfc-style 
   niv # easy dependency management for nix projects

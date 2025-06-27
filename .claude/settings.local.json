@@ -4,5 +4,6 @@
       "Bash(git push:*)"
     ],
     "deny": []
-  }
+  },
+  "enableAllProjectMcpServers": false
 }
