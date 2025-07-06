@@ -18,6 +18,21 @@ safe-cli = pkgs.writeShellScriptBin "safe-cli" ''
   
   exec "$VENV_DIR/bin/safe-cli" "$@"
 '';
+claude-code = pkgs.writeShellScriptBin "claude-code" ''
+  NPM_CONFIG_PREFIX="$HOME/.local/npm"
+  export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+  
+  if [ ! -f "$NPM_CONFIG_PREFIX/bin/claude" ]; then
+    echo "Installing claude-code via npm..."
+    mkdir -p "$NPM_CONFIG_PREFIX"
+    ${pkgs.nodePackages_latest.nodejs}/bin/npm install --prefix "$NPM_CONFIG_PREFIX" -g @anthropic-ai/claude-code
+  else
+    echo "Updating claude-code..."
+    ${pkgs.nodePackages_latest.nodejs}/bin/npm update --prefix "$NPM_CONFIG_PREFIX" -g @anthropic-ai/claude-code
+  fi
+  
+  exec "$NPM_CONFIG_PREFIX/bin/claude" "$@"
+'';
 in (with pkgs; [
   docker
   tldr
@@ -48,6 +63,7 @@ in (with pkgs; [
   gnuplot
   python312
   safe-cli
+  claude-code
   lcov
   #appimage-run
   #gnumake
@@ -75,7 +91,6 @@ in (with pkgs; [
   solc-select
   vscode
   eza # ls replacement
-  # claude-code # Already included with nodejs
   # ledger-live-desktop # Install manually from https://www.ledger.com/ledger-live
   # Nix 
   nixfmt-rfc-style 
