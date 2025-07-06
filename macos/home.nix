@@ -84,6 +84,7 @@ in {
           "$HOME/.gnupg"
           "$HOME/Library/Python/3.9/bin"
           "$HOME/.local/bin"
+          "$HOME/.local/npm/bin"
           "/run/current-system/sw/bin"
           "/etc/profiles/per-user/$USER/bin"
           "NIX_LDFLAGS=-L${pkgs.libiconv}/lib"

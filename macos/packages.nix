@@ -18,20 +18,15 @@ safe-cli = pkgs.writeShellScriptBin "safe-cli" ''
   
   exec "$VENV_DIR/bin/safe-cli" "$@"
 '';
-claude-code = pkgs.writeShellScriptBin "claude-code" ''
+claude-update = pkgs.writeShellScriptBin "claude-update" ''
   NPM_CONFIG_PREFIX="$HOME/.local/npm"
-  export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+  mkdir -p "$NPM_CONFIG_PREFIX"
   
-  if [ ! -f "$NPM_CONFIG_PREFIX/bin/claude" ]; then
-    echo "Installing claude-code via npm..."
-    mkdir -p "$NPM_CONFIG_PREFIX"
-    ${pkgs.nodePackages_latest.nodejs}/bin/npm install --prefix "$NPM_CONFIG_PREFIX" -g @anthropic-ai/claude-code
-  else
-    echo "Updating claude-code..."
-    ${pkgs.nodePackages_latest.nodejs}/bin/npm update --prefix "$NPM_CONFIG_PREFIX" -g @anthropic-ai/claude-code
-  fi
+  echo "Installing/updating claude-code to latest version..."
+  ${pkgs.nodePackages_latest.nodejs}/bin/npm install --prefix "$NPM_CONFIG_PREFIX" -g @anthropic-ai/claude-code@latest
   
-  exec "$NPM_CONFIG_PREFIX/bin/claude" "$@"
+  echo "claude-code updated! Use: $NPM_CONFIG_PREFIX/bin/claude"
+  echo "Or add $NPM_CONFIG_PREFIX/bin to your PATH"
 '';
 in (with pkgs; [
   docker
@@ -63,7 +58,7 @@ in (with pkgs; [
   gnuplot
   python312
   safe-cli
-  claude-code
+  claude-update
   lcov
   #appimage-run
   #gnumake
