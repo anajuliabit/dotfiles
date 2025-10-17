@@ -52,6 +52,7 @@ in (with pkgs; [
   nodePackages.prettier
   bun
   yarn
+  nodePackages.pnpm
   comma # run software from without installing it
   languagetool
   graphviz
@@ -79,7 +80,6 @@ in (with pkgs; [
   sqlite
   xdg-utils
   #xdotool
-  #google-chrome
   discord
   spotify
   iterm2
@@ -90,4 +90,5 @@ in (with pkgs; [
   # Nix 
   nixfmt-rfc-style 
   niv # easy dependency management for nix projects
+  #warp
 ] ++ (with pkgs.darwin.apple_sdk.frameworks; [ SystemConfiguration ]))
