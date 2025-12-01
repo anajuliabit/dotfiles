@@ -21,12 +21,21 @@ safe-cli = pkgs.writeShellScriptBin "safe-cli" ''
 claude-update = pkgs.writeShellScriptBin "claude-update" ''
   NPM_CONFIG_PREFIX="$HOME/.local/npm"
   mkdir -p "$NPM_CONFIG_PREFIX"
-  
+
   echo "Installing/updating claude-code to latest version..."
   ${pkgs.nodePackages_latest.nodejs}/bin/npm install --prefix "$NPM_CONFIG_PREFIX" -g @anthropic-ai/claude-code@latest
-  
+
   echo "claude-code updated! Use: $NPM_CONFIG_PREFIX/bin/claude"
   echo "Or add $NPM_CONFIG_PREFIX/bin to your PATH"
+'';
+claude-flow-install = pkgs.writeShellScriptBin "claude-flow-install" ''
+  NPM_CONFIG_PREFIX="$HOME/.local/npm"
+  mkdir -p "$NPM_CONFIG_PREFIX"
+
+  echo "Installing/updating claude-flow to latest version..."
+  ${pkgs.nodePackages_latest.nodejs}/bin/npm install --prefix "$NPM_CONFIG_PREFIX" -g claude-flow@latest
+
+  echo "claude-flow installed! Use: $NPM_CONFIG_PREFIX/bin/claude-flow"
 '';
 in (with pkgs; [
   docker
@@ -60,6 +69,7 @@ in (with pkgs; [
   python312
   safe-cli
   claude-update
+  claude-flow-install
   lcov
   #appimage-run
   #gnumake

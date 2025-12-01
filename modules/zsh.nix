@@ -93,6 +93,9 @@
     };
 
     initContent = ''
+      # Add conda to PATH
+      export PATH="$HOME/miniconda3/bin:$PATH"
+
       # search history based on what's typed in the prompt
       autoload -U history-search-end
       zle -N history-beginning-search-backward-end history-search-end
@@ -126,7 +129,13 @@
       [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
       source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 
+      # Conda initialization
+      if command -v conda &> /dev/null; then
+        source $(conda info --base)/etc/profile.d/conda.sh
+      fi
+
       alias claude="/Users/anajuliabittencourt/.claude/local/claude"
+      alias claude-flow="/Users/anajuliabittencourt/.claude/local/bin/claude-flow"
     '';
   };
 
